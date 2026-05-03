@@ -2,7 +2,7 @@
 
 A reproducible, containerized WDL/Cromwell workflow for *Mycobacterium tuberculosis* complex (MTBC) antimicrobial-resistance profiling & core-SNP phylogenomics.
 
-The workflow supports paired-end Illumina FASTQ inputs & produces quality-control summaries, TB-Profiler drug-resistance and lineage reports, MTBC-only sample filtering, Snippy-based core-SNP outputs, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny, tree visualization & interactive HTML reports for GitHub Pages.
+The workflow supports paired-end Illumina FASTQ inputs & produces quality-control summaries, TB-Profiler drug-resistance and lineage reports, MTBC-only sample filtering, Snippy-based core-SNP outputs, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny, tree visualization & interactive HTML reports.
 
 
 ## Workflow overview
@@ -53,7 +53,7 @@ Tree visualization + integrated HTML report
 ```text
 TB-AMR-MTBC-Phylogenomics/
 ├── README.md
-├── TB_5.wdl
+├── TB.wdl
 ├── examples/
 │   └── inputs.example.json
 └── docs/
