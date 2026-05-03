@@ -22,23 +22,23 @@ https://gmboowa.github.io/TB-AMR-MTBC-Phylogenomics/
 
 ```text
 Paired-end FASTQ files
-    ⬇
+        ⬇
 Read trimming
-    ⬇
+        ⬇
 FastQC + MultiQC
-    ⬇
+        ⬇
 TB-Profiler AMR, species, and lineage profiling
-    ⬇
+        ⬇
 MTBC-only sample filtering
-    ⬇
+        ⬇
 Snippy per-sample variant calling
-    ⬇
+        ⬇
 Snippy-core alignment
-    ⬇
+        ⬇
 Optional Gubbins recombination filtering
-    ⬇
+        ⬇
 IQ-TREE2 maximum-likelihood phylogeny
-    ⬇
+        ⬇
 Tree visualization + integrated HTML report
 ```
 
