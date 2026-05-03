@@ -174,18 +174,18 @@ For larger datasets, especially when using Gubbins & IQ-TREE2, consider increasi
 
 ### Quality control
 
-▪ Trimmed FASTQ files  
-▪ FastQC reports  
-▪ MultiQC report  
-▪ Trimming summary table  
+- **⬤ Trimmed FASTQ files**  
+- **⬤ FastQC reports**  
+- **⬤ MultiQC report**  
+- **⬤ Trimming summary table**
 
 ### TB-Profiler & MTBC filtering
 
-▪ TB-Profiler JSON outputs  
-▪ Combined TB-Profiler HTML report  
-▪ Resistance profile summary  
-▪ MTBC-positive sample list  
-▪ Non-MTBC or low-confidence excluded sample list  
+- **⬤ TB-Profiler JSON outputs**  
+- **⬤ Combined TB-Profiler HTML report**  
+- **⬤ Resistance profile summary**  
+- **⬤ MTBC-positive sample list**  
+- **⬤ Non-MTBC or low-confidence excluded sample list**
 
 ### SNP phylogenomics
 
@@ -213,12 +213,12 @@ https://gmboowa.github.io/TB-AMR-MTBC-Phylogenomics/
 
 The integrated report should be interpreted using multiple layers of evidence:
 
-▪ TB-Profiler resistance profile  
-▪ MTBC lineage & sub-lineage  
-▪ Core-SNP phylogenetic clustering  
-▪ Bootstrap support  
-▪ Recombination-filtered alignment if Gubbins is enabled  
-▪ Metadata such as country, year, collection site & sample source  
+- **⬤ TB-Profiler resistance profile**  
+- **⬤ MTBC lineage & sub-lineage**  
+- **⬤ Core-SNP phylogenetic clustering**  
+- **⬤ Bootstrap support**  
+- **⬤ Recombination-filtered alignment (if Gubbins is enabled)**  
+- **⬤ Metadata (country, year, collection site, sample source)**
 
 Close clustering alone should not be treated as proof of transmission without epidemiological & sampling context.
 
