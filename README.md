@@ -2,7 +2,7 @@
 
 A reproducible, containerized WDL/Cromwell workflow for *Mycobacterium tuberculosis* complex (MTBC) antimicrobial-resistance profiling & core-SNP phylogenomics.
 
-The workflow supports paired-end Illumina FASTQ inputs & produces quality-control summaries, TB-Profiler drug-resistance and lineage reports, MTBC-only sample filtering, Snippy-based core-SNP outputs, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny, tree visualization & interactive HTML reports.
+The workflow supports paired-end Illumina FASTQ inputs & produces quality-control summaries, TB-Profiler drug-resistance & lineage reports, MTBC-only sample filtering, Snippy-based core-SNP outputs, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny, tree visualization & interactive HTML reports.
 
 
 ## Workflow overview
@@ -60,8 +60,8 @@ TB-AMR-MTBC-Phylogenomics/
     ├── index.html
     ├── DEPLOYMENT.md
     ├── reports/
-    │   ├── integrated_tb_amr_mtbc_phylogenomics_report.html
-    │   └── tbprofiler_combined_report.html
+    │   ├── integrated_tb_report.html
+    │   └── tbprofiler_report.html
     └── assets/
         └── .gitkeep
 ```
@@ -109,10 +109,10 @@ The input FASTQ files must be ordered like this:
 ```json
 {
   "TB_AMR_MTBC_Phylogenomics.input_reads": [
-    "/path/to/sample1_1.fastq.gz",
-    "/path/to/sample1_2.fastq.gz",
-    "/path/to/sample2_1.fastq.gz",
-    "/path/to/sample2_2.fastq.gz"
+    "~/sample1_1.fastq.gz",
+    "~/sample1_2.fastq.gz",
+    "~/sample2_1.fastq.gz",
+    "~/sample2_2.fastq.gz"
   ],
 
   "TB_AMR_MTBC_Phylogenomics.adapters": "~/adapters.fa",
