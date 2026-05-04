@@ -126,12 +126,12 @@ workflow TB_AMR_MTBC_Phylogenomics {
   # 8. Render tree only when a Newick tree exists.
   if (do_phylogeny && defined(IQTREE2_PHYLOGENY.final_tree)) {
     call TREE_VISUALIZATION {
-      input:
-        input_tree = select_first([IQTREE2_PHYLOGENY.final_tree]),
-        width = tree_width,
-        height = tree_height,
-        image_format = tree_image_format,
-        title = "MTBC core-SNP phylogenomic tree"
+    input:
+      input_tree = IQTREE2_PHYLOGENY.final_tree,
+      tbprofiler_summary_tsv = TB_PROFILER_AND_MTBC_FILTER.summary_tsv,
+      width = tree_width,
+      height = tree_height,
+      image_format = tree_image_format
     }
   }
 
@@ -186,7 +186,7 @@ workflow TB_AMR_MTBC_Phylogenomics {
     File? iqtree_newick = IQTREE2_PHYLOGENY.final_tree
     File? iqtree_status = IQTREE2_PHYLOGENY.iqtree_status
     File? tree_image = TREE_VISUALIZATION.tree_image
-    File? tree_render_status = TREE_VISUALIZATION.render_status
+    File? tree_render_status = TREE_VISUALIZATION.render_log
 
     File final_merged_html_report = MERGE_TB_REPORTS.final_report_html
     File run_metadata = MERGE_TB_REPORTS.run_metadata
@@ -1436,238 +1436,292 @@ task IQTREE2_PHYLOGENY {
 
 task TREE_VISUALIZATION {
   input {
-    String docker_image = "gmboowa/ete3-render:1.18"
-    File input_tree
-    Int width = 2400
-    Int height = 1600
+    File? input_tree
+    File? tbprofiler_summary_tsv
+    Int width = 2600
+    Int height = 3200
     String image_format = "png"
-    String title = "MTBC core-SNP phylogenomic tree"
+    String title = "Phylogenetic tree"
   }
 
   command <<<
-    set -uo pipefail
-    mkdir -p tree_visualization logs
+    set -euo pipefail
+    mkdir -p tree_visualization
     export QT_QPA_PLATFORM=offscreen
     export MPLBACKEND=Agg
 
-    python3 - <<'PY_TREE_RENDER'
+    python3 - <<'PY'
 from pathlib import Path
-import sys
-import re
+import csv
 
-input_tree_path = Path("~{input_tree}")
-out = Path("tree_visualization/phylogenetic_tree.~{image_format}")
+tree_input = "~{if defined(input_tree) then input_tree else ""}"
+tbprofiler_summary_path = "~{if defined(tbprofiler_summary_tsv) then tbprofiler_summary_tsv else ""}"
+
+image_format = "~{image_format}".lower().strip()
+out_img = Path(f"tree_visualization/phylogenetic_tree.{image_format}")
+cleaned_tree = Path("tree_visualization/phylogenetic_tree.cleaned.nwk")
 log = Path("tree_visualization/render.log")
-status = Path("tree_visualization/render_status.txt")
-cleaned_tree_out = Path("tree_visualization/phylogenetic_tree.cleaned.nwk")
-
-REFERENCE_NAMES = {"reference", "ref", "h37rv", "nc_000962.3", "nc_000962"}
 
 try:
-    from ete3 import Tree, TreeStyle, TextFace, NodeStyle, faces
+    from ete3 import Tree, TreeStyle, TextFace, NodeStyle
 
-    if not input_tree_path.exists() or input_tree_path.stat().st_size == 0:
-        raise RuntimeError("Input tree is missing or empty")
+    if image_format not in {"png", "svg", "pdf"}:
+        raise ValueError(f"Unsupported image_format: {image_format}. Use png, svg, or pdf.")
 
-    t = Tree(str(input_tree_path), format=1)
+    if not tree_input:
+        raise ValueError("input_tree was not supplied to TREE_VISUALIZATION.")
 
-    # Remove the reference from visualization only.
-    # The IQ-TREE Newick remains unchanged as the formal phylogenetic output.
-    removed_reference = []
+    tree_path = Path(tree_input)
+
+    if not tree_path.exists() or tree_path.stat().st_size == 0:
+        raise FileNotFoundError(f"Input tree is missing or empty: {tree_path}")
+
+    metadata = {}
+
+    def classify_resistance(dr_type, resistant_drugs):
+        text = f"{dr_type or ''} {resistant_drugs or ''}".lower()
+
+        if "xdr" in text:
+            return "XDR-TB", "#6a3d9a"
+        if "mdr" in text or ("rif" in text and "inh" in text):
+            return "MDR-TB", "#d73027"
+        if any(x in text for x in [
+            "rif", "rifampicin", "rpo",
+            "inh", "isoniazid", "katg", "inha",
+            "hr-tb", "rr-tb"
+        ]):
+            return "Mono-resistant", "#e6ab02"
+        if "susceptible" in text or "none" in text or text.strip() == "":
+            return "Susceptible", "#1b9e77"
+
+        return "Other/Unknown", "#999999"
+
+    if tbprofiler_summary_path and Path(tbprofiler_summary_path).exists():
+        with open(tbprofiler_summary_path, newline="") as fh:
+            reader = csv.DictReader(fh, delimiter="\t")
+            for r in reader:
+                sample = (r.get("sample") or "").strip()
+                if not sample:
+                    continue
+
+                main_lineage = (r.get("main_lineage") or "").strip()
+                sub_lineage = (r.get("sub_lineage") or "").strip()
+                dr_type = (r.get("dr_type") or "").strip()
+                resistant_drugs = (r.get("resistant_drugs") or "").strip()
+
+                lineage = main_lineage
+                if sub_lineage and sub_lineage.lower() not in {"not reported", "none", "na", "n/a"}:
+                    lineage = sub_lineage
+
+                category, color = classify_resistance(dr_type, resistant_drugs)
+
+                metadata[sample] = {
+                    "lineage": lineage,
+                    "category": category,
+                    "color": color
+                }
+
+    t = Tree(str(tree_path), format=1)
+
+    reference_names = {
+        "reference",
+        "ref",
+        "h37rv",
+        "nc_000962",
+        "nc_000962.3"
+    }
+
+    removed_refs = []
     for leaf in list(t.get_leaves()):
-        if leaf.name.strip().lower() in REFERENCE_NAMES:
-            removed_reference.append(leaf.name)
+        if leaf.name.strip().lower() in reference_names:
+            removed_refs.append(leaf.name)
             leaf.detach()
 
-    # Midpoint-root the visualization tree after removing the reference.
-    # The original IQ-TREE Newick remains unchanged as the formal phylogenetic output.
-    midpoint_rooted = False
-    midpoint_root_error = ""
+    if len(t.get_leaves()) < 2:
+        raise ValueError("Tree has fewer than two non-reference tips after filtering.")
+
     try:
-        if len(t.get_leaves()) >= 2:
-            midpoint = t.get_midpoint_outgroup()
-            if midpoint is not None:
-                t.set_outgroup(midpoint)
-                midpoint_rooted = True
+        midpoint = t.get_midpoint_outgroup()
+        if midpoint:
+            t.set_outgroup(midpoint)
     except Exception as e:
-        midpoint_root_error = repr(e)
+        log.write_text(f"WARNING: midpoint rooting failed: {repr(e)}\n")
 
-    # Save a cleaned, midpoint-rooted tree for downstream visualization tools and
-    # for the embedded HTML tree. This copy excludes only the reference sequence.
-    t.write(format=1, outfile=str(cleaned_tree_out))
+    n_leaves = len(t.get_leaves())
+    has_metadata = len(metadata) > 0
 
-    n_leaves = max(1, len(t.get_leaves()))
+    requested_width = int("~{width}")
+    auto_width = max(requested_width, 1800)
 
-    # Auto-scale tree labels, node sizes, branch spacing, and canvas size based on sample count.
-    # Borrowed from the working rMAP ETE3 visualization logic and adapted for the TB workflow.
     if n_leaves <= 10:
-        leaf_font = 10
-        support_font = 7
-        node_size = 5
-        render_width = min(~{width}, 1100)
-        render_height = min(~{height}, max(420, n_leaves * 60 + 120))
-        branch_vertical_margin = 8
-    elif n_leaves <= 25:
-        leaf_font = 9
-        support_font = 6
+        if has_metadata:
+            label_font = 9
+            metadata_font = 7
+            bootstrap_font = 8
+        else:
+            label_font = 11
+            metadata_font = 0
+            bootstrap_font = 8
         node_size = 4
-        render_width = min(~{width}, 1400)
-        render_height = max(~{height}, n_leaves * 34 + 140)
-        branch_vertical_margin = 8
-    elif n_leaves <= 75:
-        leaf_font = 7
-        support_font = 5
-        node_size = 3
-        render_width = max(~{width}, 1600)
-        render_height = max(~{height}, n_leaves * 24 + 140)
+        branch_width = 1
         branch_vertical_margin = 3
-    elif n_leaves <= 150:
-        leaf_font = 6
-        support_font = 4
-        node_size = 2
-        render_width = max(~{width}, 2000)
-        render_height = max(~{height}, n_leaves * 18 + 140)
+
+    elif n_leaves <= 25:
+        label_font = 9
+        metadata_font = 7
+        bootstrap_font = 8
+        node_size = 4
+        branch_width = 1
+        branch_vertical_margin = 3
+
+    elif n_leaves <= 50:
+        label_font = 8
+        metadata_font = 6
+        bootstrap_font = 7
+        node_size = 3
+        branch_width = 1
         branch_vertical_margin = 2
+
+    elif n_leaves <= 100:
+        label_font = 7
+        metadata_font = 6
+        bootstrap_font = 6
+        node_size = 3
+        branch_width = 1
+        branch_vertical_margin = 2
+
     else:
-        leaf_font = 5
-        support_font = 3
-        node_size = 1
-        render_width = max(~{width}, 2400)
-        render_height = max(~{height}, n_leaves * 14 + 140)
+        label_font = 6
+        metadata_font = 5
+        bootstrap_font = 5
+        node_size = 2
+        branch_width = 1
         branch_vertical_margin = 1
 
-    ns = NodeStyle()
-    ns["size"] = node_size
-    ns["vt_line_width"] = 1
-    ns["hz_line_width"] = 1
-
     for node in t.traverse():
-        node.set_style(ns)
+        ns = NodeStyle()
+        ns["hz_line_width"] = branch_width
+        ns["vt_line_width"] = branch_width
+        ns["hz_line_color"] = "#000000"
+        ns["vt_line_color"] = "#000000"
+        ns["fgcolor"] = "#0047cc"
+        ns["size"] = node_size
+        ns["shape"] = "circle"
 
-    def clean_support_label(value):
-        value = str(value).strip()
-        if not value:
-            return ""
-
-        # IQ-TREE can output dual support labels such as UFBoot/SH-aLRT or SH-aLRT/UFBoot.
-        # Display the true first support value as a single rounded integer, matching the rMAP logic.
-        if "/" in value:
-            value = value.split("/")[0].strip()
-
-        try:
-            x = float(value)
-            if x <= 1:
-                x *= 100
-            return str(int(round(x)))
-        except Exception:
-            return value
-
-    def layout(node):
         if node.is_leaf():
-            name_face = TextFace(node.name, fsize=leaf_font)
-            name_face.margin_left = 4
-            faces.add_face_to_node(name_face, node, column=0, position="branch-right")
+            sample = node.name
+            meta = metadata.get(sample, {})
+
+            lineage = meta.get("lineage", "")
+            category = meta.get("category", "Other/Unknown")
+            color = meta.get("color", "#999999")
+
+            meta_text = " | ".join([x for x in [lineage, category] if x])
+
+            ns["fgcolor"] = color
+            node.set_style(ns)
+
+            node.add_face(
+                TextFace(sample, fsize=label_font, fgcolor="#111111"),
+                column=0,
+                position="branch-right"
+            )
+
+            if meta_text and metadata_font > 0:
+                node.add_face(
+                    TextFace("  " + meta_text, fsize=metadata_font, fgcolor="#555555"),
+                    column=1,
+                    position="branch-right"
+                )
+
+            node.name = ""
+
         else:
-            support_text = ""
+            ns["fgcolor"] = "#0047cc"
+            ns["size"] = max(1, node_size - 1)
+            node.set_style(ns)
 
-            # IQ-TREE combined labels such as 100/100 are usually stored in node.name.
-            if getattr(node, "name", None) and str(node.name).strip():
-                support_text = str(node.name).strip()
-            elif getattr(node, "support", None) is not None:
+            support = str(node.support).strip()
+            if support and support not in {"0", "0.0"}:
                 try:
-                    if float(node.support) > 0:
-                        support_text = str(node.support)
+                    value = float(support)
+                    if value <= 1:
+                        value = value * 100
+                    support = str(int(round(value)))
                 except Exception:
-                    support_text = str(node.support)
+                    pass
 
-            support_label = clean_support_label(support_text)
-
-            if support_label and support_label not in ["0", "0.0"]:
-                support_face = TextFace(support_label, fsize=support_font, fgcolor="darkred")
-                support_face.margin_right = 2
-                faces.add_face_to_node(support_face, node, column=0, position="branch-top")
+                node.add_face(
+                    TextFace(support, fsize=bootstrap_font, fgcolor="#b00000"),
+                    column=0,
+                    position="branch-top"
+                )
 
     ts = TreeStyle()
+    ts.mode = "r"
     ts.show_leaf_name = False
+    ts.show_branch_length = False
     ts.show_branch_support = False
     ts.show_scale = True
-    ts.layout_fn = layout
-
-    # Keep the WDL input 'title' for compatibility, but do not render it onto the figure.
-    # This keeps the exported tree clean for manuscripts and reports.
-    # ts.title.add_face(TextFace("~{title}", fsize=13, bold=True), column=0)
-
-    ts.margin_left = 10
-    ts.margin_right = 10
-    ts.margin_top = 5
-    ts.margin_bottom = 10
+    ts.scale = None
     ts.branch_vertical_margin = branch_vertical_margin
 
-    # Render with auto-adjusted width and height so that large trees retain readable labels.
-    t.render(str(out), w=render_width, h=render_height, units="px", tree_style=ts)
+    ts.margin_top = 6
+    ts.margin_bottom = 45
+    ts.margin_left = 15
+    ts.margin_right = 420
+    ts.title.clear()
 
-    log.write_text(
-        "Rendered with ete3\n"
-        "Figure title rendered: no\n"
-        "Reference removed from visualization: yes\n"
-        f"Reference labels removed: {','.join(removed_reference) if removed_reference else 'none found'}\n"
-        f"Midpoint rooted visualization tree: {'yes' if midpoint_rooted else 'no'}\n"
-        f"Midpoint rooting warning: {midpoint_root_error if midpoint_root_error else 'none'}\n"
-        "Only bootstrap support value displayed: yes\n"
-        "Displayed support format: single integer bootstrap value\n"
-        "Support source: internal Newick support labels from IQ-TREE output\n"
-        f"Number of samples displayed: {n_leaves}\n"
-        f"Leaf font size: {leaf_font}\n"
-        f"Support font size: {support_font}\n"
-        f"Node size: {node_size}\n"
-        f"Branch vertical margin: {branch_vertical_margin}\n"
-        f"Image width: {render_width}px\n"
-        f"Image height: {render_height}px\n"
-        f"Cleaned visualization Newick: {cleaned_tree_out}\n"
-    )
-    status.write_text("success\n")
+    t.write(format=1, outfile=str(cleaned_tree))
+
+    # Render by width only to avoid vertical stretching.
+    t.render(str(out_img), w=auto_width, units="px", tree_style=ts)
+
+    with open(log, "a") as fh:
+        fh.write("TREE_VISUALIZATION completed successfully.\n")
+        fh.write(f"Input tree: {tree_path}\n")
+        fh.write(f"TB-Profiler summary: {tbprofiler_summary_path}\n")
+        fh.write(f"Metadata records loaded: {len(metadata)}\n")
+        fh.write(f"Output image: {out_img}\n")
+        fh.write(f"Cleaned tree: {cleaned_tree}\n")
+        fh.write(f"Tips rendered: {n_leaves}\n")
+        fh.write(f"Reference tips removed: {removed_refs}\n")
+        fh.write(f"Canvas width: {auto_width}\n")
+        fh.write("Canvas height: ETE3 auto-height\n")
+        fh.write(f"Label font: {label_font}\n")
+        fh.write(f"Metadata font: {metadata_font}\n")
+        fh.write(f"Bootstrap font: {bootstrap_font}\n")
+        fh.write(f"Node size: {node_size}\n")
+        fh.write(f"Branch width: {branch_width}\n")
+        fh.write(f"Metadata present: {has_metadata}\n")
+        fh.write("Resistance color key:\n")
+        fh.write("  Susceptible: #1b9e77\n")
+        fh.write("  Mono-resistant: #e6ab02\n")
+        fh.write("  MDR-TB: #d73027\n")
+        fh.write("  XDR-TB: #6a3d9a\n")
+        fh.write("  Other/Unknown: #999999\n")
 
 except Exception as e:
-    # fallback: always produce a valid image-like file so the workflow can continue
-    msg = f"TREE_RENDER_FAILED: {repr(e)}"
-    log.write_text(msg + "\n")
-    status.write_text("tree_render_failed_fallback_created\n")
-
-    fallback_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300">
-<rect width="100%" height="100%" fill="#f8fafc"/>
-<text x="40" y="80" font-family="Arial" font-size="28" fill="#991b1b">Tree rendering failed</text>
-<text x="40" y="130" font-family="Arial" font-size="18" fill="#334155">{msg}</text>
-<text x="40" y="180" font-family="Arial" font-size="16" fill="#475569">The workflow continued and the final HTML report will still be generated.</text>
-</svg>"""
-
-    if "~{image_format}" == "svg":
-        out.write_text(fallback_svg)
-    else:
-        # Write SVG fallback even if extension is png; this preserves an inspectable failure artifact.
-        out.write_text(fallback_svg)
-
-    try:
-        cleaned_tree_out.write_text("\n")
-    except Exception:
-        pass
-PY_TREE_RENDER
+    with open(log, "a") as fh:
+        fh.write("ERROR in TREE_VISUALIZATION\n")
+        fh.write(repr(e) + "\n")
+    raise
+PY
   >>>
 
   runtime {
-    docker: "~{docker_image}"
+    docker: "gmboowa/ete3-render:1.18"
     cpu: 2
-    memory: "8 GB"
-    disks: "local-disk 50 HDD"
+    memory: "4 GB"
+    disks: "local-disk 20 HDD"
   }
 
   output {
     File tree_image = "tree_visualization/phylogenetic_tree.~{image_format}"
     File cleaned_tree = "tree_visualization/phylogenetic_tree.cleaned.nwk"
     File render_log = "tree_visualization/render.log"
-    File render_status = "tree_visualization/render_status.txt"
   }
 }
-
 task MERGE_TB_REPORTS {
   input {
     String docker_image = "python:3.11-slim"
@@ -1853,10 +1907,6 @@ def assign_coords(root):
     ls=leaves(root)
     n=max(1, len(ls))
 
-    # HTML embedded tree autoscaling. This keeps tip labels/details as in the
-    # TB report, but makes branch geometry resemble the ETE3 publication tree:
-    # wider horizontal structure, larger vertical spacing, internal node dots,
-    # bootstrap labels near branch nodes, and a scale bar.
     if n <= 10:
         ygap = 82
         tip_font = 14
@@ -1920,13 +1970,10 @@ def assign_coords(root):
             set_x(c, acc + (c.length or 0.0))
     set_x(root)
 
-    # Make terminal labels align vertically like the ETE3 render, while preserving
-    # internal branch lengths for all internal splits.
     tip_x = left + tree_span
     for l in ls:
         l.x = max(l.x, tip_x)
 
-    # A practical scale bar: ~20% of maximum tree depth, rounded for display.
     bar_value = depth / 5.0 if depth > 0 else 0.0
     bar_px = bar_value * xscale
     if bar_px < 60:
@@ -1974,24 +2021,18 @@ def draw_tree_svg():
     txt=Path(tree_newick).read_text().strip()
     if not txt: return '<div class="note"><strong>Tree file was empty.</strong></div>'
     try:
-        # The WDL passes the cleaned tree from TREE_VISUALIZATION here.
-        # That cleaned copy has already had the reference removed and has been midpoint-rooted.
         root=parse_newick(txt)
         root=prune_reference_tips(root)
         if root is None:
             return '<div class="note"><strong>Tree contained only the reference tip after filtering.</strong></div>'
         width,height,ls,scale_bar,style=assign_coords(root)
-        parts=[f'<svg width="100%" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Core SNP tree with ETE3-style rectangular branches and bootstrap values">']
+        parts=[f'<svg class="mtbc-tree-svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Core SNP tree with ETE3-style rectangular branches and bootstrap values">']
         parts.append('<g class="ete3-style-tree">')
         def esc_attr(x): return html.escape(str(x), quote=True).replace("'", "&#39;")
 
         def rec(n):
             if not n.is_leaf():
                 ys=[c.y for c in n.children]
-
-                # Vertical connector first, then horizontal connectors to each child.
-                # This gives the embedded HTML tree the same rectangular branch style
-                # as the ETE3 output, while preserving the current clickable tips.
                 parts.append(
                     f'<path class="branch ete3-branch" stroke-width="{style["branch_w"]}" '
                     f'd="M{n.x:.1f} {min(ys):.1f} L{n.x:.1f} {max(ys):.1f}"/>'
@@ -2022,8 +2063,6 @@ def draw_tree_svg():
                 detail=' | '.join([sample, row.get('species',''), row.get('main_lineage',''), resistance_bucket(row), row.get('resistant_drugs','')]).strip(' |')
                 color=tip_color(sample)
 
-                # Keep the original TB report tip logic: clickable tips, resistance-based
-                # tip color, sample label, and metadata label are preserved.
                 parts.append(f'<circle class="tip-node" cx="{n.x:.1f}" cy="{n.y:.1f}" r="5" fill="{color}" onclick="showTip(\'{esc_attr(detail)}\')"/>')
                 parts.append(f'<text class="tip" x="{n.x+12:.1f}" y="{n.y+4:.1f}" font-size="{style["tip_font"]}">{safe(sample)}</text>')
                 meta=' | '.join([row.get('main_lineage',''), resistance_bucket(row)]).strip(' |')
@@ -2031,7 +2070,6 @@ def draw_tree_svg():
 
         rec(root)
 
-        # ETE3-style scale bar at bottom left.
         y=scale_bar['y']; x1=scale_bar['x1']; x2=scale_bar['x2']
         parts.append(f'<path class="scale-bar" d="M{x1:.1f} {y:.1f} L{x2:.1f} {y:.1f}"/>')
         parts.append(f'<path class="scale-bar" d="M{x1:.1f} {y-12:.1f} L{x1:.1f} {y+12:.1f}"/>')
@@ -2043,14 +2081,21 @@ def draw_tree_svg():
     except Exception as e:
         return '<div class="note"><strong>Tree rendering failed.</strong> The report still includes tabular results. Error: '+safe(repr(e))+'</div>'
 
-svg_tree = draw_tree_svg()
+def draw_tree_static_image():
+    img_path = Path("final_report/mtbc_tree.png")
+    if img_path.exists() and img_path.stat().st_size > 0:
+        return '<img class="mtbc-tree-img" src="mtbc_tree.png" alt="ETE3-rendered MTBC core-SNP phylogenetic tree">'
+    return draw_tree_svg()
+
+svg_tree = draw_tree_static_image()
+
 qc_rows = [{'sample':r.get('sample',''), 'raw_reads':'Reported in MultiQC', 'trimmed_reads':'See trimming report', 'decision':'Proceed' if r.get('mtbc_selected','').upper()=='YES' else 'Review / excluded if non-MTBC'} for r in rows]
 
 html_out = f'''<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><title>Interactive TB AMR MTBC Phylogenomics Report</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 :root{{--bg:#f5f7fb;--card:#ffffff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;--blue:#2563eb;--teal:#0f766e;--purple:#7c3aed;--red:#b91c1c;--orange:#d97706;--green:#087f5b;--dark:#12355b;}}
-body{{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}}.header{{background:linear-gradient(135deg,#12355b,#0f766e);color:white;padding:28px 42px;}}.header h1{{margin:0;font-size:30px;}}.header p{{margin:8px 0 0;font-size:15px;opacity:.95;}}.container{{padding:28px 42px;}}.cards{{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:16px;margin-bottom:24px;}}.card{{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,.08);}}.card h3{{margin:0;color:var(--muted);font-size:14px;}}.card .num{{font-size:30px;font-weight:bold;margin-top:8px;}}.blue{{color:var(--blue)}}.green{{color:var(--green)}}.orange{{color:var(--orange)}}.red{{color:var(--red)}}.section{{background:var(--card);border-radius:16px;padding:20px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);}}.section h2{{margin-top:0;padding-bottom:10px;border-bottom:2px solid var(--border);}}.controls{{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;}}input,select,button{{border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:13px;background:white;}}button{{cursor:pointer;background:#eef6ff;color:#12355b;font-weight:bold;}}button:hover{{background:#dbeafe;}}table{{width:100%;border-collapse:collapse;font-size:13px;overflow:hidden;border-radius:12px;}}th{{color:white;padding:10px;text-align:left;cursor:pointer;user-select:none;}}td{{padding:9px;border-bottom:1px solid var(--border);}}tr:hover td{{background:#f9fafb;}}th.sample{{background:#0f766e;}}th.species{{background:#2563eb;}}th.lineage{{background:#7c3aed;}}th.resistance{{background:#b91c1c;}}th.mutations{{background:#d97706;}}th.status{{background:#087f5b;}}.badge{{padding:4px 8px;border-radius:999px;color:white;font-size:12px;display:inline-block;}}.badge-green{{background:#087f5b;}}.badge-red{{background:#b91c1c;}}.badge-blue{{background:#2563eb;}}.badge-orange{{background:#d97706;}}.note{{background:#eef6ff;border-left:5px solid #2563eb;padding:12px;border-radius:10px;margin:12px 0;}}.grid2{{display:grid;grid-template-columns:1.25fr .75fr;gap:20px;align-items:start;}}.tree-panel{{background:#fbfdff;border:1px solid var(--border);border-radius:16px;padding:14px;overflow:auto;}}svg text{{font-family:Arial,Helvetica,sans-serif;}}.branch{{stroke:#111827;stroke-width:2;fill:none;stroke-linecap:square;shape-rendering:crispEdges;}}.ete3-branch{{stroke:#111827;fill:none;stroke-linecap:square;shape-rendering:crispEdges;}}.bootstrap{{font-size:12px;fill:#9f1d20;font-weight:normal;}}.ete3-bootstrap{{fill:#9f1d20;font-weight:normal;}}.internal-node{{stroke:none;}}.tip-node{{stroke:none;cursor:pointer;}}.scale-bar{{stroke:#111827;stroke-width:2;fill:none;shape-rendering:crispEdges;}}.scale-label{{font-size:24px;fill:#111827;font-family:Arial,Helvetica,sans-serif;}}.tip{{font-size:13px;fill:#111827;}}.tip-meta{{font-size:11px;fill:#6b7280;}}.legend{{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:12px;}}.legend span{{border-radius:999px;padding:5px 9px;background:#f3f4f6;}}.details{{background:#fafafa;border:1px solid var(--border);border-radius:12px;padding:12px;}}details{{margin-bottom:10px;border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff;}}summary{{cursor:pointer;font-weight:bold;}}.footer{{font-size:12px;color:var(--muted);margin-top:20px;}}@media(max-width:900px){{.cards{{grid-template-columns:repeat(2,1fr);}}.grid2{{grid-template-columns:1fr;}}}}
+body{{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}}.header{{background:linear-gradient(135deg,#12355b,#0f766e);color:white;padding:28px 42px;}}.header h1{{margin:0;font-size:30px;}}.header p{{margin:8px 0 0;font-size:15px;opacity:.95;}}.container{{padding:28px 42px;}}.cards{{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:16px;margin-bottom:24px;}}.card{{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,.08);}}.card h3{{margin:0;color:var(--muted);font-size:14px;}}.card .num{{font-size:30px;font-weight:bold;margin-top:8px;}}.blue{{color:var(--blue)}}.green{{color:var(--green)}}.orange{{color:var(--orange)}}.red{{color:var(--red)}}.section{{background:var(--card);border-radius:16px;padding:20px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);}}.section h2{{margin-top:0;padding-bottom:10px;border-bottom:2px solid var(--border);}}.controls{{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;}}input,select,button{{border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:13px;background:white;}}button{{cursor:pointer;background:#eef6ff;color:#12355b;font-weight:bold;}}button:hover{{background:#dbeafe;}}table{{width:100%;border-collapse:collapse;font-size:13px;overflow:hidden;border-radius:12px;}}th{{color:white;padding:10px;text-align:left;cursor:pointer;user-select:none;}}td{{padding:9px;border-bottom:1px solid var(--border);}}tr:hover td{{background:#f9fafb;}}th.sample{{background:#0f766e;}}th.species{{background:#2563eb;}}th.lineage{{background:#7c3aed;}}th.resistance{{background:#b91c1c;}}th.mutations{{background:#d97706;}}th.status{{background:#087f5b;}}.badge{{padding:4px 8px;border-radius:999px;color:white;font-size:12px;display:inline-block;}}.badge-green{{background:#087f5b;}}.badge-red{{background:#b91c1c;}}.badge-blue{{background:#2563eb;}}.badge-orange{{background:#d97706;}}.note{{background:#eef6ff;border-left:5px solid #2563eb;padding:12px;border-radius:10px;margin:12px 0;}}.grid2{{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start;}}.tree-panel{{background:#fbfdff;border:1px solid var(--border);border-radius:16px;padding:4px 10px 10px 10px;overflow:auto;width:100%;box-sizing:border-box;}}.mtbc-tree-img{{display:block;width:auto;max-width:none;height:auto;margin:0;}}.mtbc-tree-svg{{display:block;max-width:none;width:auto;height:auto;margin-top:0;}}svg text{{font-family:Arial,Helvetica,sans-serif;}}.branch{{stroke:#111827;stroke-width:2;fill:none;stroke-linecap:square;shape-rendering:crispEdges;}}.ete3-branch{{stroke:#111827;fill:none;stroke-linecap:square;shape-rendering:crispEdges;}}.bootstrap{{font-size:12px;fill:#9f1d20;font-weight:normal;}}.ete3-bootstrap{{fill:#9f1d20;font-weight:normal;}}.internal-node{{stroke:none;}}.tip-node{{stroke:none;cursor:pointer;}}.scale-bar{{stroke:#111827;stroke-width:2;fill:none;shape-rendering:crispEdges;}}.scale-label{{font-size:24px;fill:#111827;font-family:Arial,Helvetica,sans-serif;}}.tip{{font-size:13px;fill:#111827;}}.tip-meta{{font-size:11px;fill:#6b7280;}}.legend{{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:12px;}}.legend span{{border-radius:999px;padding:5px 9px;background:#f3f4f6;}}.details{{background:#fafafa;border:1px solid var(--border);border-radius:12px;padding:12px;}}details{{margin-bottom:10px;border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff;}}summary{{cursor:pointer;font-weight:bold;}}.footer{{font-size:12px;color:var(--muted);margin-top:20px;}}@media(max-width:900px){{.cards{{grid-template-columns:repeat(2,1fr);}}.grid2{{grid-template-columns:1fr;}}}}
 </style></head><body><div class="header"><h1>Interactive TB AMR MTBC Phylogenomics Report</h1><p>Trimming → QC → TB-Profiler → MTBC-only filtering → core-SNP phylogenomics → final merged report</p><p><strong>Run generated:</strong> {run_started_utc} &nbsp; | &nbsp; <strong>Run stamp:</strong> {run_stamp_safe}</p></div><div class="container"><div class="cards"><div class="card"><h3>Total paired samples</h3><div class="num blue">{len(rows)}</div></div><div class="card"><h3>MTBC isolates retained</h3><div class="num green">{len(selected)}</div></div><div class="card"><h3>Non-MTBC excluded</h3><div class="num orange">{len(non_mtbc)}</div></div><div class="card"><h3>Drug-resistant isolates</h3><div class="num red">{len(resistant)}</div></div></div>
 <div class="section"><h2>1. Sample QC and Trimming Summary</h2><div class="controls"><input id="qcSearch" onkeyup="filterTable('qcSearch','qcTable')" placeholder="Search QC table..."><button onclick="downloadCSV('qcTable','qc_summary.csv')">Download QC CSV</button></div><table id="qcTable"><thead><tr><th class="sample" onclick="sortTable('qcTable',0)">Sample ID</th><th class="status" onclick="sortTable('qcTable',1)">Raw reads</th><th class="status" onclick="sortTable('qcTable',2)">Trimmed reads</th><th class="status" onclick="sortTable('qcTable',3)">FastQC status</th><th class="status" onclick="sortTable('qcTable',4)">Workflow decision</th></tr></thead><tbody>'''
 for r in qc_rows:
@@ -2065,12 +2110,12 @@ for r in rows:
     html_out += f"<tr><td>{safe(r.get('sample',''))}</td><td>{safe(r.get('species',''))}</td><td>{safe(lineage)}</td><td>{safe(resistance_bucket(r))}</td><td>{safe((r.get('key_mutations','') if r.get('key_mutations','') not in ['', 'None reported'] else r.get('resistant_drugs','')))}</td><td><span class=\"badge {cls}\">{label}</span></td></tr>\n"
 html_out += '</tbody></table></div>'
 html_out += build_nonsyn_section()
-html_out += f'''<div class="section"><h2>4. Interactive MTBC-only Core-SNP Tree with Bootstrap Values</h2><div class="grid2"><div class="tree-panel">{svg_tree}<div class="legend"><span><strong style="color:#b91c1c;">●</strong> MDR / RIF resistant</span><span><strong style="color:#d97706;">●</strong> INH resistant</span><span><strong style="color:#087f5b;">●</strong> Susceptible</span><span><strong style="color:#2563eb;">●</strong> M. africanum</span><span><strong style="color:#b91c1c;">Bootstrap values</strong> shown at internal nodes</span><span><strong>Scale bar</strong> shown in substitutions/site</span></div></div><div class="details"><h3>Selected branch/sample detail</h3><p id="tipBox" class="note">Click any tree tip/node circle to display sample details here.</p><details open><summary>Tree construction summary</summary><p><strong>Included:</strong> {len(selected)} TB-Profiler-confirmed MTBC isolates.</p><p><strong>Excluded:</strong> {len(non_mtbc)} non-MTBC or low-confidence isolate(s).</p><p><strong>Core alignment:</strong> Snippy-core alignment.</p><p><strong>Recombination:</strong> Optional Gubbins-filtered alignment.</p><p><strong>Tree:</strong> IQ-TREE2 maximum-likelihood phylogeny.</p><p><strong>Rooting/display:</strong> midpoint-rooted for visualization, with the reference removed from the displayed tree only.</p><p><strong>Scale:</strong> branch lengths are scaled from the Newick branch lengths and displayed with a scale bar.</p><p><strong>Bootstrap:</strong> Values displayed on internal branches from the Newick support labels.</p></details><details><summary>Expected tree output files</summary><p><code>final.treefile</code></p><p><code>MTBC_core_SNP_phylogeny.iqtree</code></p><p><code>phylogenetic_tree.png</code></p><p><code>integrated_tb_amr_mtbc_phylogenomics_report.html</code></p></details></div></div></div><div class="section"><h2>5. Final Interpretation</h2><p>The report documents all samples through QC and TB-Profiler analysis, then applies an MTBC-only rule before phylogenomic reconstruction. Samples not classified as MTBC are excluded from the tree, but retained in the report for transparency.</p><div class="note"><strong>Interpretation:</strong> use close clustering together with bootstrap support, lineage, drug-resistance profile, metadata, and SNP distances before making transmission inferences.</div></div><div class="footer">Generated by TB_AMR_MTBC_Phylogenomics WDL workflow. Run generated: {run_started_utc}. Run stamp: {run_stamp_safe}.</div></div><script>
+html_out += f'''<div class="section"><h2>4. MTBC-only Core-SNP Phylogenetic Tree</h2><div class="grid2"><div class="tree-panel">{svg_tree}<div class="legend"><span><strong style="color:#b91c1c;">●</strong> MDR / RIF resistant</span><span><strong style="color:#d97706;">●</strong> INH resistant</span><span><strong style="color:#087f5b;">●</strong> Susceptible</span><span><strong style="color:#2563eb;">●</strong> M. africanum</span><span><strong style="color:#b91c1c;">Bootstrap values</strong> shown at internal nodes</span><span><strong>Scale bar</strong> shown in substitutions/site</span></div></div><div class="details"><h3>Selected branch/sample detail</h3><p id="tipBox" class="note">If the static ETE3 tree is shown, use the labels directly from the figure. If the SVG fallback is shown, click any tree tip/node circle to display sample details here.</p><details open><summary>Tree construction summary</summary><p><strong>Included:</strong> {len(selected)} TB-Profiler-confirmed MTBC isolates.</p><p><strong>Excluded:</strong> {len(non_mtbc)} non-MTBC or low-confidence isolate(s).</p><p><strong>Core alignment:</strong> Snippy-core alignment.</p><p><strong>Recombination:</strong> Optional Gubbins-filtered alignment.</p><p><strong>Tree:</strong> IQ-TREE2 maximum-likelihood phylogeny.</p><p><strong>Rooting/display:</strong> midpoint-rooted for visualization, with the reference removed from the displayed tree only.</p><p><strong>Display:</strong> the report preferentially embeds the ETE3-rendered static tree image <code>mtbc_tree.png</code>; the Newick-based SVG renderer is used only as a fallback if the image is missing.</p></details><details><summary>Expected tree output files</summary><p><code>final.treefile</code></p><p><code>MTBC_core_SNP_phylogeny.iqtree</code></p><p><code>phylogenetic_tree.png</code></p><p><code>mtbc_tree.png</code></p><p><code>integrated_tb_amr_mtbc_phylogenomics_report.html</code></p></details></div></div></div><div class="section"><h2>5. Final Interpretation</h2><p>The report documents all samples through QC and TB-Profiler analysis, then applies an MTBC-only rule before phylogenomic reconstruction. Samples not classified as MTBC are excluded from the tree, but retained in the report for transparency.</p><div class="note"><strong>Interpretation:</strong> use close clustering together with bootstrap support, lineage, drug-resistance profile, metadata, and SNP distances before making transmission inferences.</div></div><div class="footer">Generated by TB_AMR_MTBC_Phylogenomics WDL workflow. Run generated: {run_started_utc}. Run stamp: {run_stamp_safe}.</div></div><script>
 function filterTable(inputId, tableId){{const filter=document.getElementById(inputId).value.toLowerCase();const rows=document.getElementById(tableId).getElementsByTagName("tbody")[0].rows;for(let i=0;i<rows.length;i++){{rows[i].style.display=rows[i].innerText.toLowerCase().includes(filter)?"":"none";}}}}
 function filterResistance(value){{const rows=document.getElementById("tbTable").getElementsByTagName("tbody")[0].rows;for(let i=0;i<rows.length;i++){{rows[i].style.display=value===""||rows[i].cells[3].innerText.includes(value)?"":"none";}}}}
 function sortTable(tableId,col){{const table=document.getElementById(tableId);const tbody=table.tBodies[0];const rows=Array.from(tbody.rows);const asc=table.getAttribute("data-sort-col")!=col||table.getAttribute("data-sort-dir")!=="asc";rows.sort((a,b)=>{{const A=a.cells[col].innerText.replace(/,/g,'');const B=b.cells[col].innerText.replace(/,/g,'');const nA=parseFloat(A),nB=parseFloat(B);if(!isNaN(nA)&&!isNaN(nB))return asc?nA-nB:nB-nA;return asc?A.localeCompare(B):B.localeCompare(A);}});rows.forEach(r=>tbody.appendChild(r));table.setAttribute("data-sort-col",col);table.setAttribute("data-sort-dir",asc?"asc":"desc");}}
 function showTip(text){{document.getElementById("tipBox").innerText=text;}}
-function downloadCSV(tableId,filename){{const table=document.getElementById(tableId);let csv=[];for(const row of table.rows){{const cols=Array.from(row.cells).map(cell=>'"'+cell.innerText.replace(/"/g,'""')+'"');csv.push(cols.join(','));}}const blob=new Blob([csv.join("\n")],{{type:"text/csv"}});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}}
+function downloadCSV(tableId,filename){{const table=document.getElementById(tableId);let csv=[];for(const row of table.rows){{const cols=Array.from(row.cells).map(cell=>'"'+cell.innerText.replace(/"/g,'""')+'"');csv.push(cols.join(','));}}const blob=new Blob([csv.join("\\n")],{{type:"text/csv"}});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}}
 </script></body></html>'''
 
 (outdir / 'integrated_tb_amr_mtbc_phylogenomics_report.html').write_text(html_out, encoding='utf-8')
