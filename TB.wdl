@@ -1686,12 +1686,24 @@ try:
 
             support = ""
 
-            # Prefer original IQ-TREE internal node label if available.
-            # IQ-TREE with -alrt and -B may produce labels such as 95/100.
+            # Prefer the original IQ-TREE internal node label.
+            # If IQ-TREE produced SH-aLRT/UFBoot labels such as 99.4/100,
+            # display only the UFBoot/bootstrap value after "/".
             raw_name = str(getattr(node, "name", "") or "").strip()
 
             if raw_name:
-                support = raw_name
+                try:
+                    if "/" in raw_name:
+                        raw_name = raw_name.split("/")[-1].strip()
+
+                    value = float(raw_name)
+
+                    if 0 < value <= 1:
+                        value = value * 100
+
+                    support = str(int(round(value)))
+                except Exception:
+                    support = ""
             else:
                 raw_support = str(getattr(node, "support", "") or "").strip()
 
@@ -1704,7 +1716,7 @@ try:
                             value = value * 100
                         support = str(int(round(value)))
                     except Exception:
-                        support = raw_support
+                        support = ""
 
             if support:
                 node.add_face(
@@ -2049,7 +2061,7 @@ def build_tree_legend():
     legend = ['<div class="legend">']
     for label, color in items:
         legend.append(f'<span><strong style="color:{color};">●</strong> {safe(label)}</span>')
-    legend.append('<span><strong style="color:#b91c1c;">Bootstrap values</strong></span>')
+    legend.append('<span><strong style="color:#b91c1c;">Bootstrap support (%)</strong></span>')
     legend.append('<span><strong>Scale bar</strong> substitutions/site</span>')
     legend.append("</div>")
     return "".join(legend)
@@ -2207,7 +2219,7 @@ th.status{{background:#087f5b;}}
   font-size:12px;
   display:inline-block;
 }}
-.badge-green{{background:#087f5b;}}
+.badge-green{{background:#28A745;font-weight:700;}}
 .badge-red{{background:#b91c1c;}}
 .badge-blue{{background:#2563eb;}}
 .badge-orange{{background:#d97706;}}
