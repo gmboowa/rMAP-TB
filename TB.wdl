@@ -1465,12 +1465,12 @@ log = Path("tree_visualization/render.log")
 log.write_text("TREE_VISUALIZATION started\n")
 
 RESISTANCE_COLORS = {
-    "Unknown": "#999999",
-    "Sensitive": "#1b9e77",
-    "MDR": "#d73027",
-    "Pre-XDR": "#984ea3",
-    "XDR": "#6a3d9a",
-    "Other": "#e6ab02"
+  "Unknown": "#999999",
+  "Sensitive": "#1b9e77",
+  "MDR": "#d73027",
+  "Pre-XDR": "#FF6A00",
+  "XDR": "#FF0000",
+  "Other": "#e6ab02"
 }
 
 try:
@@ -1858,12 +1858,12 @@ rows = list(csv.DictReader(open(summary_tsv), delimiter="\t"))
 nonsyn_rows = list(csv.DictReader(open(nonsyn_tsv), delimiter="\t"))
 
 RESISTANCE_COLORS = {
-    "Sensitive": "#1b9e77",
-    "Monoresistance": "#e6ab02",
-    "MDR": "#d73027",
-    "Pre-XDR": "#984ea3",
-    "XDR": "#6a3d9a",
-    "Unknown": "#999999",
+  "Sensitive": "#1b9e77",
+  "Monoresistance": "#e6ab02",
+  "MDR": "#d73027",
+  "Pre-XDR": "#FF6A00",
+  "XDR": "#FF0000",
+  "Unknown": "#999999",
 }
 
 def classify_resistance(dr_type, resistant_drugs):
