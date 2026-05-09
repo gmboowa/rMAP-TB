@@ -9,7 +9,7 @@ The workflow supports paired-end Illumina FASTQ inputs & produces quality-contro
 
 <p align="center">
   <img src="docs/assets/workflow/TB_AMR_MTBC_Phylogenomics.png"
-       alt="TB-AMR-MTBC-Phylogenomics workflow"
+       alt="rMAP-TB workflow"
        width="100%">
 </p>
 
@@ -117,40 +117,40 @@ The input FASTQ files must be ordered like this:
 
 ```json
 {
-  "TB_AMR_MTBC_Phylogenomics.input_reads": [
+  "rMAP_TB.input_reads": [
     "~/sample1_1.fastq.gz",
     "~/sample1_2.fastq.gz",
     "~/sample2_1.fastq.gz",
     "~/sample2_2.fastq.gz"
   ],
 
-  "TB_AMR_MTBC_Phylogenomics.adapters": "~/adapters.fa",
-  "TB_AMR_MTBC_Phylogenomics.mtbc_reference_genbank": "~/H37Rv.gb",
+  "rMAP_TB.adapters": "~/adapters.fa",
+  "rMAP_TB.mtbc_reference_genbank": "~/H37Rv.gb",
 
-  "TB_AMR_MTBC_Phylogenomics.do_trimming": true,
-  "TB_AMR_MTBC_Phylogenomics.do_quality_control": true,
-  "TB_AMR_MTBC_Phylogenomics.do_tb_profiler": true,
-  "TB_AMR_MTBC_Phylogenomics.do_phylogeny": true,
-  "TB_AMR_MTBC_Phylogenomics.use_gubbins": true,
+  "rMAP_TB.do_trimming": true,
+  "rMAP_TB.do_quality_control": true,
+  "rMAP_TB.do_tb_profiler": true,
+  "rMAP_TB.do_phylogeny": true,
+  "rMAP_TB.use_gubbins": true,
 
-  "TB_AMR_MTBC_Phylogenomics.tbprofiler_docker": "staphb/tbprofiler:6.6.6",
-  "TB_AMR_MTBC_Phylogenomics.snippy_reference_type": "genbank",
+  "rMAP_TB.tbprofiler_docker": "staphb/tbprofiler:6.6.6",
+  "rMAP_TB.snippy_reference_type": "genbank",
 
-  "TB_AMR_MTBC_Phylogenomics.iqtree2_model": "GTR+G",
-  "TB_AMR_MTBC_Phylogenomics.iqtree2_bootstraps": 1000,
-  "TB_AMR_MTBC_Phylogenomics.min_mtbc_samples_for_tree": 3,
+  "rMAP_TB.iqtree2_model": "GTR+G",
+  "rMAP_TB.iqtree2_bootstraps": 1000,
+  "rMAP_TB.min_mtbc_samples_for_tree": 3,
 
-  "TB_AMR_MTBC_Phylogenomics.report_nonsynonymous_drug_gene_mutations": true,
-  "TB_AMR_MTBC_Phylogenomics.tb_drug_resistance_genes":   "rpoB,katG,inhA,fabG1,ahpC,embB,pncA,rpsL,rrs,gyrA,gyrB,eis,ethA,ethR,thyA,folC,alr,ddl,gidB,tlyA,rrl,atpE,rv0678,pepQ",
+  "rMAP_TB.report_nonsynonymous_drug_gene_mutations": true,
+  "rMAP_TB.tb_drug_resistance_genes":   "rpoB,katG,inhA,fabG1,ahpC,embB,pncA,rpsL,rrs,gyrA,gyrB,eis,ethA,ethR,thyA,folC,alr,ddl,gidB,tlyA,rrl,atpE,rv0678,pepQ",
 
-  "TB_AMR_MTBC_Phylogenomics.max_cpus": 8,
-  "TB_AMR_MTBC_Phylogenomics.max_memory_gb": 16,
-  "TB_AMR_MTBC_Phylogenomics.min_read_length": 50,
-  "TB_AMR_MTBC_Phylogenomics.min_mapping_quality": 20,
+  "rMAP_TB.max_cpus": 8,
+  "rMAP_TB.max_memory_gb": 16,
+  "rMAP_TB.min_read_length": 50,
+  "rMAP_TB.min_mapping_quality": 20,
 
-  "TB_AMR_MTBC_Phylogenomics.tree_width": 2400,
-  "TB_AMR_MTBC_Phylogenomics.tree_height": 1600,
-  "TB_AMR_MTBC_Phylogenomics.tree_image_format": "png"
+  "rMAP_TB.tree_width": 2400,
+  "rMAP_TB.tree_height": 1600,
+  "rMAP_TB.tree_image_format": "png"
 }
 ```
 
@@ -230,7 +230,7 @@ For larger datasets, especially when using Gubbins & IQ-TREE2, consider increasi
 ## GitHub Pages report site
 
 ```text
-https://gmboowa.github.io/TB-AMR-MTBC-Phylogenomics/
+https://gmboowa.github.io/rMAP_TB/
 ```
 
 
@@ -252,7 +252,7 @@ Close clustering alone should not be treated as proof of transmission without ep
 If you use this workflow, please cite or acknowledge:
 
 ```text
-TB-AMR-MTBC-Phylogenomics: a WDL/Cromwell workflow for MTBC antimicrobial-resistance profiling & core-SNP phylogenomics.
+rMAP_TB: a WDL/Cromwell workflow for MTBC antimicrobial-resistance profiling & core-SNP phylogenomics.
 ```
 
 ## License
