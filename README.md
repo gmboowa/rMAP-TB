@@ -1,4 +1,4 @@
-## TB-AMR-MTBC-Phylogenomics
+## rMAP-TB
 
 A reproducible, containerized WDL/Cromwell workflow for *Mycobacterium tuberculosis* complex (MTBC) antimicrobial-resistance profiling & core-SNP phylogenomics.
 
