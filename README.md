@@ -18,25 +18,43 @@ The workflow supports paired-end Illumina FASTQ inputs & produces quality-contro
 
 Paired-end FASTQ files
         ⬇
-Read trimming
+Read trimming with Trimmomatic
         ⬇
-FastQC + MultiQC
+Sequence quality control with FastQC
         ⬇
-Mycobacteria species typing
+QC aggregation with MultiQC
         ⬇
-TB-Profiler AMR, MTB species & lineage profiling
+Mycobacteria species typing with Kraken2 + Bracken
+        ⬇
+TB-Profiler species, lineage & AMR profiling
         ⬇
 MTBC-only sample filtering
         ⬇
 Snippy per-sample variant calling
         ⬇
-Snippy-core alignment
+Mean-depth extraction & variant summary generation
+        ⬇
+Snippy-core core-genome alignment
+        ⬇
+Drug-resistance-associated non-synonymous mutation summary
+        ⬇
+Pairwise SNP distance estimation
+        ⬇
+SNP cluster interpretation
+        ⬇
+Lineage distribution summary
+        ⬇
+SNP distance heatmap generation
+        ⬇
+QC filtering rationale & surveillance metadata export
         ⬇
 Optional Gubbins recombination filtering
         ⬇
 IQ-TREE2 maximum-likelihood phylogeny
         ⬇
-Tree visualization + integrated HTML report
+ETE3 phylogenetic tree visualization
+        ⬇
+Integrated HTML report with downloadable surveillance outputs
 
 </pre>
 </div>
