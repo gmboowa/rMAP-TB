@@ -383,10 +383,7 @@ Close SNP clustering or close placement on a phylogenetic tree should **not** be
 
 If you use this workflow, please cite or acknowledge the associated manuscript:
 
-```text
 rMAP-TB: a reproducible WDL/Cromwell workflow for *Mycobacterium tuberculosis* complex genomic surveillance and drug-resistance interpretation.
-```
-
 
 ## License
 
