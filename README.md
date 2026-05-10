@@ -1,8 +1,10 @@
 ## rMAP-TB
 
-A reproducible, containerized WDL/Cromwell workflow for *Mycobacterium tuberculosis* complex (MTBC) antimicrobial-resistance profiling & core-SNP phylogenomics.
+**rMAP-TB** is a reproducible, Dockerized WDL/Cromwell workflow for public-health-oriented analysis of *Mycobacterium tuberculosis* complex (MTBC) genomic data. It supports paired-end Illumina FASTQ inputs & integrates species typing, TB drug-resistance profiling, lineage interpretation, MTBC-only sample filtering, core-SNP phylogenomics, and interactive surveillance reporting.
 
-The workflow supports paired-end Illumina FASTQ inputs & produces quality-control summaries, TB-Profiler drug-resistance & lineage reports, MTBC-only sample filtering, Snippy-based core-SNP outputs, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny, tree visualization & interactive HTML reports.
+The workflow performs read trimming, sequence quality control, Kraken2/Bracken-based Mycobacteria species typing, TB-Profiler resistance and lineage profiling, Snippy-based variant calling, Snippy-core alignment, drug-resistance-associated non-synonymous mutation summarization, pairwise SNP distance estimation, SNP cluster interpretation, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny & ETE3 tree visualization.
+
+rMAP-TB generates integrated HTML reports & downloadable public-health surveillance outputs, including QC filtering rationale, TB-Profiler mutation-level resistance evidence, lineage distribution summaries, SNP distance heatmaps, pairwise SNP distance tables, SNP cluster summaries & surveillance metadata TSV files.
 
 
 ## Workflow overview
@@ -61,19 +63,29 @@ Integrated HTML report with downloadable surveillance outputs
 
 ## Key features
 
-- **⬤ Paired-end FASTQ input support**  
-- **⬤ Adapter trimming before downstream analysis**  
-- **⬤ FastQC & MultiQC quality-control reporting**  
-- **⬤ TB-Profiler-based drug-resistance prediction**  
-- **⬤ MTBC lineage & sub-lineage reporting**  
-- **⬤ MTBC-only filtering before phylogenomic reconstruction**  
-- **⬤ Snippy-based reference-guided variant calling**  
-- **⬤ Core-SNP alignment generation using Snippy-core**  
+- **⬤ Paired-end Illumina FASTQ input support**  
+- **⬤ Adapter trimming & read preprocessing using Trimmomatic**  
+- **⬤ Sequence quality-control assessment using FastQC**  
+- **⬤ Aggregated QC reporting using MultiQC**  
+- **⬤ Mycobacteria species typing using Kraken2 + Bracken**  
+- **⬤ TB-Profiler-based MTBC species, lineage, sub-lineage & drug-resistance profiling**  
+- **⬤ WHO-aligned TB drug-resistance classification, including HR-TB, RR-TB, MDR-TB, Pre-XDR-TB & XDR-TB**  
+- **⬤ Mutation-level TB-Profiler resistance evidence reporting, including drug, gene, mutation/change, confidence & evidence fields** 
+- **⬤ MTBC-only sample filtering before downstream phylogenomics**  
+- **⬤ Snippy-based reference-guided per-sample variant calling**  
+- **⬤ Mean-depth extraction & per-sample variant summary reporting**  
+- **⬤ Core-genome SNP alignment generation using Snippy-core**  
+- **⬤ Non-synonymous mutation reporting for key TB drug-resistance-associated genes**  
+- **⬤ Pairwise SNP distance estimation from MTBC core-genome alignments**  
+- **⬤ SNP cluster interpretation using configurable SNP-distance thresholds**  
+- **⬤ SNP distance heatmap generation for genomic relatedness assessment**  
+- **⬤ Lineage distribution summary & visualization**  
 - **⬤ Optional recombination filtering using Gubbins**  
-- **⬤ Maximum-likelihood phylogeny using IQ-TREE2**  
-- **⬤ Optional midpoint-rooted tree visualization**  
-- **⬤ Interactive HTML reports suitable for GitHub Pages**  
-- **⬤ Non-synonymous mutation reporting for key TB drug-resistance genes**
+- **⬤ Maximum-likelihood phylogenetic inference using IQ-TREE2**  
+- **⬤ ETE3-based phylogenetic tree visualization with lineage & resistance metadata**  
+- **⬤ Downloadable QC filtering rationale & surveillance metadata TSV outputs**  
+- **⬤ Integrated interactive HTML report suitable for GitHub Pages deployment**  
+- **⬤ Dockerized modular WDL/Cromwell execution for reproducible analysis**
 
 ## Repository structure
 
@@ -106,31 +118,40 @@ rMAP-TB/
 
 | Requirement | Purpose |
 |---|---|
-| Java | Required to run Cromwell |
-| Cromwell | WDL workflow execution engine |
-| Docker | Runs containerized bioinformatics tools |
-| Paired-end FASTQ files | Input sequencing data |
-| Adapter FASTA file | Required for trimming |
-| MTBC GenBank reference | Required for Snippy & phylogenomic analysis |
+| Java | Required to run the Cromwell workflow engine |
+| Cromwell | Executes the WDL workflow locally or on supported backends |
+| Docker | Runs the containerized bioinformatics tools used by each WDL task |
+| Paired-end Illumina FASTQ files | Primary input sequencing data for trimming, QC, species typing, TB-Profiler, and variant calling |
+| Adapter FASTA file | Required for Trimmomatic adapter trimming |
+| MTBC GenBank reference | Required for Snippy reference-guided variant calling & Snippy-core alignment |
+| Kraken2/Bracken Mycobacteria database | Required for Mycobacteria species typing; embedded in the workflow Docker image if using the recommended container |
+| TB-Profiler database | Required for MTBC lineage & drug-resistance profiling; provided within the TB-Profiler container |
+| Sufficient local compute resources | Needed for read processing, variant calling, SNP alignment, recombination filtering, phylogeny, and HTML report generation |
 
 ## Main workflow inputs
 
 | Input | Description |
 |---|---|
-| `input_reads` | Array of paired-end FASTQ files, ordered as R1 followed immediately by matching R2 |
-| `adapters` | Adapter FASTA file used by the trimming step |
-| `mtbc_reference_genbank` | MTBC reference genome in GenBank format |
-| `do_trimming` | Enables read trimming |
-| `do_quality_control` | Enables FastQC & MultiQC |
-| `do_tb_profiler` | Enables TB-Profiler AMR & lineage analysis |
-| `do_phylogeny` | Enables MTBC-only SNP phylogenomics |
-| `use_gubbins` | Enables optional recombination filtering |
-| `tbprofiler_docker` | Docker image for TB-Profiler |
-| `snippy_reference_type` | Reference type; use `genbank` when providing a GenBank reference |
-| `iqtree2_model` | IQ-TREE2 substitution model |
-| `iqtree2_bootstraps` | Number of bootstrap replicates |
-| `min_mtbc_samples_for_tree` | Minimum number of MTBC samples required to build a tree |
-| `tb_drug_resistance_genes` | Comma-separated genes used for non-synonymous mutation reporting |
+| `input_reads` | Array of paired-end Illumina FASTQ files, ordered as R1 followed immediately by the matching R2 file |
+| `adapters` | Adapter FASTA file used by Trimmomatic during read trimming |
+| `mtbc_reference_genbank` | MTBC reference genome in GenBank format for Snippy variant calling & core-SNP alignment |
+| `do_trimming` | Enables adapter trimming & read preprocessing |
+| `do_quality_control` | Enables FastQC quality assessment & MultiQC aggregation |
+| `do_species_typing` | Enables Mycobacteria species typing using Kraken2 + Bracken |
+| `do_tb_profiler` | Enables TB-Profiler-based MTBC species, lineage, sub-lineage & drug-resistance profiling |
+| `do_phylogeny` | Enables MTBC-only SNP phylogenomics, including Snippy, Snippy-core, IQ-TREE2 & tree visualization |
+| `use_gubbins` | Enables optional recombination filtering before phylogenetic reconstruction |
+| `tbprofiler_docker` | Docker image used for TB-Profiler AMR & lineage profiling |
+| `species_typing_docker` | Docker image used for Kraken2 + Bracken Mycobacteria species typing |
+| `snippy_reference_type` | Reference format used by Snippy; use `genbank` when providing a GenBank reference |
+| `iqtree2_model` | IQ-TREE2 nucleotide substitution model used for maximum-likelihood phylogeny |
+| `iqtree2_bootstraps` | Number of bootstrap replicates used for phylogenetic support estimation |
+| `min_mtbc_samples_for_tree` | Minimum number of MTBC-positive samples required to proceed with tree reconstruction |
+| `likely_transmission_snp_threshold` | SNP-distance threshold for identifying genomically close sample pairs requiring epidemiological review |
+| `possible_transmission_snp_threshold` | SNP-distance threshold for identifying intermediate-distance sample pairs requiring metadata review |
+| `tb_drug_resistance_genes` | Comma-separated list of TB drug-resistance-associated genes used for non-synonymous mutation reporting |
+| `tree_title` | Title displayed on the rendered MTBC phylogenetic tree |
+| `tree_image_format` | Output format for the ETE3-rendered phylogenetic tree image |
 
 ## Example input JSON
 
@@ -143,7 +164,6 @@ examples/inputs.example.json
 The input FASTQ files must be ordered like this:
 
 ```json
-{
   "rMAP_TB.input_reads": [
     "~/sample1_1.fastq.gz",
     "~/sample1_2.fastq.gz",
@@ -156,25 +176,31 @@ The input FASTQ files must be ordered like this:
 
   "rMAP_TB.do_trimming": true,
   "rMAP_TB.do_quality_control": true,
+  "rMAP_TB.do_species_typing": true,
   "rMAP_TB.do_tb_profiler": true,
   "rMAP_TB.do_phylogeny": true,
   "rMAP_TB.use_gubbins": true,
 
   "rMAP_TB.tbprofiler_docker": "staphb/tbprofiler:6.6.6",
+  "rMAP_TB.species_typing_docker": "gmboowa/mycobacterium-kraken2-bracken:2026.05",
   "rMAP_TB.snippy_reference_type": "genbank",
 
   "rMAP_TB.iqtree2_model": "GTR+G",
   "rMAP_TB.iqtree2_bootstraps": 1000,
   "rMAP_TB.min_mtbc_samples_for_tree": 3,
 
+  "rMAP_TB.likely_transmission_snp_threshold": 5,
+  "rMAP_TB.possible_transmission_snp_threshold": 12,
+
   "rMAP_TB.report_nonsynonymous_drug_gene_mutations": true,
-  "rMAP_TB.tb_drug_resistance_genes":   "rpoB,katG,inhA,fabG1,ahpC,embB,pncA,rpsL,rrs,gyrA,gyrB,eis,ethA,ethR,thyA,folC,alr,ddl,gidB,tlyA,rrl,atpE,rv0678,pepQ",
+  "rMAP_TB.tb_drug_resistance_genes": "rpoB,katG,inhA,fabG1,ahpC,embB,pncA,rpsL,rrs,gyrA,gyrB,eis,ethA,ethR,thyA,folC,alr,ddl,gidB,tlyA,rrl,atpE,rv0678,pepQ",
 
   "rMAP_TB.max_cpus": 8,
   "rMAP_TB.max_memory_gb": 16,
   "rMAP_TB.min_read_length": 50,
   "rMAP_TB.min_mapping_quality": 20,
 
+  "rMAP_TB.tree_title": "MTBC Core-SNP Phylogeny",
   "rMAP_TB.tree_width": 2400,
   "rMAP_TB.tree_height": 1600,
   "rMAP_TB.tree_image_format": "png"
@@ -185,30 +211,20 @@ The input FASTQ files must be ordered like this:
 
 | Workflow component | Docker image | Purpose |
 |---|---|---|
-| Read trimming | `quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2` | Adapter trimming & read quality filtering |
-| FastQC | `staphb/fastqc:0.11.9` | Read-level quality control |
-| MultiQC | `ewels/multiqc:latest` | Aggregated QC reporting |
-| Species typing | `gmboowa/mycobacterium-kraken2-bracken:2026.05` | *Mycobacterium* species identification using Kraken2 + Bracken |
-| TB-Profiler | `staphb/tbprofiler:6.6.6` | MTBC drug-resistance prediction & lineage profiling |
-| Snippy | `staphb/snippy:4.6.0` | Reference-guided SNP calling |
-| Snippy-core | `staphb/snippy:4.6.0` | Core-SNP alignment generation |
-| Gubbins | `staphb/gubbins:3.4.1` | Recombination filtering |
-| IQ-TREE2 | `staphb/iqtree2:2.3.4` | Maximum-likelihood phylogenetic inference |
-| Tree visualization | `gmboowa/ete3-render:1.18` | Publication-style phylogenetic tree rendering |
-| Report merging | `python:3.11-slim` | Final integrated HTML report generation |
+| Read trimming | `quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2` | Adapter trimming & read-quality filtering || FastQC | `staphb/fastqc:0.11.9` | Per-sample read-level quality-control assessment || MultiQC | `ewels/multiqc:latest` | Aggregated QC reporting across samples || Species typing | `gmboowa/mycobacterium-kraken2-bracken:2026.05` | *Mycobacterium* species identification using Kraken2 + Bracken || TB-Profiler | `staphb/tbprofiler:6.6.6` | MTBC species, lineage, sub-lineage, drug-resistance prediction & mutation-level resistance evidence || Snippy | `staphb/snippy:4.6.0` | Reference-guided per-sample SNP calling || Snippy-core | `staphb/snippy:4.6.0` | Core-genome SNP alignment generation across MTBC-positive samples || Non-synonymous mutation summary | `python:3.11-slim` | Extraction & reporting of non-synonymous mutations in TB drug-resistance-associated genes || Pairwise SNP distance & clustering | `python:3.11-slim` | Pairwise SNP distance estimation, reference-sequence exclusion & SNP cluster interpretation || Surveillance summary visuals | `python:3.11-slim` | Lineage distribution plots, SNP heatmap generation, QC filtering rationale & surveillance metadata TSV export || Gubbins | `staphb/gubbins:3.4.1` | Optional recombination filtering before phylogenetic reconstruction || IQ-TREE2 | `staphb/iqtree2:2.3.4` | Maximum-likelihood phylogenetic inference with bootstrap support || Tree visualization | `gmboowa/ete3-render:1.18` | ETE3-based phylogenetic tree rendering with lineage, resistance & bootstrap metadata || Report merging | `python:3.11-slim` | Final integrated interactive HTML report generation |
 
 ## Running the workflow
 
 From the repository root:
 
 ```bash
-java -jar cromwell-<version>.jar run TB.wdl --inputs ~/inputs.example.json
+java -jar cromwell-<version>.jar run rMAP_TB.wdl --inputs ~/inputs.example.json
 ```
 
 For example:
 
 ```bash
-java -jar cromwell-92.jar run TB.wdl --inputs ~/inputs.example.json
+java -jar cromwell-92.jar run rMAP_TB.wdl --inputs ~/inputs.example.json
 ```
 
 ## Recommended local Docker resources
@@ -224,36 +240,117 @@ For larger datasets, especially when using Gubbins & IQ-TREE2, consider increasi
 
 ## Main outputs
 
-### Quality control
 
-- **⬤ Trimmed FASTQ files**  
-- **⬤ FastQC reports**  
-- **⬤ MultiQC report**  
-- **⬤ Trimming summary table**
+### Quality control & read preprocessing
 
-### TB-Profiler & MTBC filtering
+- **⬤ Trimmed paired-end FASTQ files**  
+- **⬤ FastQC per-sample HTML reports**  
+- **⬤ FastQC ZIP output files**  
+- **⬤ MultiQC aggregated quality-control report**  
+- **⬤ Trimming summary table**  
+- **⬤ QC summary HTML report**  
+
+### Mycobacteria species typing
+
+- **⬤ Kraken2 classification outputs**  
+- **⬤ Kraken2 species-level reports**  
+- **⬤ Bracken abundance outputs**  
+- **⬤ Mycobacteria species typing TSV summary**  
+- **⬤ Species typing HTML report**  
+- **⬤ Most probable species call per sample**  
+- **⬤ Evidence supporting species assignment**  
+
+### TB-Profiler, lineage & MTBC filtering
 
 - **⬤ TB-Profiler JSON outputs**  
+- **⬤ TB-Profiler text reports**  
 - **⬤ Combined TB-Profiler HTML report**  
-- **⬤ Resistance profile summary**  
+- **⬤ TB-Profiler summary TSV**  
+- **⬤ MTBC species, lineage & sub-lineage summary**  
+- **⬤ WHO-aligned TB drug-resistance profile summary**  
+- **⬤ Predicted resistant drugs summary**  
+- **⬤ TB-Profiler mutation-level resistance evidence TSV**  
+- **⬤ TB-Profiler mutation-level resistance evidence HTML report**  
 - **⬤ MTBC-positive sample list**  
-- **⬤ Non-MTBC or low-confidence excluded sample list**
+- **⬤ MTBC-filtered FASTQ files for downstream phylogenomics**  
+- **⬤ MTBC selection/exclusion rationale**  
 
-### SNP phylogenomics
+### Variant calling & core-SNP alignment
 
-- **⬤ Per-sample Snippy variant calls**  
-- **⬤ Snippy-core alignment**  
+- **⬤ Per-sample Snippy variant-calling directories**  
+- **⬤ Per-sample VCF files**  
+- **⬤ Per-sample aligned FASTA files**  
+- **⬤ Per-sample Snippy tabular variant files**  
+- **⬤ Snippy logs**  
+- **⬤ Variant summary HTML report**  
+- **⬤ Mean-depth summary TSV**  
+- **⬤ Snippy-core full alignment**  
+- **⬤ Snippy-core SNP alignment**  
 - **⬤ Core SNP VCF**  
-- **⬤ Optional Gubbins recombination-filtered alignment**  
-- **⬤ IQ-TREE2 maximum-likelihood tree**  
-- **⬤ Bootstrap-supported tree file**  
-- **⬤ Tree visualization as PNG or SVG**
+- **⬤ Core SNP tabular summary**  
 
-### Interactive reports
+### Drug-resistance-associated mutation summaries
 
-▪ `integrated_report(s).html`  
+- **⬤ Non-synonymous mutation TSV summary**  
+- **⬤ Non-synonymous mutation HTML report**  
+- **⬤ Per-sample collapsible mutation summaries**  
+- **⬤ Drug-resistance-associated gene-level mutation reporting**  
 
+### Pairwise SNP distance & cluster interpretation
 
+- **⬤ Pairwise SNP distance matrix TSV**  
+- **⬤ Pairwise SNP distance pairs TSV**  
+- **⬤ SNP cluster summary TSV**  
+- **⬤ SNP distance cluster HTML report**  
+- **⬤ Pairwise SNP heatmap PNG**  
+- **⬤ Reference/non-sample sequence exclusion log**  
+- **⬤ SNP distance task status log**  
+
+### Surveillance summary outputs
+
+- **⬤ Lineage distribution TSV**  
+- **⬤ Lineage distribution SVG plot**  
+- **⬤ SNP distance heatmap SVG**  
+- **⬤ QC filtering rationale TSV**  
+- **⬤ Surveillance metadata TSV**  
+- **⬤ Surveillance summary HTML report**  
+- **⬤ Mean depth, MTBC support, lineage, resistance profile & tree-inclusion metadata**  
+
+### Optional recombination filtering
+
+- **⬤ Gubbins recombination-filtered polymorphic-sites alignment**  
+- **⬤ Gubbins recombination-filtered final tree**  
+- **⬤ Gubbins log files**  
+- **⬤ Recombination-filtering status outputs**  
+
+### Phylogenetic inference & visualization
+
+- **⬤ IQ-TREE2 maximum-likelihood tree file**  
+- **⬤ IQ-TREE2 report file**  
+- **⬤ IQ-TREE2 log file**  
+- **⬤ Bootstrap-supported Newick tree**  
+- **⬤ Exportable Newick tree for downstream visualization tools such as iTOL**  
+- **⬤ ETE3-rendered MTBC phylogenetic tree image**  
+- **⬤ Cleaned tree file used for visualization**  
+- **⬤ Tree rendering log**  
+
+### Integrated reports & downloadable public-health outputs
+
+- **⬤ Final integrated interactive HTML report**  
+- **⬤ Run metadata file**  
+- **⬤ Downloadable TB surveillance metadata TSV**  
+- **⬤ Downloadable QC filtering rationale TSV**  
+- **⬤ Embedded lineage distribution plot**  
+- **⬤ Embedded SNP distance heatmap**  
+- **⬤ Embedded MTBC phylogenetic tree**  
+- **⬤ GitHub Pages-compatible report outputs**  
+
+Example final report output:
+
+```text
+integrated_report.html
+
+```
 ## GitHub Pages report site
 
 ```text
@@ -263,24 +360,33 @@ https://gmboowa.github.io/rMAP_TB/
 
 ## Interpretation guidance
 
-The integrated report should be interpreted using multiple layers of evidence:
+The integrated report should be interpreted using multiple complementary layers of genomic, resistance, quality-control & epidemiological evidence:
 
-- **⬤ TB-Profiler resistance profile**  
-- **⬤ MTBC lineage & sub-lineage**  
+- **⬤ Mycobacteria species typing results**  
+- **⬤ MTBC selection & filtering rationale**  
+- **⬤ TB-Profiler species, lineage & sub-lineage calls**  
+- **⬤ TB-Profiler drug-resistance profile**  
+- **⬤ Mutation-level resistance evidence, including drug, gene, mutation/change, confidence & evidence fields**  
+- **⬤ Non-synonymous mutations in key TB drug-resistance-associated genes**  
+- **⬤ Mean depth & sample-level QC indicators**  
+- **⬤ Pairwise SNP distances between MTBC isolates**  
+- **⬤ SNP cluster interpretation using the configured SNP-distance thresholds**  
+- **⬤ SNP distance heatmap for genomic relatedness assessment**  
 - **⬤ Core-SNP phylogenetic clustering**  
-- **⬤ Bootstrap support**  
-- **⬤ Recombination-filtered alignment (if Gubbins is enabled)**  
-- **⬤ Metadata (country, year, collection site, sample source)**
+- **⬤ Bootstrap support values on the phylogenetic tree**  
+- **⬤ Recombination-filtered alignment & tree, if Gubbins is enabled**  
+- **⬤ Surveillance metadata, including country, year, collection site, sample source, lineage, resistance profile & tree-inclusion status where available**
 
-Close clustering alone should not be treated as proof of transmission without epidemiological & sampling context.
+Close SNP clustering or close placement on a phylogenetic tree should **not** be interpreted as proof of direct transmission on its own. Transmission interpretation should be made only after considering epidemiological linkage, sampling density, collection dates, geography, lineage, resistance profile, sequence quality, SNP distances & bootstrap support.
 
 ## Suggested citation / acknowledgement
 
-If you use this workflow, please cite or acknowledge:
+If you use this workflow, please cite or acknowledge the associated manuscript:
 
 ```text
-rMAP_TB: a WDL/Cromwell workflow for MTBC antimicrobial-resistance profiling & core-SNP phylogenomics.
+rMAP-TB: a reproducible WDL/Cromwell workflow for *Mycobacterium tuberculosis* complex genomic surveillance and drug-resistance interpretation.
 ```
+
 
 ## License
 
