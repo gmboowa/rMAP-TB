@@ -207,11 +207,24 @@ The input FASTQ files must be ordered like this:
 }
 ```
 
-## Docker images used in the workflow
+## Docker Images Used in the Workflow
 
-| Workflow component | Docker image | Purpose |
+| Workflow Component | Docker Image | Purpose |
 |---|---|---|
-| Read trimming | `quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2` | Adapter trimming & read-quality filtering || FastQC | `staphb/fastqc:0.11.9` | Per-sample read-level quality-control assessment || MultiQC | `ewels/multiqc:latest` | Aggregated QC reporting across samples || Species typing | `gmboowa/mycobacterium-kraken2-bracken:2026.05` | *Mycobacterium* species identification using Kraken2 + Bracken || TB-Profiler | `staphb/tbprofiler:6.6.6` | MTBC species, lineage, sub-lineage, drug-resistance prediction & mutation-level resistance evidence || Snippy | `staphb/snippy:4.6.0` | Reference-guided per-sample SNP calling || Snippy-core | `staphb/snippy:4.6.0` | Core-genome SNP alignment generation across MTBC-positive samples || Non-synonymous mutation summary | `python:3.11-slim` | Extraction & reporting of non-synonymous mutations in TB drug-resistance-associated genes || Pairwise SNP distance & clustering | `python:3.11-slim` | Pairwise SNP distance estimation, reference-sequence exclusion & SNP cluster interpretation || Surveillance summary visuals | `python:3.11-slim` | Lineage distribution plots, SNP heatmap generation, QC filtering rationale & surveillance metadata TSV export || Gubbins | `staphb/gubbins:3.4.1` | Optional recombination filtering before phylogenetic reconstruction || IQ-TREE2 | `gmboowa/iqtree2-python:2.3.4` | Maximum-likelihood phylogenetic inference with bootstrap support || Tree visualization | `gmboowa/ete3-render:1.18` | ETE3-based phylogenetic tree rendering with lineage, resistance & bootstrap metadata || Report merging | `python:3.11-slim` | Final integrated interactive HTML report generation |
+| Read trimming | `quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2` | Adapter trimming & read-quality filtering |
+| FastQC | `staphb/fastqc:0.11.9` | Per-sample read-level quality-control assessment |
+| MultiQC | `ewels/multiqc:latest` | Aggregated QC reporting across samples |
+| Species typing | `gmboowa/mycobacterium-kraken2-bracken:2026.05` | *Mycobacterium* species identification using Kraken2 & Bracken |
+| TB-Profiler | `staphb/tbprofiler:6.6.6` | MTBC species, lineage, sub-lineage, drug-resistance prediction & mutation-level resistance evidence |
+| Snippy | `staphb/snippy:4.6.0` | Reference-guided per-sample SNP calling |
+| Snippy-core | `staphb/snippy:4.6.0` | Core-genome SNP alignment generation across MTBC-positive samples |
+| Non-synonymous mutation summary | `python:3.11-slim` | Extraction & reporting of non-synonymous mutations in TB drug-resistance-associated genes |
+| Pairwise SNP distance & clustering | `python:3.11-slim` | Pairwise SNP distance estimation, reference-sequence exclusion & SNP cluster interpretation |
+| Surveillance summary visuals | `python:3.11-slim` | Lineage distribution plots, SNP heatmap generation, QC filtering rationale & surveillance metadata TSV export |
+| Gubbins | `staphb/gubbins:3.4.1` | Optional recombination filtering before phylogenetic reconstruction |
+| IQ-TREE2 | `gmboowa/iqtree2-python:2.3.4` | Maximum-likelihood phylogenetic inference with bootstrap support |
+| Tree visualization | `gmboowa/ete3-render:1.18` | ETE3-based phylogenetic tree rendering with lineage, resistance & bootstrap metadata |
+| Report merging | `python:3.11-slim` | Final integrated interactive HTML report generation |
 
 ## Running the workflow
 
