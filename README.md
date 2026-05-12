@@ -20,62 +20,62 @@ rMAP-TB generates integrated HTML reports & downloadable public-health surveilla
 
 ```text
 Paired-end FASTQ files
-        ⬇
+          ⬇
 Read trimming with Trimmomatic
-        ⬇
+          ⬇
 Sequence quality control with FastQC
-        ⬇
+          ⬇
 QC aggregation with MultiQC
-        ⬇
+          ⬇
 Mycobacteria species typing with Kraken2 + Bracken
-        ⬇
+          ⬇
 MTBC / non-MTBC Mycobacteria routing
         │
         ├──────────────────────────────────────────────▶ Non-MTBC Mycobacteria / NTM branch
-        │                                                     ⬇
+        │                                                       ⬇
         │                                               NTM speciation summary
-        │                                                     ⬇
+        │                                                       ⬇
         │                                               Most probable NTM species identified
-        │                                                     ⬇
+        │                                                       ⬇
         │                                               Species-level evidence and MTBC support
-        │                                                     ⬇
+        │                                                       ⬇
         │                                               Exclusion from MTBC-specific analysis
-        │                                                     ⬇
+        │                                                       ⬇
         │                                               Non-MTBC Mycobacteria species summary
-        │                                                     ⬇
+        │                                                       ⬇
         │                                               Integrated HTML report
         │
-        ⬇
+          ⬇
 MTBC-supported samples only
-        ⬇
+          ⬇
 TB-Profiler species, lineage & AMR profiling
-        ⬇
+          ⬇
 MTBC-only sample filtering
-        ⬇
+          ⬇
 Snippy per-sample variant calling
-        ⬇
+          ⬇
 Mean-depth extraction & variant summary generation
-        ⬇
+          ⬇
 Snippy-core core-genome alignment
-        ⬇
+          ⬇
 Drug-resistance-associated non-synonymous mutation summary
-        ⬇
+          ⬇
 Pairwise SNP distance estimation
-        ⬇
+          ⬇
 SNP cluster interpretation
-        ⬇
+          ⬇
 Lineage distribution summary
-        ⬇
+          ⬇
 SNP distance heatmap generation
-        ⬇
+          ⬇
 QC filtering rationale & surveillance metadata export
-        ⬇
+          ⬇
 Optional Gubbins recombination filtering
-        ⬇
+          ⬇
 IQ-TREE2 maximum-likelihood phylogeny
-        ⬇
+          ⬇
 ETE3 phylogenetic tree visualization
-        ⬇
+          ⬇
 Integrated HTML report with downloadable surveillance outputs
 ```
 
