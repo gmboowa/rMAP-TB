@@ -8,94 +8,75 @@ rMAP-TB generates integrated HTML reports & downloadable public-health surveilla
 
 
 ## Workflow overview
-
 <p align="center">
   <img src="docs/assets/workflow/rMAP_TB.png"
        alt="rMAP-TB workflow"
        width="100%">
 </p>
 
-<pre align="left">
+```text
 Paired-end FASTQ files
-  |
-  v
+        ⬇
 Read trimming with Trimmomatic
-  |
-  v
+        ⬇
 Sequence quality control with FastQC
-  |
-  v
+        ⬇
 QC aggregation with MultiQC
-  |
-  v
+        ⬇
 Mycobacteria species typing with Kraken2 + Bracken
-  |
-  v
+        ⬇
 MTBC / non-MTBC Mycobacteria routing
-  |
-  +-- Non-MTBC Mycobacteria / NTM branch
-  |     |
-  |     v
-  |   NTM speciation summary
-  |     - Most probable NTM species
-  |     - Species-level evidence
-  |     - MTBC support status
-  |     - Exclusion from MTBC-specific analysis
-  |     |
-  |     v
-  |   Non-MTBC Mycobacteria species summary
-  |     |
-  |     v
-  |   Integrated HTML report
-  |
-  +-- MTBC-supported sample branch
-        |
-        v
-      TB-Profiler species, lineage & AMR profiling
-        |
-        v
-      MTBC-only sample filtering
-        |
-        v
-      Snippy per-sample variant calling
-        |
-        v
-      Mean-depth extraction & variant summary generation
-        |
-        v
-      Snippy-core core-genome alignment
-        |
-        v
-      Drug-resistance-associated non-synonymous mutation summary
-        |
-        v
-      Pairwise SNP distance estimation
-        |
-        v
-      SNP cluster interpretation
-        |
-        v
-      Lineage distribution summary
-        |
-        v
-      SNP distance heatmap generation
-        |
-        v
-      QC filtering rationale & surveillance metadata export
-        |
-        v
-      Optional Gubbins recombination filtering
-        |
-        v
-      IQ-TREE2 maximum-likelihood phylogeny
-        |
-        v
-      ETE3 phylogenetic tree visualization
-        |
-        v
-      Integrated HTML report with downloadable surveillance outputs
-</pre>
+        ⬇
 
+┌──────────────────────────────────────────────────────────────┐
+│                 Non-MTBC Mycobacteria / NTM branch           │
+│                              ⬇                               │
+│                    NTM speciation summary                    │
+│                              ⬇                               │
+│              Most probable NTM species identified            │
+│                              ⬇                               │
+│              Species-level evidence and MTBC support         │
+│                              ⬇                               │
+│              Exclusion from MTBC-specific analysis           │
+│                              ⬇                               │
+│              Non-MTBC Mycobacteria species summary           │
+│                              ⬇                               │
+│                    Integrated HTML report                    │
+└──────────────────────────────────────────────────────────────┘
+
+        ⬇
+MTBC-supported samples only
+        ⬇
+TB-Profiler species, lineage & AMR profiling
+        ⬇
+MTBC-only sample filtering
+        ⬇
+Snippy per-sample variant calling
+        ⬇
+Mean-depth extraction & variant summary generation
+        ⬇
+Snippy-core core-genome alignment
+        ⬇
+Drug-resistance-associated non-synonymous mutation summary
+        ⬇
+Pairwise SNP distance estimation
+        ⬇
+SNP cluster interpretation
+        ⬇
+Lineage distribution summary
+        ⬇
+SNP distance heatmap generation
+        ⬇
+QC filtering rationale & surveillance metadata export
+        ⬇
+Optional Gubbins recombination filtering
+        ⬇
+IQ-TREE2 maximum-likelihood phylogeny
+        ⬇
+ETE3 phylogenetic tree visualization
+        ⬇
+Integrated HTML report with downloadable surveillance outputs
+```
 ## Key features
 
 - **⬤ Paired-end Illumina FASTQ input support**  
