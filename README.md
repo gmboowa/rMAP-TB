@@ -13,9 +13,10 @@ rMAP-TB generates integrated HTML reports & downloadable public-health surveilla
        alt="rMAP-TB workflow"
        width="100%">
 </p>
+
 ## rMAP-TB workflow overview
 
-</p>
+
 
 ```text
 Paired-end FASTQ files
