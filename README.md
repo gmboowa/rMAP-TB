@@ -13,8 +13,6 @@ rMAP-TB generates integrated HTML reports & downloadable public-health surveilla
        alt="rMAP-TB workflow"
        width="100%">
 </p>
-
-```text
 ## rMAP-TB workflow overview
 
 <p align="center">
@@ -23,9 +21,7 @@ rMAP-TB generates integrated HTML reports & downloadable public-health surveilla
        width="100%">
 </p>
 
-<div align="center">
-
-<pre>
+```text
 Paired-end FASTQ files
         ⬇
 Read trimming with Trimmomatic
@@ -38,21 +34,19 @@ Mycobacteria species typing with Kraken2 + Bracken
         ⬇
 MTBC / non-MTBC Mycobacteria routing
         │
-        ├───────────────────────────────▶ ┌──────────────────────────────────────────────┐
-        │                                  │ Non-MTBC Mycobacteria / NTM branch          │
-        │                                  │        ⬇                                     │
-        │                                  │ NTM speciation summary                      │
-        │                                  │        ⬇                                     │
-        │                                  │ Most probable NTM species identified        │
-        │                                  │        ⬇                                     │
-        │                                  │ Species-level evidence and MTBC support     │
-        │                                  │        ⬇                                     │
-        │                                  │ Exclusion from MTBC-specific analysis       │
-        │                                  │        ⬇                                     │
-        │                                  │ Non-MTBC Mycobacteria species summary       │
-        │                                  │        ⬇                                     │
-        │                                  │ Integrated HTML report                      │
-        │                                  └──────────────────────────────────────────────┘
+        ├──────────────────────────────────────────────▶ Non-MTBC Mycobacteria / NTM branch
+        │                                                   ⬇
+        │                                               NTM speciation summary
+        │                                                   ⬇
+        │                                               Most probable NTM species identified
+        │                                                   ⬇
+        │                                               Species-level evidence and MTBC support
+        │                                                   ⬇
+        │                                               Exclusion from MTBC-specific analysis
+        │                                                   ⬇
+        │                                               Non-MTBC Mycobacteria species summary
+        │                                                   ⬇
+        │                                               Integrated HTML report
         │
         ⬇
 MTBC-supported samples only
@@ -86,9 +80,8 @@ IQ-TREE2 maximum-likelihood phylogeny
 ETE3 phylogenetic tree visualization
         ⬇
 Integrated HTML report with downloadable surveillance outputs
-</pre>
+```
 
-</div>
 ## Key features
 
 - **⬤ Paired-end Illumina FASTQ input support**  
