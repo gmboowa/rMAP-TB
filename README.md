@@ -29,51 +29,50 @@ QC aggregation with MultiQC
 Mycobacteria species typing with Kraken2 + Bracken
         ⬇
 MTBC / non-MTBC Mycobacteria routing
-        ├───────────────────────────────────────────────┐
-        │                                               │
-        │                                               ⬇
-        │                         Non-MTBC Mycobacteria / NTM speciation summary
-        │                                    - Most probable NTM species
-        │                                    - Species-level evidence
-        │                                    - MTBC support status
-        │                                    - Exclusion from MTBC-specific analysis
-        │                                               ⬇
-        │                                 Non-MTBC Mycobacteria Species Summary
-        │                                               ⬇
-        │                                     Integrated HTML report
         │
-        ⬇
-MTBC-supported samples only
-        ⬇
-TB-Profiler species, lineage & AMR profiling
-        ⬇
-MTBC-only sample filtering
-        ⬇
-Snippy per-sample variant calling
-        ⬇
-Mean-depth extraction & variant summary generation
-        ⬇
-Snippy-core core-genome alignment
-        ⬇
-Drug-resistance-associated non-synonymous mutation summary
-        ⬇
-Pairwise SNP distance estimation
-        ⬇
-SNP cluster interpretation
-        ⬇
-Lineage distribution summary
-        ⬇
-SNP distance heatmap generation
-        ⬇
-QC filtering rationale & surveillance metadata export
-        ⬇
-Optional Gubbins recombination filtering
-        ⬇
-IQ-TREE2 maximum-likelihood phylogeny
-        ⬇
-ETE3 phylogenetic tree visualization
-        ⬇
-Integrated HTML report with downloadable surveillance outputs
+        ├── Non-MTBC Mycobacteria / NTM branch
+        │       ⬇
+        │   NTM speciation summary
+        │       ├── Most probable NTM species
+        │       ├── Species-level evidence
+        │       ├── MTBC support status
+        │       └── Exclusion from MTBC-specific analysis
+        │       ⬇
+        │   Non-MTBC Mycobacteria species summary
+        │       ⬇
+        │   Integrated HTML report
+        │
+        └── MTBC-supported sample branch
+                ⬇
+            TB-Profiler species, lineage & AMR profiling
+                ⬇
+            MTBC-only sample filtering
+                ⬇
+            Snippy per-sample variant calling
+                ⬇
+            Mean-depth extraction & variant summary generation
+                ⬇
+            Snippy-core core-genome alignment
+                ⬇
+            Drug-resistance-associated non-synonymous mutation summary
+                ⬇
+            Pairwise SNP distance estimation
+                ⬇
+            SNP cluster interpretation
+                ⬇
+            Lineage distribution summary
+                ⬇
+            SNP distance heatmap generation
+                ⬇
+            QC filtering rationale & surveillance metadata export
+                ⬇
+            Optional Gubbins recombination filtering
+                ⬇
+            IQ-TREE2 maximum-likelihood phylogeny
+                ⬇
+            ETE3 phylogenetic tree visualization
+                ⬇
+            Integrated HTML report with downloadable surveillance outputs
 
 </pre>
 </div>
