@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="500.0" y="35" text-anchor="middle" font-family="Arial" font-size="22" font-weight="700" fill="#0f172a">Lineage Distribution</text>
+<text x="500.0" y="58" text-anchor="middle" font-family="Arial" font-size="12" fill="#475569">TB-Profiler lineage calls where available; unresolved Kraken-supported MTBC samples are shown separately.</text>
+<line x1="120" y1="70" x2="120" y2="440" stroke="#334155" stroke-width="2"/>
+<line x1="120" y1="440" x2="940" y2="440" stroke="#334155" stroke-width="2"/>
+<rect x="144" y="277" width="241" height="163" rx="8" fill="#2563eb"/>
+<text x="264.5" y="269" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#0f172a">14</text>
+<text x="264.5" y="470" text-anchor="middle" font-family="Arial" font-size="13" fill="#0f172a">L3</text>
+<rect x="409" y="90" width="241" height="350" rx="8" fill="#2563eb"/>
+<text x="529.5" y="82" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#0f172a">30</text>
+<text x="529.5" y="470" text-anchor="middle" font-family="Arial" font-size="13" fill="#0f172a">L4</text>
+<rect x="674" y="405" width="241" height="35" rx="8" fill="#2563eb"/>
+<text x="794.5" y="397" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#0f172a">3</text>
+<text x="794.5" y="470" text-anchor="middle" font-family="Arial" font-size="13" fill="#0f172a">L7</text>
+<text x="500.0" y="496" text-anchor="middle" font-family="Arial" font-size="12" fill="#475569">Lineage groups are summarized from TB-Profiler main-lineage and sub-lineage fields. Lineage does not determine phylogeny selection.</text></svg>
