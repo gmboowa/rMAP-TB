@@ -2,11 +2,11 @@
 
 **rMAP-TB** is a reproducible, Dockerized WDL/Cromwell workflow for public-health-oriented analysis of *Mycobacterium tuberculosis* complex (MTBC) and non-MTBC Mycobacteria genomic data. It supports paired-end Illumina FASTQ inputs & integrates read preprocessing, species typing, MTBC/NTM routing, TB drug-resistance profiling, lineage interpretation, MTBC-only sample filtering, core-SNP phylogenomics & interactive surveillance reporting.
 
-The workflow first performs read trimming, sequence quality control, and Kraken2/Bracken-based Mycobacteria species typing. Species typing is used to route samples before TB-Profiler execution: MTBC-supported samples proceed to TB-Profiler resistance, species & lineage profiling, while non-MTBC Mycobacteria are summarized separately through an NTM speciation branch. This allows the workflow to report the most probable NTM species and supporting evidence while excluding non-MTBC samples from MTBC-specific downstream analyses.
+The workflow first performs read trimming, sequence quality control & Kraken2/Bracken-based Mycobacteria species typing. Species typing is used to route samples before TB-Profiler execution: MTBC-supported samples proceed to TB-Profiler resistance, species & lineage profiling, while non-MTBC Mycobacteria are summarized separately through an NTM speciation branch. This allows the workflow to report the most probable NTM species and supporting evidence while excluding non-MTBC samples from MTBC-specific downstream analyses.
 
 For MTBC-supported samples, rMAP-TB performs Snippy-based variant calling, mean-depth extraction, variant summary generation, Snippy-core core-genome alignment, drug-resistance-associated non-synonymous mutation summarization, pairwise SNP distance estimation, SNP cluster interpretation, lineage distribution analysis, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny &  ETE3 phylogenetic tree visualization.
 
-rMAP-TB generates integrated HTML reports and downloadable public-health surveillance outputs, including QC filtering rationale, Mycobacteria species typing summaries, NTM speciation summaries, TB-Profiler mutation-level resistance evidence, resistance-profile summaries, lineage distribution summaries, pairwise SNP distance tables, SNP cluster summaries, SNP distance heatmaps, phylogenetic tree visualizations &  surveillance metadata TSV files.
+rMAP-TB generates integrated HTML reports & downloadable public-health surveillance outputs, including QC filtering rationale, Mycobacteria species typing summaries, NTM speciation summaries, TB-Profiler mutation-level resistance evidence, resistance-profile summaries, lineage distribution summaries, pairwise SNP distance tables, SNP cluster summaries, SNP distance heatmaps, phylogenetic tree visualizations &  surveillance metadata TSV files.
 
 ## Workflow overview
 <p align="center">
@@ -416,20 +416,42 @@ https://gmboowa.github.io/rMAP-TB/
 
 The integrated report should be interpreted using multiple complementary layers of genomic, resistance, quality-control & epidemiological evidence:
 
-- **⬤ Mycobacteria species typing results**  
-- **⬤ MTBC selection & filtering rationale**  
-- **⬤ TB-Profiler species, lineage & sub-lineage calls**  
-- **⬤ TB-Profiler drug-resistance profile**  
-- **⬤ Mutation-level resistance evidence, including drug, gene, mutation/change, confidence & evidence fields**  
-- **⬤ Non-synonymous mutations in key TB drug-resistance-associated genes**  
-- **⬤ Mean depth & sample-level QC indicators**  
-- **⬤ Pairwise SNP distances between MTBC isolates**  
-- **⬤ SNP cluster interpretation using the configured SNP-distance thresholds**  
-- **⬤ SNP distance heatmap for genomic relatedness assessment**  
-- **⬤ Core-SNP phylogenetic clustering**  
-- **⬤ Bootstrap support values on the phylogenetic tree**  
-- **⬤ Recombination-filtered alignment & tree, if Gubbins is enabled**  
-- **⬤ Surveillance metadata, including country, year, collection site, sample source, lineage, resistance profile & tree-inclusion status where available**
+### Key outputs and visualizations
+
+rMAP-TB generates an integrated HTML surveillance report with:
+
+#### Species typing & sample selection
+- Mycobacteria species typing results
+- MTBC selection & filtering rationale
+- TB-Profiler species, lineage & sub-lineage calls
+
+#### Drug-resistance interpretation
+- TB-Profiler drug-resistance profiles
+- Mutation-level resistance evidence, including drug, gene, mutation/change, confidence & evidence fields
+- Non-synonymous mutations in key TB drug-resistance-associated genes
+
+#### Quality control & sequencing metrics
+- Mean depth & sample-level QC indicators
+- Tree-inclusion status & sample filtering notes
+
+#### SNP analysis & genomic relatedness
+- Pairwise SNP distances between MTBC isolates
+- SNP cluster interpretation using configured SNP-distance thresholds
+- SNP distance heatmap for genomic relatedness assessment
+
+#### Phylogenomics
+- Core-SNP phylogenetic clustering
+- Bootstrap support values on the phylogenetic tree
+- Recombination-filtered alignment & tree, if Gubbins is enabled
+
+#### Surveillance metadata
+- Country
+- Year
+- Collection site
+- Sample source
+- Lineage
+- Resistance profile
+- Tree-inclusion status, where available
 
 Close SNP clustering or close placement on a phylogenetic tree should **not** be interpreted as proof of direct transmission on its own. Transmission interpretation should be made only after considering epidemiological linkage, sampling density, collection dates, geography, lineage, resistance profile, sequence quality, SNP distances & bootstrap support.
 
