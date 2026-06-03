@@ -2,11 +2,11 @@ Original sequences: 49
 Included sequences: 47
 Excluded sequences: 2
 Included non-reference samples: 46
-Alignment length: 4410911
+Alignment length: 7322
 Maximum allowed missing fraction: 0.5
 
 Excluded samples from IQ-TREE only:
-- SRR10993945: 58.85% missing/ambiguous/gap content; missing_fraction_ge_0.5; SRR10993945 was excluded from IQ-TREE because 58.85% of its core-SNP alignment was missing/ambiguous/gap content, exceeding the maximum allowed threshold of 50%.
-- SRR10993957: 60.97% missing/ambiguous/gap content; missing_fraction_ge_0.5; SRR10993957 was excluded from IQ-TREE because 60.97% of its core-SNP alignment was missing/ambiguous/gap content, exceeding the maximum allowed threshold of 50%.
+- 0037_SRR10993945: 58.43% missing/ambiguous/gap content; missing_fraction_ge_0.5; 0037_SRR10993945 was excluded from IQ-TREE because 58.43% of its core-SNP alignment was missing/ambiguous/gap content, exceeding the maximum allowed threshold of 50%.
+- 0040_SRR10993957: 59.42% missing/ambiguous/gap content; missing_fraction_ge_0.5; 0040_SRR10993957 was excluded from IQ-TREE because 59.42% of its core-SNP alignment was missing/ambiguous/gap content, exceeding the maximum allowed threshold of 50%.
 
 Note: Excluded samples are not removed from the wider workflow. They are excluded only from IQ-TREE phylogenetic inference because their core-SNP alignment sequence did not meet the minimum quality requirements for tree reconstruction.

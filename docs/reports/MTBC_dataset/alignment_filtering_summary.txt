@@ -1,8 +1,8 @@
-Original sequences: 31
-Included sequences: 31
+Original sequences: 29
+Included sequences: 29
 Excluded sequences: 0
-Included non-reference samples: 30
-Alignment length: 23741
+Included non-reference samples: 28
+Alignment length: 20040
 Maximum allowed missing fraction: 0.5
 
 Excluded samples from IQ-TREE only: none

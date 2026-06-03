@@ -1,4 +1,4 @@
 sample	alignment_length	acgt_count	missing_count	missing_fraction	threshold	reason	exclusion_note
-SRR15244368	4410911	0	4410911	1.000000	0.500000	no_usable_acgt_bases	SRR15244368 was excluded from IQ-TREE because it had 100.00% missing/ambiguous/gap content in the core-SNP alignment and no usable ACGT bases.
-SRR15244369	4410911	0	4410911	1.000000	0.500000	no_usable_acgt_bases	SRR15244369 was excluded from IQ-TREE because it had 100.00% missing/ambiguous/gap content in the core-SNP alignment and no usable ACGT bases.
-SRR35699173	4410911	8564	4402347	0.998058	0.500000	missing_fraction_ge_0.5	SRR35699173 was excluded from IQ-TREE because 99.81% of its core-SNP alignment was missing/ambiguous/gap content, exceeding the maximum allowed threshold of 50%.
+0019_SRR15244368	4410911	0	4410911	1.000000	0.500000	no_usable_acgt_bases	0019_SRR15244368 was excluded from IQ-TREE because it had 100.00% missing/ambiguous/gap content in the core-SNP alignment and no usable ACGT bases.
+0020_SRR15244369	4410911	0	4410911	1.000000	0.500000	no_usable_acgt_bases	0020_SRR15244369 was excluded from IQ-TREE because it had 100.00% missing/ambiguous/gap content in the core-SNP alignment and no usable ACGT bases.
+0024_SRR35699173	4410911	8564	4402347	0.998058	0.500000	missing_fraction_ge_0.5	0024_SRR35699173 was excluded from IQ-TREE because 99.81% of its core-SNP alignment was missing/ambiguous/gap content, exceeding the maximum allowed threshold of 50%.

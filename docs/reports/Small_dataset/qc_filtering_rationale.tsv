@@ -1,11 +1,11 @@
 sample	mean_depth	kraken_mtbc_supported	mtbc_percent	selected_for_phylogeny	included_in_tree	reason
-ERR14370750	149.29	YES	99.37	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-ERR14370934	176.50	YES	71.45	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-ERR14371053	310.75	YES	98.33	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-ERR14371121	308.82	YES	98.88	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-ERR15166681	141.35	YES	97.34	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-ERR16097103	83.04	YES	99.54	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-SRR13870376	64.78	YES	99.26	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-SRR13870395	85.28	YES	99.06	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-SRR24222987	68.98	YES	99.62	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
-SRR28351210	136.99	YES	99.50	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0000_ERR14370750	149.29	YES	99.37	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0001_ERR14370934	176.50	YES	71.45	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0002_ERR14371053	310.75	YES	98.33	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0003_ERR14371121	308.82	YES	98.88	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0004_ERR15166681	141.35	YES	97.34	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0005_ERR16097103	83.04	YES	99.54	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0006_SRR13870376	64.78	YES	99.26	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0007_SRR13870395	85.28	YES	99.06	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0008_SRR24222987	68.99	YES	99.62	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported
+0009_SRR28351210	136.99	YES	99.50	YES	YES	Selected for phylogeny because Kraken2/Bracken species typing supports MTBC; TB-Profiler lineage reported

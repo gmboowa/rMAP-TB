@@ -2,7 +2,9 @@ version 1.0
 
 workflow rMAP_TB {
   input {
-    Array[File]+ input_reads
+    Array[File]+ read1
+    Array[File]+ read2
+    File? sample_metadata_tsv
     File adapters
     File mtbc_reference_genbank
 
@@ -27,8 +29,10 @@ workflow rMAP_TB {
     Int likely_transmission_snp_threshold = 5
     Int possible_transmission_snp_threshold = 12
 
-    Int max_cpus = 8
-    Int max_memory_gb = 16
+    # Terra runtime controls. Defaults increased for faster execution of TB-Profiler, Snippy, Gubbins, and IQ-TREE.
+    # Lower these values if cost control is more important than speed.
+    Int max_cpus = 16
+    Int max_memory_gb = 64
     Int min_read_length = 50
     Int min_mapping_quality = 20
     Int tree_width = 2400
@@ -39,28 +43,47 @@ workflow rMAP_TB {
 
   Int cpu_4 = if max_cpus < 4 then max_cpus else 4
   Int cpu_8 = if max_cpus < 8 then max_cpus else 8
+  Int cpu_16 = if max_cpus < 16 then max_cpus else 16
   Int min_mtbc_fastq_files_for_tree = min_mtbc_samples_for_tree * 2
+
+  # 0. Prepare paired-end reads supplied from Terra data tables.
+  # This follows the same Terra input logic as the WHO_2021 optional-metadata version.
+  #
+  # For a Terra SET run, use an entity table named TBs and a set table named TBs_set.
+  # In the workflow input form, launch from TBs_set and set:
+  #   rMAP_TB.read1 = this.TBs.read1
+  #   rMAP_TB.read2 = this.TBs.read2
+  #
+  # The expressions above resolve to Array[File]+ values only when the selected
+  # root entity is a set containing multiple TBs members. This task then validates
+  # matching R1/R2 counts and creates an interleaved Array[File] for downstream
+  # tasks that expect paired reads in R1/R2 order.
+  call PREPARE_READ_PAIRS {
+    input:
+      read1 = read1,
+      read2 = read2
+  }
 
   # 1. Trimming is the first executable step. All downstream analysis uses these reads when trimming is enabled.
   if (do_trimming) {
     call TRIMMING {
       input:
-        input_reads = input_reads,
+        input_reads = PREPARE_READ_PAIRS.paired_reads,
         adapters = adapters,
         trimmomatic_quality_encoding = trimmomatic_quality_encoding,
-        cpu = cpu_4,
+        cpu = cpu_8,
         min_length = min_read_length
     }
   }
 
-  Array[File] analysis_reads = select_first([TRIMMING.trimmed_reads, input_reads])
+  Array[File] analysis_reads = select_first([TRIMMING.trimmed_reads, PREPARE_READ_PAIRS.paired_reads])
 
   # 2. Sample QC and Trimming Summary. FastQC runs only after trimming, because it consumes analysis_reads.
   if (do_quality_control) {
     call FASTQC {
       input:
         input_reads = analysis_reads,
-        cpu = cpu_4
+        cpu = cpu_8
     }
 
     call MULTIQC {
@@ -79,7 +102,7 @@ workflow rMAP_TB {
         input_reads = analysis_reads,
         qc_dependency = MULTIQC.multiqc_report,
         docker_image = species_typing_docker,
-        cpu = cpu_8,
+        cpu = cpu_16,
         memory_gb = max_memory_gb
     }
 
@@ -103,7 +126,7 @@ workflow rMAP_TB {
         qc_dependency = SPECIES_TYPING.species_typing_html,
         species_typing_tsv = SPECIES_TYPING.species_typing_tsv,
         docker_image = tbprofiler_docker,
-        cpu = cpu_8,
+        cpu = cpu_16,
         memory_gb = max_memory_gb
     }
   }
@@ -116,7 +139,7 @@ workflow rMAP_TB {
         input_reads = mtbc_reads,
         reference_genome = mtbc_reference_genbank,
         reference_type = snippy_reference_type,
-        cpu = cpu_8,
+        cpu = cpu_16,
         memory_gb = max_memory_gb,
         min_quality = min_mapping_quality
     }
@@ -139,7 +162,7 @@ workflow rMAP_TB {
         core_full_alignment = select_first([SNIPPY_CORE_MTBC.core_full_alignment]),
         likely_transmission_snp_threshold = likely_transmission_snp_threshold,
         possible_transmission_snp_threshold = possible_transmission_snp_threshold,
-        cpu = cpu_4,
+        cpu = cpu_8,
         memory_gb = max_memory_gb
     }
   }
@@ -153,8 +176,9 @@ workflow rMAP_TB {
         species_typing_tsv = SPECIES_TYPING.species_typing_tsv,
         pairwise_snp_distance_matrix = SNP_DISTANCE_CLUSTERING.pairwise_snp_distance_matrix,
         mean_depth_tsv = SNIPPY_CORE_MTBC.mean_depth_summary_tsv,
-        cpu = 1,
-        memory_gb = 4
+        sample_metadata_tsv = sample_metadata_tsv,
+        cpu = cpu_4,
+        memory_gb = max_memory_gb
     }
   }
 
@@ -163,7 +187,7 @@ workflow rMAP_TB {
     call GUBBINS_RECOMBINATION {
       input:
         core_full_alignment = select_first([SNIPPY_CORE_MTBC.core_full_alignment]),
-        cpu = cpu_8,
+        cpu = cpu_16,
         memory_gb = max_memory_gb
     }
   }
@@ -178,7 +202,7 @@ workflow rMAP_TB {
         alignment = select_first([GUBBINS_RECOMBINATION.filtered_alignment, SNIPPY_CORE_MTBC.core_full_alignment]),
         model = iqtree2_model,
         bootstrap_replicates = iqtree2_bootstraps,
-        cpu = cpu_8,
+        cpu = cpu_16,
         memory_gb = max_memory_gb,
         midpoint_root_tree = midpoint_root_tree,
         max_missing_fraction_for_tree = 0.50,
@@ -327,13 +351,67 @@ workflow rMAP_TB {
     File run_metadata = MERGE_TB_REPORTS.run_metadata
   }
 }
+task PREPARE_READ_PAIRS {
+  input {
+    Array[File]+ read1
+    Array[File]+ read2
+    String docker_image = "ubuntu:22.04"
+  }
+
+  command <<<
+    set -euo pipefail
+    mkdir -p prepared
+
+    r1=(~{sep=' ' read1})
+    r2=(~{sep=' ' read2})
+
+    if [ ${#r1[@]} -ne ${#r2[@]} ]; then
+      echo "ERROR: read1 and read2 must contain the same number of files." >&2
+      echo "read1 count: ${#r1[@]}" >&2
+      echo "read2 count: ${#r2[@]}" >&2
+      exit 1
+    fi
+
+    echo -e "sample_index\tsample\tread1\tread2\tprepared_read1\tprepared_read2" > prepared_read_pairs.tsv
+
+    for i in "${!r1[@]}"; do
+      R1="${r1[$i]}"
+      R2="${r2[$i]}"
+
+      sample=$(basename "$R1")
+      sample=$(echo "$sample" | sed -E 's/(\.fastq\.gz|\.fq\.gz|\.fastq|\.fq)$//' | sed -E 's/(_R?1|_1|\.R?1|\.1)(_|$).*//')
+      prefix=$(printf "%04d_%s" "$i" "$sample")
+
+      out_R1="prepared/${prefix}_R1.fastq.gz"
+      out_R2="prepared/${prefix}_R2.fastq.gz"
+
+      ln -s "$R1" "$out_R1"
+      ln -s "$R2" "$out_R2"
+
+      echo -e "$i\t$sample\t$R1\t$R2\t$out_R1\t$out_R2" >> prepared_read_pairs.tsv
+    done
+  >>>
+
+  runtime {
+    docker: docker_image
+    cpu: 1
+    memory: "2 GB"
+    disks: "local-disk 20 HDD"
+  }
+
+  output {
+    Array[File] paired_reads = glob("prepared/*.fastq.gz")
+    File prepared_read_pairs = "prepared_read_pairs.tsv"
+  }
+}
+
 task TRIMMING {
   input {
     String docker_image = "quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2"
     Array[File]+ input_reads
     File adapters
     String trimmomatic_quality_encoding = "phred33"
-    Int cpu = 4
+    Int cpu = 8
     Int min_length = 50
   }
 
@@ -491,8 +569,8 @@ PY
   runtime {
     docker: "~{docker_image}"
     cpu: cpu
-    memory: "8 GB"
-    disks: "local-disk 100 HDD"
+    memory: "16 GB"
+    disks: "local-disk 300 HDD"
   }
 
   output {
@@ -508,7 +586,7 @@ task FASTQC {
     # This task therefore generates its summary using bash only.
     String docker_image = "quay.io/biocontainers/fastqc:0.11.9--0"
     Array[File]+ input_reads
-    Int cpu = 4
+    Int cpu = 8
   }
 
   command <<<
@@ -604,8 +682,8 @@ HTML_TAIL
   runtime {
     docker: "~{docker_image}"
     cpu: cpu
-    memory: "8 GB"
-    disks: "local-disk 50 HDD"
+    memory: "16 GB"
+    disks: "local-disk 100 HDD"
     continueOnReturnCode: [0]
   }
 
@@ -694,9 +772,9 @@ HTML
 
   runtime {
     docker: "~{docker_image}"
-    cpu: 1
-    memory: "4 GB"
-    disks: "local-disk 20 HDD"
+    cpu: 2
+    memory: "8 GB"
+    disks: "local-disk 50 HDD"
   }
 
   output {
@@ -710,8 +788,8 @@ task SPECIES_TYPING {
     Array[File]+ input_reads
     File? qc_dependency
     String docker_image = "gmboowa/mycobacterium-kraken2-bracken:2026.05"
-    Int cpu = 8
-    Int memory_gb = 16
+    Int cpu = 16
+    Int memory_gb = 64
   }
 
   command <<<
@@ -1018,6 +1096,8 @@ PY
     docker: docker_image
     cpu: cpu
     memory: "~{memory_gb} GB"
+    disks: "local-disk 200 HDD"
+    timeout: "24 hours"
   }
 }
 task MYCOBACTERIA_SAMPLE_ROUTER {
@@ -1025,8 +1105,8 @@ task MYCOBACTERIA_SAMPLE_ROUTER {
     Array[File]+ input_reads
     File species_typing_tsv
     String docker_image = "python:3.11-slim"
-    Int cpu = 1
-    Int memory_gb = 2
+    Int cpu = 2
+    Int memory_gb = 8
   }
 
   command <<<
@@ -1256,8 +1336,8 @@ PY
     docker: docker_image
     cpu: cpu
     memory: "~{memory_gb} GB"
-    disks: "local-disk 20 HDD"
-    timeout: "6 hours"
+    disks: "local-disk 100 HDD"
+    timeout: "24 hours"
   }
 
   output {
@@ -1284,8 +1364,8 @@ task TB_PROFILER_AND_MTBC_FILTER {
     File? qc_dependency
     File? species_typing_tsv
     String docker_image = "staphb/tbprofiler:6.6.6"
-    Int cpu = 8
-    Int memory_gb = 16
+    Int cpu = 16
+    Int memory_gb = 64
   }
 
   command <<<
@@ -1433,6 +1513,7 @@ def normalize_sample_id(name):
     s = s.split("\\")[-1]
     s = re.sub(r"(\.fastq\.gz|\.fq\.gz|\.fastq|\.fq|\.gz)$", "", s, flags=re.IGNORECASE)
     s = re.sub(r"(_R?1_paired|_R?2_paired|_R?1|_R?2|_1_paired|_2_paired|_1|_2|\.R?1|\.R?2|\.1|\.2)$", "", s)
+    s = re.sub(r"^\d{3,}[_-](?=(?:[DES]RR|SAM[END]?|ERS|SRS|DRS|SRX|ERX|DRX|[A-Za-z]))", "", s)
     return s.strip()
 
 def normalize_drug_name(x):
@@ -1667,21 +1748,20 @@ def classify_who_2021_tb_resistance(resistant_drugs, tbprofiler_drtype):
          MDR/RR-TB plus resistance to any fluoroquinolone.
 
       3. MDR-TB:
-         Resistance to at least rifampicin and isoniazid.
+         Resistance to at least both isoniazid and rifampicin.
 
       4. RR-TB:
-         Resistance to rifampicin, with or without resistance to other drugs,
-         but without isoniazid resistance if MDR criteria are not met.
+         Rifampicin-resistant TB without detected isoniazid resistance.
 
       5. Hr-TB:
          Isoniazid-resistant and rifampicin-susceptible TB.
 
       6. Monoresistance:
          Resistance to exactly one anti-TB drug, excluding cases already classified
-         as RR-TB or Hr-TB.
+         as RR-TB, MDR-TB, Pre-XDR-TB, XDR-TB, or Hr-TB.
 
       7. Polyresistance:
-         Resistance to more than one anti-TB drug, excluding MDR-TB, RR-TB,
+         Resistance to more than one anti-TB drug, excluding MDR/RR-TB,
          Pre-XDR-TB, and XDR-TB.
 
       8. No resistance detected by TB-Profiler.
@@ -1731,7 +1811,7 @@ def classify_who_2021_tb_resistance(resistant_drugs, tbprofiler_drtype):
     if has_rif and has_inh:
         return "MDR-TB"
 
-    if has_rif:
+    if has_rif and not has_inh:
         return "RR-TB"
 
     if has_inh and not has_rif:
@@ -2256,7 +2336,7 @@ out = [
     "<div class='card'><h1>TB-Profiler drug-resistance, species and lineage report</h1>",
     "<p class='muted'>This table summarizes TB-Profiler JSON outputs, resistance-associated mutations, and Kraken2/Bracken-based MTBC sample selection for downstream core-SNP phylogenomics. TB-Profiler species and lineage are reported as annotations only and do not determine SNP-tree inclusion.</p>",
     "<p class='muted'><strong>Phylogeny selection rule:</strong> samples are selected for Snippy/core-SNP/IQ-TREE only when Kraken2/Bracken species typing supports MTBC. IQ-TREE may later exclude selected samples from the final tree if their core-SNP alignment has excessive missing, ambiguous, or gap content.</p>",
-    "<p class='muted'><strong>WHO 2021+ classification rule used:</strong> XDR-TB = MDR/RR-TB plus fluoroquinolone resistance plus bedaquiline or linezolid resistance; Pre-XDR-TB = MDR/RR-TB plus fluoroquinolone resistance; MDR-TB = rifampicin plus isoniazid resistance; RR-TB = rifampicin resistance without MDR criteria; Hr-TB = isoniazid resistance without rifampicin resistance.</p>",
+    "<p class='muted'><strong>WHO 2021+ classification rule used:</strong> XDR-TB = MDR/RR-TB plus fluoroquinolone resistance plus bedaquiline or linezolid resistance; Pre-XDR-TB = MDR/RR-TB plus fluoroquinolone resistance; RR-TB = rifampicin resistance without detected isoniazid resistance; MDR-TB = resistance to at least both isoniazid and rifampicin; MDR/RR-TB is the umbrella term for MDR-TB or RR-TB; Hr-TB = isoniazid resistance without rifampicin resistance.</p>",
     "</div>",
     "<div class='card'><table><thead><tr>"
 ]
@@ -2396,8 +2476,8 @@ PYMUTHTML_FALLBACK
     docker: "~{docker_image}"
     cpu: cpu
     memory: "~{memory_gb} GB"
-    disks: "local-disk 300 HDD"
-    timeout: "72 hours"
+    disks: "local-disk 500 HDD"
+    timeout: "120 hours"
   }
 
   output {
@@ -2426,8 +2506,8 @@ task SNIPPY_CORE_MTBC {
 
     File reference_genome
     String reference_type = "genbank"
-    Int cpu = 8
-    Int memory_gb = 16
+    Int cpu = 16
+    Int memory_gb = 64
     Int min_quality = 20
   }
 
@@ -2681,8 +2761,8 @@ PY
     docker: "~{docker_image}"
     cpu: cpu
     memory: "~{memory_gb} GB"
-    disks: "local-disk 250 HDD"
-    timeout: "72 hours"
+    disks: "local-disk 500 HDD"
+    timeout: "120 hours"
   }
 
   output {
@@ -2870,9 +2950,9 @@ PY
 
   runtime {
     docker: "~{docker_image}"
-    cpu: 1
-    memory: "4 GB"
-    disks: "local-disk 20 HDD"
+    cpu: 2
+    memory: "8 GB"
+    disks: "local-disk 50 HDD"
   }
 
   output {
@@ -2888,8 +2968,8 @@ task SNP_DISTANCE_CLUSTERING {
     File core_full_alignment
     Int likely_transmission_snp_threshold = 5
     Int possible_transmission_snp_threshold = 12
-    Int cpu = 2
-    Int memory_gb = 4
+    Int cpu = 8
+    Int memory_gb = 64
   }
 
   command <<<
@@ -3524,8 +3604,8 @@ PY
     docker: "~{docker_image}"
     cpu: cpu
     memory: "~{memory_gb} GB"
-    disks: "local-disk 50 HDD"
-    timeout: "12 hours"
+    disks: "local-disk 100 HDD"
+    timeout: "24 hours"
     continueOnReturnCode: [0]
   }
 
@@ -3544,8 +3624,8 @@ task GUBBINS_RECOMBINATION {
   input {
     String docker_image = "staphb/gubbins:3.4.1"
     File core_full_alignment
-    Int cpu = 8
-    Int memory_gb = 16
+    Int cpu = 16
+    Int memory_gb = 64
   }
 
   command <<<
@@ -3627,8 +3707,8 @@ EOF
     docker: "~{docker_image}"
     cpu: cpu
     memory: "~{memory_gb} GB"
-    disks: "local-disk 200 HDD"
-    timeout: "72 hours"
+    disks: "local-disk 400 HDD"
+    timeout: "120 hours"
   }
 
   output {
@@ -3646,8 +3726,8 @@ task IQTREE2_PHYLOGENY {
     File alignment
     String model = "GTR+G"
     Int bootstrap_replicates = 1000
-    Int cpu = 8
-    Int memory_gb = 16
+    Int cpu = 16
+    Int memory_gb = 64
     Boolean midpoint_root_tree = true
 
     # Samples with missing/gap/ambiguous content >= this threshold
@@ -4076,8 +4156,8 @@ PY
     docker: "~{docker_image}"
     cpu: cpu
     memory: "~{memory_gb} GB"
-    disks: "local-disk 100 HDD"
-    timeout: "200 hours"
+    disks: "local-disk 400 HDD"
+    timeout: "240 hours"
   }
 
   output {
@@ -4163,21 +4243,28 @@ else:
     )
 
 RESISTANCE_COLORS = {
-    "Sensitive": "#2a9d8f",
-    "Hr-TB": "#2292dc",
-    "MDR/RR-TB": "#ed641e",
-    "Pre-XDR-TB": "#ed2828",
-    "XDR-TB": "#5a189a",
-    "Monoresistance": "#fcd33d",
-    "Polyresistance": "#2292dc",
-    "Other drug resistance": "#2292dc",
-    "Resistance not determined by TB-Profiler": "#999999",
-    "Unknown": "#999999"
+    # Deliberately unique colors for every final resistance category.
+    # These colors are used consistently in the tree, legends, badges, and
+    # surveillance tables so categories are not visually collapsed.
+    "Sensitive": "#2A9D8F",                               # teal
+    "Hr-TB": "#1D9BF0",                                  # blue
+    "RR-TB": "#F59E0B",                                  # amber
+    "MDR-TB": "#E11D48",                                 # rose
+    "MDR/RR-TB": "#F97316",                              # orange
+    "Pre-XDR-TB": "#EF4444",                             # red
+    "XDR-TB": "#6D28D9",                                 # purple
+    "Monoresistance": "#FACC15",                         # yellow
+    "Polyresistance": "#06B6D4",                         # cyan
+    "Other drug resistance": "#2563EB",                   # royal blue
+    "Resistance not determined by TB-Profiler": "#94A3B8", # slate gray
+    "Unknown": "#6B7280"                                  # dark gray
 }
 
 CANONICAL_RESISTANCE_ORDER = [
     "Sensitive",
     "Hr-TB",
+    "RR-TB",
+    "MDR-TB",
     "MDR/RR-TB",
     "Pre-XDR-TB",
     "XDR-TB",
@@ -4242,6 +4329,7 @@ def normalize_tree_leaf_name(name):
     s = re.sub(r"\.R[12](_001)?$", "", s)
     s = re.sub(r"\.[12]$", "", s)
     s = re.sub(r"\s+", "_", s)
+    s = re.sub(r"^\d{3,}[_-](?=(?:[DES]RR|SAM[END]?|ERS|SRS|DRS|SRX|ERX|DRX|[A-Za-z]))", "", s)
     return s.strip()
 
 def normalize_metadata_sample_id(name):
@@ -4281,8 +4369,16 @@ def normalize_profile_label(value):
     if "pre-xdr" in low or "pre xdr" in low or "prexdr" in low:
         return "Pre-XDR-TB"
 
-    if "mdr" in low or re.search(r"\brr[- ]?tb\b", low):
+    # Preserve the umbrella only when no drug-level calls are available.
+    # Drug-level classification elsewhere converts rif-only to RR-TB and rif+INH to MDR-TB.
+    if re.search(r"\bmdr\s*/\s*rr[- ]?tb\b", low) or re.search(r"\bmdr[- ]?rr[- ]?tb\b", low):
         return "MDR/RR-TB"
+
+    if "mdr" in low:
+        return "MDR-TB"
+
+    if re.search(r"\brr[- ]?tb\b", low):
+        return "RR-TB"
 
     if re.search(r"\bhr[- ]?tb\b", low) or "isoniazid-resistant" in low:
         return "Hr-TB"
@@ -4297,6 +4393,7 @@ def normalize_profile_label(value):
         return "Other drug resistance"
 
     return "Unknown"
+
 
 def profile_color(profile):
     return RESISTANCE_COLORS.get(profile, RESISTANCE_COLORS["Unknown"])
@@ -4379,51 +4476,65 @@ def split_drug_tokens(value):
     return out
 
 def classify_resistance_from_drugs(dr_type, resistant_drugs):
-    profile = normalize_profile_label(dr_type)
+    """
+    Final tree-label resistance classifier.
 
-    if profile != "Unknown":
-        return profile, profile_color(profile)
-
+    Important fix:
+    TB-Profiler may use the umbrella string MDR/RR-TB. That umbrella must not
+    be displayed as the final isolate category when drug-level calls are
+    available. Drug-level calls are authoritative for separating:
+      - rifampicin only              -> RR-TB
+      - rifampicin + isoniazid      -> MDR-TB
+      - rifampicin + FQ             -> Pre-XDR-TB
+      - rifampicin + FQ + BDQ/LZD   -> XDR-TB
+    The raw dr_type string is used only when no parseable resistant_drugs field
+    is available.
+    """
     drugs = set(split_drug_tokens(resistant_drugs))
 
-    if not drugs:
-        return "Sensitive", RESISTANCE_COLORS["Sensitive"]
+    if drugs:
+        isoniazid = "isoniazid" in drugs
+        rifampicin = "rifampicin" in drugs
 
-    isoniazid = "isoniazid" in drugs
-    rifampicin = "rifampicin" in drugs
+        fluoroquinolones = {
+            "levofloxacin",
+            "moxifloxacin",
+            "ofloxacin",
+            "gatifloxacin",
+            "ciprofloxacin"
+        }
 
-    fluoroquinolones = {
-        "levofloxacin",
-        "moxifloxacin",
-        "ofloxacin",
-        "gatifloxacin",
-        "ciprofloxacin"
-    }
+        group_a_additional = {
+            "bedaquiline",
+            "linezolid"
+        }
 
-    group_a_additional = {
-        "bedaquiline",
-        "linezolid"
-    }
+        has_fq = bool(drugs.intersection(fluoroquinolones))
+        has_group_a_additional = bool(drugs.intersection(group_a_additional))
 
-    has_fq = bool(drugs.intersection(fluoroquinolones))
-    has_group_a_additional = bool(drugs.intersection(group_a_additional))
+        if rifampicin and has_fq and has_group_a_additional:
+            return "XDR-TB", RESISTANCE_COLORS["XDR-TB"]
 
-    if rifampicin and has_fq and has_group_a_additional:
-        return "XDR-TB", RESISTANCE_COLORS["XDR-TB"]
+        if rifampicin and has_fq:
+            return "Pre-XDR-TB", RESISTANCE_COLORS["Pre-XDR-TB"]
 
-    if rifampicin and has_fq:
-        return "Pre-XDR-TB", RESISTANCE_COLORS["Pre-XDR-TB"]
+        if rifampicin and isoniazid:
+            return "MDR-TB", RESISTANCE_COLORS["MDR-TB"]
 
-    if rifampicin:
-        return "MDR/RR-TB", RESISTANCE_COLORS["MDR/RR-TB"]
+        if rifampicin and not isoniazid:
+            return "RR-TB", RESISTANCE_COLORS["RR-TB"]
 
-    if isoniazid and not rifampicin:
-        return "Hr-TB", RESISTANCE_COLORS["Hr-TB"]
+        if isoniazid and not rifampicin:
+            return "Hr-TB", RESISTANCE_COLORS["Hr-TB"]
 
-    if len(drugs) == 1:
-        return "Monoresistance", RESISTANCE_COLORS["Monoresistance"]
+        if len(drugs) == 1:
+            return "Monoresistance", RESISTANCE_COLORS["Monoresistance"]
 
-    return "Polyresistance", RESISTANCE_COLORS["Polyresistance"]
+        return "Polyresistance", RESISTANCE_COLORS["Polyresistance"]
+
+    profile = normalize_profile_label(dr_type)
+    return profile, profile_color(profile)
+
 
 def clean_single_bootstrap_value(raw_value):
     raw = str(raw_value or "").strip().strip("'\"")
@@ -4770,7 +4881,10 @@ PY
 
   runtime {
     docker: "~{docker_image}"
-    cpu: 1
+    cpu: 4
+    memory: "16 GB"
+    disks: "local-disk 50 HDD"
+    timeout: "24 hours"
   }
 
   output {
@@ -4787,8 +4901,9 @@ task TB_SURVEILLANCE_SUMMARY_VISUALS {
     File? species_typing_tsv
     File? pairwise_snp_distance_matrix
     File? mean_depth_tsv
-    Int cpu = 1
-    Int memory_gb = 4
+    File? sample_metadata_tsv
+    Int cpu = 4
+    Int memory_gb = 64
   }
 
   command <<<
@@ -4818,9 +4933,10 @@ HTML
     species_tsv="~{if defined(species_typing_tsv) then species_typing_tsv else ""}"
     snp_matrix="~{if defined(pairwise_snp_distance_matrix) then pairwise_snp_distance_matrix else ""}"
     depth_tsv="~{if defined(mean_depth_tsv) then mean_depth_tsv else ""}"
+    user_metadata_tsv="~{if defined(sample_metadata_tsv) then select_first([sample_metadata_tsv]) else ""}"
 
     set +e
-    python3 - "$tb_tsv" "$species_tsv" "$snp_matrix" "$depth_tsv" <<'PY'
+    python3 - "$tb_tsv" "$species_tsv" "$snp_matrix" "$depth_tsv" "$user_metadata_tsv" <<'PY'
 import csv
 import html
 import re
@@ -4841,6 +4957,7 @@ tb_tsv = Path(sys.argv[1])
 species_tsv = Path(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] else None
 snp_matrix = Path(sys.argv[3]) if len(sys.argv) > 3 and sys.argv[3] else None
 depth_tsv = Path(sys.argv[4]) if len(sys.argv) > 4 and sys.argv[4] else None
+user_metadata_path = Path(sys.argv[5]) if len(sys.argv) > 5 and sys.argv[5] else None
 
 outdir = Path("surveillance_summary")
 outdir.mkdir(exist_ok=True)
@@ -4892,6 +5009,7 @@ def normalize_sample_id(name):
         "",
         s
     )
+    s = re.sub(r"^\d{3,}[_-](?=(?:[DES]RR|SAM[END]?|ERS|SRS|DRS|SRX|ERX|DRX|[A-Za-z]))", "", s)
     return s.strip()
 
 def extract_mtbc_percent(evidence):
@@ -4964,7 +5082,7 @@ def read_snp_matrix(path):
             if s and not is_reference_name(s)
         ]
 
-        samples = [raw_samples[i] for i in keep_idx]
+        samples = [normalize_sample_id(raw_samples[i]) for i in keep_idx]
         matrix = []
 
         for row in reader:
@@ -5301,6 +5419,39 @@ with (outdir / "lineage_distribution.tsv").open("w", newline="") as out:
     for lineage, count in items:
         writer.writerow([lineage, count])
 
+# Optional user-supplied sample metadata TSV.
+# Expected format: tab-delimited file with one row per sample and a sample identifier column.
+# Supported identifier column names: sample, sample_id, isolate, isolate_id, accession, run_accession, sra_accession.
+# Extra metadata columns are carried forward into tb_surveillance_metadata.tsv with a user_ prefix.
+user_metadata_extra_columns = []
+user_metadata_by_sample = {}
+if user_metadata_path and Path(user_metadata_path).exists():
+    with open(user_metadata_path, newline="") as meta_handle:
+        reader = csv.DictReader(meta_handle, delimiter="\t")
+        if reader.fieldnames:
+            sample_keys = [
+                "sample",
+                "sample_id",
+                "isolate",
+                "isolate_id",
+                "accession",
+                "run_accession",
+                "sra_accession"
+            ]
+            sample_key = next((k for k in sample_keys if k in reader.fieldnames), None)
+            if sample_key:
+                user_metadata_extra_columns = [c for c in reader.fieldnames if c != sample_key]
+                for meta_row in reader:
+                    sample_id = (meta_row.get(sample_key) or "").strip()
+                    if sample_id:
+                        user_metadata_by_sample[sample_id] = {
+                            f"user_{c}": (meta_row.get(c) or "") for c in user_metadata_extra_columns
+                        }
+
+if user_metadata_by_sample:
+    for row in metadata_rows:
+        row.update(user_metadata_by_sample.get(row.get("sample", ""), {}))
+
 with (outdir / "tb_surveillance_metadata.tsv").open("w", newline="") as out:
     fieldnames = [
         "sample",
@@ -5323,8 +5474,9 @@ with (outdir / "tb_surveillance_metadata.tsv").open("w", newline="") as out:
         "selection_basis",
         "tbprofiler_status"
     ]
+    fieldnames = fieldnames + [f"user_{c}" for c in user_metadata_extra_columns]
 
-    writer = csv.DictWriter(out, fieldnames=fieldnames, delimiter="\t")
+    writer = csv.DictWriter(out, fieldnames=fieldnames, delimiter="\t", extrasaction="ignore")
     writer.writeheader()
     writer.writerows(metadata_rows)
 
@@ -5595,8 +5747,8 @@ HTML
     docker: "~{docker_image}"
     cpu: cpu
     memory: "~{memory_gb} GB"
-    disks: "local-disk 20 HDD"
-    timeout: "4 hours"
+    disks: "local-disk 100 HDD"
+    timeout: "24 hours"
   }
 
   output {
@@ -5790,8 +5942,10 @@ task MERGE_TB_REPORTS {
     fi
 
     python3 - "$tb_tsv" "$resistance_tsv" "$species_tsv" "$ntm_tsv" "$routing_tsv" "$routing_status_txt" "$nonsyn_tsv" "$mutation_tsv" "$snp_pairs_tsv" "$snp_cluster_tsv" "$lineage_tsv" "$surveillance_metadata_tsv" "$qc_rationale_tsv" "$qc_html" "$trim_html" "$variant_html" "$iqtree_txt" "$species_html" "$ntm_html" "$iqtree_excluded_tsv" "$iqtree_included_tsv" "$iqtree_filtering_summary_txt" "$iqtree_status_txt" <<'PY'
+import base64
 import csv
 import html
+import os
 import re
 import sys
 from pathlib import Path
@@ -5812,21 +5966,28 @@ run_stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_UTC")
 )
 
 RESISTANCE_COLORS = {
-    "Sensitive": "#2a9d8f",
-    "Hr-TB": "#2292dc",
-    "MDR/RR-TB": "#ed641e",
-    "Pre-XDR-TB": "#ed2828",
-    "XDR-TB": "#5a189a",
-    "Monoresistance": "#fcd33d",
-    "Polyresistance": "#2292dc",
-    "Other drug resistance": "#2292dc",
-    "Resistance not determined by TB-Profiler": "#999999",
-    "Unknown": "#999999"
+    # Deliberately unique colors for every final resistance category.
+    # These colors are used consistently in the tree, legends, badges, and
+    # surveillance tables so categories are not visually collapsed.
+    "Sensitive": "#2A9D8F",                               # teal
+    "Hr-TB": "#1D9BF0",                                  # blue
+    "RR-TB": "#F59E0B",                                  # amber
+    "MDR-TB": "#E11D48",                                 # rose
+    "MDR/RR-TB": "#F97316",                              # orange
+    "Pre-XDR-TB": "#EF4444",                             # red
+    "XDR-TB": "#6D28D9",                                 # purple
+    "Monoresistance": "#FACC15",                         # yellow
+    "Polyresistance": "#06B6D4",                         # cyan
+    "Other drug resistance": "#2563EB",                   # royal blue
+    "Resistance not determined by TB-Profiler": "#94A3B8", # slate gray
+    "Unknown": "#6B7280"                                  # dark gray
 }
 
 RESISTANCE_ORDER = [
     "Sensitive",
     "Hr-TB",
+    "RR-TB",
+    "MDR-TB",
     "MDR/RR-TB",
     "Pre-XDR-TB",
     "XDR-TB",
@@ -5862,6 +6023,10 @@ def normalize_sample_id(name):
     s = s.split("\\")[-1]
     s = re.sub(r"(\.fastq\.gz|\.fq\.gz|\.fastq|\.fq|\.gz)$", "", s, flags=re.IGNORECASE)
     s = re.sub(r"(_R?1_paired|_R?2_paired|_R?1|_R?2|_1_paired|_2_paired|_1|_2|\.R?1|\.R?2|\.1|\.2)$", "", s)
+    # Remove synthetic leading numeric prefixes introduced by Terra/WDL set-mode,
+    # e.g. 0000_ERR17070185 -> ERR17070185. Analysis files can keep the raw ID;
+    # this function is used for report display, matching, and downloadable tables.
+    s = re.sub(r"^\d{3,}[_-](?=(?:[DES]RR|SAM[END]?|ERS|SRS|DRS|SRX|ERX|DRX|[A-Za-z]))", "", s)
     return s.strip()
 
 def is_reference_name(name):
@@ -6180,8 +6345,16 @@ def normalize_resistance_profile(value):
     if "pre-xdr" in low or "pre xdr" in low or "prexdr" in low:
         return "Pre-XDR-TB"
 
-    if "mdr" in low or re.search(r"\brr[- ]?tb\b", low):
+    # Preserve the umbrella only when no drug-level calls are available.
+    # Drug-level classification elsewhere converts rif-only to RR-TB and rif+INH to MDR-TB.
+    if re.search(r"\bmdr\s*/\s*rr[- ]?tb\b", low) or re.search(r"\bmdr[- ]?rr[- ]?tb\b", low):
         return "MDR/RR-TB"
+
+    if "mdr" in low:
+        return "MDR-TB"
+
+    if re.search(r"\brr[- ]?tb\b", low):
+        return "RR-TB"
 
     if re.search(r"\bhr[- ]?tb\b", low) or "isoniazid-resistant" in low:
         return "Hr-TB"
@@ -6197,52 +6370,61 @@ def normalize_resistance_profile(value):
 
     return "Unknown"
 
+
 def classify_resistance_fallback(dr_type, resistant_drugs):
-    profile = normalize_resistance_profile(dr_type)
+    """
+    Final report resistance classifier.
 
-    if profile != "Unknown":
-        return profile
-
+    Critical fix for RR-TB versus MDR/RR-TB:
+    The raw TB-Profiler dr_type can contain the umbrella label MDR/RR-TB.
+    That umbrella should not override the actual resistant_drugs list. When
+    drug-level calls are available, classify strictly from those drugs.
+    """
     drugs = set(split_drug_tokens(resistant_drugs))
 
-    if not drugs:
-        return "Sensitive"
+    if drugs:
+        isoniazid = "isoniazid" in drugs
+        rifampicin = "rifampicin" in drugs
 
-    isoniazid = "isoniazid" in drugs
-    rifampicin = "rifampicin" in drugs
+        fluoroquinolones = {
+            "levofloxacin",
+            "moxifloxacin",
+            "ofloxacin",
+            "gatifloxacin",
+            "ciprofloxacin"
+        }
 
-    fluoroquinolones = {
-        "levofloxacin",
-        "moxifloxacin",
-        "ofloxacin",
-        "gatifloxacin",
-        "ciprofloxacin"
-    }
+        group_a_additional = {
+            "bedaquiline",
+            "linezolid"
+        }
 
-    group_a_additional = {
-        "bedaquiline",
-        "linezolid"
-    }
+        has_fq = bool(drugs.intersection(fluoroquinolones))
+        has_group_a_additional = bool(drugs.intersection(group_a_additional))
 
-    has_fq = bool(drugs.intersection(fluoroquinolones))
-    has_group_a_additional = bool(drugs.intersection(group_a_additional))
+        if rifampicin and has_fq and has_group_a_additional:
+            return "XDR-TB"
 
-    if rifampicin and has_fq and has_group_a_additional:
-        return "XDR-TB"
+        if rifampicin and has_fq:
+            return "Pre-XDR-TB"
 
-    if rifampicin and has_fq:
-        return "Pre-XDR-TB"
+        if rifampicin and isoniazid:
+            return "MDR-TB"
 
-    if rifampicin:
-        return "MDR/RR-TB"
+        if rifampicin and not isoniazid:
+            return "RR-TB"
 
-    if isoniazid and not rifampicin:
-        return "Hr-TB"
+        if isoniazid and not rifampicin:
+            return "Hr-TB"
 
-    if len(drugs) == 1:
-        return "Monoresistance"
+        if len(drugs) == 1:
+            return "Monoresistance"
 
-    return "Polyresistance"
+        return "Polyresistance"
+
+    # Use dr_type only if no resistant_drugs could be parsed.
+    return normalize_resistance_profile(dr_type)
+
 
 def build_resistance_profile_map():
     profile_map = {}
@@ -6288,10 +6470,10 @@ def build_resistance_profile_map():
 
         status = r.get("status") or ""
 
-        profile = normalize_resistance_profile(profile_raw)
-
-        if profile == "Unknown":
-            profile = classify_resistance_fallback(profile_raw, resistant_drugs)
+        # Always classify using resistant_drugs first. This prevents the TB-Profiler
+        # umbrella label MDR/RR-TB from masking true RR-TB when resistant_drugs
+        # contains rifampicin but not isoniazid.
+        profile = classify_resistance_fallback(profile_raw, resistant_drugs)
 
         profile_map[sample_id] = {
             "resistance_profile": profile,
@@ -6407,10 +6589,10 @@ def build_qc_section():
     for r in species_rows:
         sid = r.get("Sample_ID") or r.get("sample") or ""
         if sid:
-            sample_ids.append(sid)
+            sample_ids.append(normalize_sample_id(sid))
 
     if not sample_ids:
-        sample_ids = [r.get("sample", "") for r in rows if r.get("sample")]
+        sample_ids = [normalize_sample_id(r.get("sample", "")) for r in rows if r.get("sample")]
 
     if not sample_ids:
         body = '<tr><td colspan="5">No sample-level QC records available.</td></tr>'
@@ -6420,7 +6602,7 @@ def build_qc_section():
         for s in sample_ids:
             body.append(
                 "<tr>"
-                f"<td>{safe(s)}</td>"
+                f"<td>{display_sample_id(s)}</td>"
                 "<td>Reported in MultiQC</td>"
                 "<td>See trimming report</td>"
                 '<td><span class="badge badge-green" style="background:#28A745 !important;color:white !important;font-weight:700;">PASS</span></td>'
@@ -6482,7 +6664,7 @@ def build_species_section():
 
             body.append(
                 "<tr>"
-                f"<td>{safe(sample)}</td>"
+                f"<td>{safe(display_sample_id(sample))}</td>"
                 f"<td>{species_badge(species)}</td>"
                 f"<td>{safe(evidence)}</td>"
                 "</tr>"
@@ -6536,7 +6718,7 @@ def build_ntm_species_section():
 
             body_parts.append(
                 "<tr>"
-                f"<td>{safe(sample)}</td>"
+                f"<td>{safe(display_sample_id(sample))}</td>"
                 f"<td><em>{safe(species)}</em></td>"
                 f"<td>{safe(category)}</td>"
                 f"<td>{safe(mtbc_reads)}</td>"
@@ -6607,7 +6789,7 @@ def build_tb_rows():
 
         out.append(
             "<tr>"
-            f"<td>{safe(sample)}</td>"
+            f"<td>{safe(display_sample_id(sample))}</td>"
             f"<td>{safe(species)}</td>"
             f"<td>{lineage}</td>"
             f"<td>{badge(category)}</td>"
@@ -6654,7 +6836,7 @@ This section reports mutation-level drug-resistance evidence extracted from TB-P
 """]
 
     for s in sorted(grouped):
-        out.append(f'<details><summary>Sample: {safe(s)} — {len(grouped[s])} mutation(s)</summary><table>')
+        out.append(f'<details><summary>Sample: {display_sample_id(s)} — {len(grouped[s])} mutation(s)</summary><table>')
         out.append("<thead><tr><th class='resistance'>Drug / Evidence source</th><th class='lineage'>Gene</th><th class='mutations'>Mutation</th><th class='mutations'>Change</th><th class='status'>Confidence</th><th class='status'>Evidence / associated drug(s)</th></tr></thead><tbody>")
 
         for r in grouped[s]:
@@ -6712,7 +6894,7 @@ No mutations were detected or mutation analysis was skipped.
 """]
 
     for s in sorted(grouped):
-        out.append(f'<details><summary>Sample: {safe(s)} — {len(grouped[s])} mutation(s)</summary><table>')
+        out.append(f'<details><summary>Sample: {display_sample_id(s)} — {len(grouped[s])} mutation(s)</summary><table>')
         out.append("<thead><tr><th class='lineage'>Gene</th><th class='mutations'>Effect</th><th class='mutations'>AA change</th><th class='mutations'>NT change</th><th class='status'>Product</th></tr></thead><tbody>")
 
         for r in grouped[s]:
@@ -6771,8 +6953,8 @@ Pairwise SNP distance and cluster reporting was not generated or was skipped. Th
 
         pair_body.append(
             "<tr>"
-            f"<td>{safe(sample1)}</td>"
-            f"<td>{safe(sample2)}</td>"
+            f"<td>{display_sample_id(sample1)}</td>"
+            f"<td>{display_sample_id(sample2)}</td>"
             f"<td>{safe(distance)}</td>"
             f"<td>{safe(comparable_sites)}</td>"
             f"<td>{cluster_badge(interpretation or cluster_class)}</td>"
@@ -6787,8 +6969,8 @@ Pairwise SNP distance and cluster reporting was not generated or was skipped. Th
             cluster_body.append(
                 "<tr>"
                 f"<td>{safe(r.get('cluster_id'))}</td>"
-                f"<td>{safe(r.get('sample1'))}</td>"
-                f"<td>{safe(r.get('sample2'))}</td>"
+                f"<td>{display_sample_id(r.get('sample1'))}</td>"
+                f"<td>{display_sample_id(r.get('sample2'))}</td>"
                 f"<td>{safe(r.get('snp_distance'))}</td>"
                 f"<td>{cluster_badge(r.get('interpretation'))}</td>"
                 "</tr>"
@@ -6850,6 +7032,53 @@ Pairwise SNP distances were calculated from the MTBC core genome alignment after
 </div>
 """
 
+def display_sample_id(value):
+    """Remove internal Terra shard/index prefixes from sample IDs shown in final report tables."""
+    s = clean(value)
+    return re.sub(r"^\d{3,6}[_-](?=ERR|SRR|DRR|SAM|ERS|SRS|[A-Za-z])", "", s)
+
+def svg_file_to_inline_html(path, title="embedded SVG"):
+    """Inline SVG content so Terra-downloaded final_report.html is self-contained."""
+    if not path or not os.path.exists(path) or os.path.getsize(path) == 0:
+        return ""
+    try:
+        svg = Path(path).read_text(encoding="utf-8", errors="replace").strip()
+        if "<svg" in svg.lower():
+            return f'<div class="embedded-svg" role="img" aria-label="{safe(title)}">{svg}</div>'
+    except Exception:
+        return ""
+    return ""
+
+def lineage_color(index):
+    palette = ["#2563eb", "#7c3aed", "#059669", "#dc2626", "#ea580c", "#0891b2", "#be185d", "#65a30d", "#9333ea", "#0f766e", "#b45309", "#4f46e5", "#c026d3", "#16a34a", "#e11d48"]
+    return palette[index % len(palette)]
+
+def build_lineage_bar_chart(cleaned_rows):
+    valid = []
+    for r in cleaned_rows:
+        lineage = clean(r.get("lineage") or r.get("Lineage"))
+        try:
+            count = int(float(clean(r.get("count") or r.get("Count") or "0")))
+        except Exception:
+            continue
+        if lineage and count > 0:
+            valid.append((lineage, count))
+    if not valid:
+        return ""
+    max_count = max(c for _, c in valid) or 1
+    bars = []
+    for idx, (lineage, count) in enumerate(valid):
+        pct = max(4, int(round((count / max_count) * 100)))
+        color = lineage_color(idx)
+        bars.append(
+            '<div class="lineage-bar-row">'
+            f'<div class="lineage-label">{safe(lineage)}</div>'
+            '<div class="lineage-bar-track">'
+            f'<div class="lineage-bar" style="width:{pct}%; background:{color};"><span>{safe(count)}</span></div>'
+            '</div></div>'
+        )
+    return '<div class="lineage-bar-chart">' + ''.join(bars) + '</div>'
+
 def build_lineage_distribution_section():
     lineage_svg_exists = Path("final_report/lineage_distribution.svg").exists()
 
@@ -6891,11 +7120,11 @@ def build_lineage_distribution_section():
             "</tr>"
         )
 
-    plot_html = (
-        '<div class="tree-panel"><object type="image/svg+xml" data="lineage_distribution.svg" style="width:100%;min-height:420px;"></object></div>'
-        if lineage_svg_exists else
-        '<div class="note">Lineage distribution plot was not available.</div>'
-    )
+    plot_html = build_lineage_bar_chart(cleaned)
+    if not plot_html and lineage_svg_exists:
+        plot_html = svg_file_to_inline_html("final_report/lineage_distribution.svg", "Lineage distribution")
+    if not plot_html:
+        plot_html = '<div class="note">Lineage distribution plot was not available.</div>'
 
     return f"""
 <div class="section">
@@ -6925,11 +7154,9 @@ This section summarizes TB-Profiler lineage calls where available. Samples suppo
 def build_snp_heatmap_section():
     heatmap_exists = Path("final_report/snp_distance_heatmap.svg").exists()
 
-    heatmap_html = (
-        '<div class="tree-panel"><object type="image/svg+xml" data="snp_distance_heatmap.svg" style="width:100%;min-height:560px;"></object></div>'
-        if heatmap_exists else
-        '<div class="note">SNP distance heatmap was not generated or was skipped.</div>'
-    )
+    heatmap_html = svg_file_to_inline_html("final_report/snp_distance_heatmap.svg", "SNP distance heatmap") if heatmap_exists else ""
+    if not heatmap_html:
+        heatmap_html = '<div class="note">SNP distance heatmap was not generated, was skipped, or the SVG was empty.</div>'
 
     return f"""
 <div class="section">
@@ -6964,7 +7191,7 @@ def build_qc_rationale_surveillance_metadata_section():
 
         qc_body.append(
             "<tr>"
-            f"<td>{safe(sample)}</td>"
+            f"<td>{safe(display_sample_id(sample))}</td>"
             f"<td>{safe(r.get('mean_depth'))}</td>"
             f"<td>{safe(r.get('mtbc_percent'))}</td>"
             f"<td>{selected_html}</td>"
@@ -6992,7 +7219,7 @@ def build_qc_rationale_surveillance_metadata_section():
 
         metadata_body.append(
             "<tr>"
-            f"<td>{safe(sample)}</td>"
+            f"<td>{safe(display_sample_id(sample))}</td>"
             f"<td>{safe(r.get('integrated_mtbc_status') or r.get('tbprofiler_species'))}</td>"
             f"<td>{safe(r.get('mtbc_support_source'))}</td>"
             f"<td>{safe(r.get('tbprofiler_lineage_status'))}</td>"
@@ -7180,7 +7407,7 @@ def build_iqtree_exclusion_footnote():
 
         if note.startswith(sample):
             note_remainder = note[len(sample):].lstrip()
-            notes.append(f"<li><strong>{safe(sample)}</strong> {safe(note_remainder)}</li>")
+            notes.append(f"<li><strong>{display_sample_id(sample)}</strong> {safe(note_remainder)}</li>")
         else:
             notes.append(f"<li>{safe(note)}</li>")
 
@@ -7206,8 +7433,22 @@ def build_iqtree_exclusion_footnote():
 </div>
 """
 
-tree_exists = Path("final_report/mtbc_tree.png").exists()
-tree_html = '<img class="mtbc-tree-img" src="mtbc_tree.png" alt="ETE3-rendered MTBC core-SNP phylogenetic tree">' if tree_exists else '<div class="note">Tree image was not provided or could not be copied into the final report folder.</div>'
+tree_image_path = Path("final_report/mtbc_tree.png")
+if tree_image_path.exists() and tree_image_path.stat().st_size > 0:
+    try:
+        tree_b64 = base64.b64encode(tree_image_path.read_bytes()).decode("ascii")
+        tree_html = (
+            '<img class="mtbc-tree-img" '
+            f'src="data:image/png;base64,{tree_b64}" '
+            'alt="ETE3-rendered MTBC core-SNP phylogenetic tree">'
+        )
+    except Exception as exc:
+        tree_html = (
+            '<div class="note">Tree image was generated, but could not be embedded '
+            f'into the final HTML report: {safe(str(exc))}</div>'
+        )
+else:
+    tree_html = '<div class="note">Tree image was not provided or could not be copied into the final report folder.</div>'
 
 html_out = f"""<!DOCTYPE html>
 <html lang="en">
@@ -7431,6 +7672,55 @@ th.status{{background:#087f5b;}}
   width:100%;
   box-sizing:border-box;
 }}
+
+.embedded-svg {{
+  max-width:100%;
+  overflow-x:auto;
+  margin:1rem 0;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fff;
+  padding:1rem;
+}}
+.embedded-svg svg {{
+  max-width:100%;
+  height:auto;
+}}
+.lineage-bar-chart {{
+  margin:1rem 0 1.25rem 0;
+  padding:1rem;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fff;
+}}
+.lineage-bar-row {{
+  display:grid;
+  grid-template-columns:minmax(120px,220px) 1fr;
+  gap:.75rem;
+  align-items:center;
+  margin:.55rem 0;
+}}
+.lineage-label {{
+  font-weight:700;
+  color:#111827;
+}}
+.lineage-bar-track {{
+  width:100%;
+  background:#f3f4f6;
+  border-radius:999px;
+  overflow:hidden;
+  min-height:1.8rem;
+}}
+.lineage-bar {{
+  color:#fff;
+  font-weight:700;
+  min-height:1.8rem;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding-right:.7rem;
+  border-radius:999px;
+}}
 .mtbc-tree-img{{
   display:block;
   width:auto;
@@ -7530,8 +7820,9 @@ pre{{
 <br><br>
 <strong>WHO 2021+ resistance definitions:</strong>
 <strong>Hr-TB:</strong> resistant to isoniazid and not resistant to rifampicin.
-<strong>RR-TB:</strong> resistant to rifampicin, with or without resistance to other drugs.
-<strong>MDR/RR-TB:</strong> rifampicin-resistant TB, with or without isoniazid resistance; MDR-TB is the subset resistant to at least isoniazid and rifampicin.
+<strong>RR-TB:</strong> resistant to rifampicin without detected isoniazid resistance.
+<strong>MDR-TB:</strong> resistant to at least both isoniazid and rifampicin.
+<strong>MDR/RR-TB:</strong> umbrella term for MDR-TB or RR-TB; the final report separates this into <strong>RR-TB</strong> when rifampicin is detected without isoniazid, and <strong>MDR-TB</strong> when both rifampicin and isoniazid are detected.
 <strong>Pre-XDR-TB:</strong> MDR/RR-TB that is also resistant to any fluoroquinolone.
 <strong>XDR-TB:</strong> MDR/RR-TB that is resistant to any fluoroquinolone and at least one additional Group A drug, bedaquiline or linezolid.
 </div>
@@ -7542,7 +7833,9 @@ pre{{
 <option value="">All resistance profiles</option>
 <option value="Sensitive">Sensitive only</option>
 <option value="Hr-TB">Hr-TB only</option>
-<option value="MDR/RR-TB">MDR/RR-TB only</option>
+<option value="RR-TB">RR-TB only</option>
+<option value="MDR-TB">MDR-TB only</option>
+<option value="MDR/RR-TB">MDR/RR-TB umbrella only</option>
 <option value="Pre-XDR-TB">Pre-XDR-TB only</option>
 <option value="XDR-TB">XDR-TB only</option>
 <option value="Other drug resistance">Other drug resistance only</option>
@@ -7747,8 +8040,10 @@ EOF_SVG
 
   runtime {
     docker: "~{docker_image}"
-    cpu: 1
-    memory: "4 GB"
+    cpu: 2
+    memory: "8 GB"
+    disks: "local-disk 50 HDD"
+    timeout: "12 hours"
   }
 
   output {
