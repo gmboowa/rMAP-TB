@@ -8,14 +8,14 @@ For MTBC-supported samples, rMAP-TB performs Snippy-based variant calling, mean-
 
 rMAP-TB generates integrated HTML reports & downloadable public-health surveillance outputs, including QC filtering rationale, Mycobacteria species typing summaries, NTM speciation summaries, TB-Profiler mutation-level resistance evidence, resistance-profile summaries, lineage distribution summaries, pairwise SNP distance tables, SNP cluster summaries, SNP distance heatmaps, phylogenetic tree visualizations &  surveillance metadata TSV files.
 
-## Workflow overview
+## Visual summary of the rMAP-TB workflow
 <p align="center">
   <img src="docs/assets/workflow/rMAP_TB.png"
        alt="rMAP-TB workflow"
        width="100%">
 </p>
 
-## rMAP-TB workflow overview
+## Detailed workflow logic & sample routing
 
 
 
