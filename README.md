@@ -1,12 +1,12 @@
-## rMAP-TB: Rapid Mycobacterial Analysis Pipeline for Tuberculosis & Mycobacterial Genomic Surveillance
+# rMAP-TB: Rapid Mycobacterial Analysis Pipeline for Tuberculosis and Mycobacterial Genomic Surveillance
 
 **rMAP-TB** is a reproducible, Dockerized WDL/Cromwell workflow for public-health-oriented analysis of *Mycobacterium tuberculosis* complex (MTBC) and non-MTBC Mycobacteria genomic data. It supports paired-end Illumina FASTQ inputs & integrates read preprocessing, species typing, MTBC/NTM routing, TB drug-resistance profiling, lineage interpretation, MTBC-only sample filtering, core-SNP phylogenomics & interactive surveillance reporting.
 
 The workflow first performs read trimming, sequence quality control & Kraken2/Bracken-based Mycobacteria species typing. Species typing is used to route samples before TB-Profiler execution: MTBC-supported samples proceed to TB-Profiler resistance, species & lineage profiling, while non-MTBC Mycobacteria are summarized separately through an NTM speciation branch. This allows the workflow to report the most probable NTM species and supporting evidence while excluding non-MTBC samples from MTBC-specific downstream analyses.
 
-For MTBC-supported samples, rMAP-TB performs Snippy-based variant calling, mean-depth extraction, variant summary generation, Snippy-core core-genome alignment, drug-resistance-associated non-synonymous mutation summarization, pairwise SNP distance estimation, SNP cluster interpretation, lineage distribution analysis, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny &  ETE3 phylogenetic tree visualization.
+For MTBC-supported samples, rMAP-TB performs Snippy-based variant calling, mean-depth extraction, variant summary generation, Snippy-core core-genome alignment, drug-resistance-associated non-synonymous mutation summarization, pairwise SNP distance estimation, SNP cluster interpretation, lineage distribution analysis, optional Gubbins recombination filtering, IQ-TREE2 maximum-likelihood phylogeny and ETE3 phylogenetic tree visualization.
 
-rMAP-TB generates integrated HTML reports & downloadable public-health surveillance outputs, including QC filtering rationale, Mycobacteria species typing summaries, NTM speciation summaries, TB-Profiler mutation-level resistance evidence, resistance-profile summaries, lineage distribution summaries, pairwise SNP distance tables, SNP cluster summaries, SNP distance heatmaps, phylogenetic tree visualizations &  surveillance metadata TSV files.
+rMAP-TB generates integrated HTML reports & downloadable public-health surveillance outputs, including QC filtering rationale, Mycobacteria species typing summaries, NTM speciation summaries, TB-Profiler mutation-level resistance evidence, resistance-profile summaries, lineage distribution summaries, pairwise SNP distance tables, SNP cluster summaries, SNP distance heatmaps, phylogenetic tree visualizations and surveillance metadata TSV files.
 
 ## Visual summary of the rMAP-TB workflow
 <p align="center">
@@ -16,9 +16,6 @@ rMAP-TB generates integrated HTML reports & downloadable public-health surveilla
 </p>
 
 ## Detailed workflow logic & sample routing
-
-
-
 ```text
 Paired-end FASTQ files
           ⬇
@@ -82,7 +79,7 @@ Integrated HTML report with downloadable surveillance outputs
 
 ## Key features
 
-rMAP-TB provides a reproducible, modular workflow for Mycobacteria species typing, MTBC-focused tuberculosis genomic surveillance, drug-resistance interpretation, SNP analysis & phylogenomic reporting.
+rMAP-TB provides a reproducible, modular workflow for mycobacterial species typing, MTBC-focused tuberculosis genomic surveillance, drug-resistance interpretation, SNP analysis & phylogenomic reporting.
 
 ### Input, preprocessing & quality control
 
@@ -129,9 +126,8 @@ rMAP-TB provides a reproducible, modular workflow for Mycobacteria species typin
 - Produces downloadable QC filtering rationale & surveillance metadata TSV outputs
 - Generates an integrated interactive HTML report suitable for GitHub Pages deployment
 - Uses Dockerized modular WDL/Cromwell execution for reproducible analysis
-  
-## Repository structure
 
+## Repository structure
 ```text
 rMAP-TB/
 ├── README.md
@@ -200,14 +196,13 @@ rMAP-TB/
 ## Example input JSON
 
 An example Cromwell input file is provided here:
-
 ```text
 examples/inputs.example.json
 ```
 
 The input FASTQ files must be ordered like this:
-
 ```json
+{
   "rMAP_TB.input_reads": [
     "~/sample1_1.fastq.gz",
     "~/sample1_2.fastq.gz",
@@ -215,8 +210,8 @@ The input FASTQ files must be ordered like this:
     "~/sample2_2.fastq.gz"
   ],
 
-  "rMAP_TB.adapters": "~/adapters.fa",
-  "rMAP_TB.mtbc_reference_genbank": "~/H37Rv.gb",
+  "rMAP_TB.adapters": "resources/adapters.fa",
+  "rMAP_TB.mtbc_reference_genbank": "resources/H37Rv.gb",
 
   "rMAP_TB.do_trimming": true,
   "rMAP_TB.do_quality_control": true,
@@ -251,7 +246,7 @@ The input FASTQ files must be ordered like this:
 }
 ```
 
-## Docker Images Used in the Workflow
+## Docker images used in the workflow
 
 | Workflow Component | Docker Image | Purpose |
 |---|---|---|
@@ -273,21 +268,18 @@ The input FASTQ files must be ordered like this:
 ## Running the workflow
 
 From the repository root:
-
 ```bash
-java -jar cromwell-<version>.jar run rMAP_TB.wdl --inputs ~/inputs.example.json
+java -jar cromwell-<version>.jar run rMAP_TB.wdl --inputs examples/inputs.example.json
 ```
 
 For example:
-
 ```bash
-java -jar cromwell-92.jar run rMAP_TB.wdl --inputs ~/inputs.example.json
+java -jar cromwell-92.jar run rMAP_TB.wdl --inputs examples/inputs.example.json
 ```
 
 ## Recommended local Docker resources
 
 For small to moderate MTBC datasets on a local workstation:
-
 ```text
 CPUs:   8
 Memory: 16 GB or higher
@@ -408,17 +400,13 @@ rMAP-TB produces modular intermediate outputs and a final integrated HTML survei
 - Embedded NTM speciation section when non-MTBC Mycobacteria are detected
 - GitHub Pages-compatible report outputs
 Example final report output:
-
 ```text
 integrated_report.html
-
 ```
 ## GitHub Pages report site
-
 ```text
 https://gmboowa.github.io/rMAP-TB/
 ```
-
 
 ## Interpretation guidance
 
@@ -429,30 +417,36 @@ The integrated report should be interpreted using multiple complementary layers 
 rMAP-TB generates an integrated HTML surveillance report with:
 
 #### Species typing & sample selection
+
 - Mycobacteria species typing results
 - MTBC selection & filtering rationale
 - TB-Profiler species, lineage & sub-lineage calls
 
 #### Drug-resistance interpretation
+
 - TB-Profiler drug-resistance profiles
 - Mutation-level resistance evidence, including drug, gene, mutation/change, confidence & evidence fields
 - Non-synonymous mutations in key TB drug-resistance-associated genes
 
 #### Quality control & sequencing metrics
+
 - Mean depth & sample-level QC indicators
 - Tree-inclusion status & sample filtering notes
 
 #### SNP analysis & genomic relatedness
+
 - Pairwise SNP distances between MTBC isolates
 - SNP cluster interpretation using configured SNP-distance thresholds
 - SNP distance heatmap for genomic relatedness assessment
 
 #### Phylogenomics
+
 - Core-SNP phylogenetic clustering
 - Bootstrap support values on the phylogenetic tree
 - Recombination-filtered alignment & tree, if Gubbins is enabled
 
 #### Surveillance metadata
+
 - Country
 - Year
 - Collection site
@@ -471,5 +465,4 @@ rMAP-TB: a reproducible WDL/Cromwell workflow for *Mycobacterium tuberculosis* c
 
 ## License
 
-▪ MIT License for permissive open-source reuse  
-
+MIT License.
