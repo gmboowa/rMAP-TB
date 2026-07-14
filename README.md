@@ -1,4 +1,4 @@
-# rMAP-TB: Rapid Mycobacterial Analysis Pipeline for Tuberculosis and Mycobacterial Genomic Surveillance
+# rMAP-TB: Rapid Mycobacterial Analysis Pipeline for Tuberculosis & Mycobacterial Genomic Surveillance
 
 **rMAP-TB** is a reproducible, Dockerized WDL/Cromwell workflow for public-health-oriented analysis of *Mycobacterium tuberculosis* complex (MTBC) and non-MTBC Mycobacteria genomic data. It supports paired-end Illumina FASTQ inputs & integrates read preprocessing, species typing, MTBC/NTM routing, TB drug-resistance profiling, lineage interpretation, MTBC-only sample filtering, core-SNP phylogenomics & interactive surveillance reporting.
 
