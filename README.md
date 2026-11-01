@@ -2,14 +2,13 @@
 
 **Rapid Mycobacterial Analysis Pipeline**
 
-A modular and reproducible WDL/Cromwell bioinformatics
-pipeline for mycobacterial genomic analysis, antimicrobial
-resistance prediction, phylogenomics, and molecular surveillance.
+A modular and reproducible WDL/Cromwell bioinformatics pipeline for mycobacterial genomic analysis, antimicrobial resistance prediction, phylogenomics, and molecular surveillance.
 
-## Development Status
 
-Under active development.
+## Visual Overview of the rMAP-TB Workflow
 
-## Author
+The rMAP-TB pipeline integrates sequencing quality control, Mycobacterium species identification, MTBC/NTM sample routing, tuberculosis drug-resistance prediction, core-SNP analysis, phylogenomic reconstruction, and genomic surveillance reporting within a reproducible WDL/Cromwell framework.
 
-Gerald Mboowa
+![rMAP-TB Genomic Surveillance Workflow](docs/assets/workflow/rMAP-TB-workflow.png)
+
+*Figure 1. Overview of the rMAP-TB workflow, showing paired-end sequencing inputs, preprocessing, species identification, MTBC/NTM routing, drug-resistance profiling, SNP analysis, optional phylogenomic reconstruction, and integrated reporting.*
