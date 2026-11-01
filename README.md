@@ -20,8 +20,6 @@ The rMAP-TB pipeline integrates sequencing quality control, Mycobacterium specie
 
 rMAP-TB v19 implements a conditional, Dockerized WDL/Cromwell workflow. It separates species identification and sample routing from MTBC-specific resistance analysis and phylogenomics. Non-MTBC samples remain represented in the final surveillance report without undergoing inappropriate MTBC-specific analyses.
 
-### Workflow execution and sample routing
-
 ```mermaid
 flowchart TD
     A["Paired-end Illumina FASTQ<br/>read1 and read2 arrays"]
