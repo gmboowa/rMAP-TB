@@ -77,36 +77,69 @@ Execution is containerised (Docker) & orchestrated by Cromwell, so analyses are 
 The workflow is composed of fifteen WDL tasks connected by conditional blocks. A task runs only when its module switch is enabled & its upstream inputs exist, so an unavailable analysis is skipped rather than failing the run.
 
 ```mermaid
+%%{init: {"theme": "base", "flowchart": {"curve": "basis", "nodeSpacing": 28, "rankSpacing": 40, "htmlLabels": true},
+  "themeVariables": {"fontFamily": "Inter, Segoe UI, Helvetica, Arial, sans-serif", "fontSize": "13px",
+  "primaryColor": "#f8fafc", "primaryTextColor": "#0f172a", "primaryBorderColor": "#cbd5e1",
+  "lineColor": "#64748b", "clusterBkg": "#ffffff", "clusterBorder": "#cbd5e1", "edgeLabelBackground": "#ffffff"}}}%%
 flowchart TD
-    A["Paired-end Illumina FASTQ<br/>read1 and read2 arrays"]
-    B["PREPARE_READ_PAIRS<br/>Validate and pair R1/R2 files"]
-    C{"Trimming enabled?"}
-    D["TRIMMING<br/>Trimmomatic"]
-    E["Use prepared reads"]
-    F["Analysis-ready paired FASTQ"]
-    G{"Quality control enabled?"}
-    H["FASTQC<br/>Per-sample sequence QC"]
-    I["MULTIQC<br/>Aggregated QC report"]
-    J{"Species typing enabled?"}
-    K["SPECIES_TYPING<br/>Kraken2, Mycobacterium-only database"]
-    L["MYCOBACTERIA_SAMPLE_ROUTER<br/>Species evidence and MTBC support"]
-    N["Non-MTBC / NTM / unresolved<br/>Species and routing summaries"]
-    O["Kraken2-supported MTBC samples"]
-    P{"TB-Profiler enabled and<br/>MTBC samples present?"}
-    Q["TB_PROFILER_AND_MTBC_FILTER<br/>Lineage, WHO resistance category, mutation evidence"]
-    R{"Phylogeny enabled and<br/>at least 3 MTBC samples?"}
-    S["SNIPPY_CORE_MTBC<br/>Reference-based variant calling"]
-    T["Coverage gate<br/>Mean depth and 10x breadth"]
-    U["snippy-core<br/>Optional PE/PPE mask, core alignment"]
-    V["TB_DRUG_GENE_NONSYNONYMOUS_MUTATIONS<br/>Drug-gene mutation summary"]
-    W["SNP_DISTANCE_CLUSTERING<br/>Pairwise distances and eligibility-gated clusters"]
-    X{"Gubbins enabled?"}
-    Y["GUBBINS_RECOMBINATION<br/>Recombination filtering"]
-    Z["IQTREE2_PHYLOGENY<br/>Alignment QC and ML tree inference"]
-    AA["TREE_VISUALIZATION<br/>Vector SVG tree, ETE3 raster, render status"]
-    AB["TB_SURVEILLANCE_SUMMARY_VISUALS<br/>Lineage summary, SNP heatmap, QC rationale, metadata"]
-    AC["MERGE_TB_REPORTS<br/>Integrated HTML surveillance report"]
-    AD["No MTBC-supported samples<br/>MTBC-specific analyses skipped"]
+    classDef input fill:#e2e8f0,stroke:#475569,stroke-width:1.5px,color:#0f172a
+    classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+    classDef qc fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a
+    classDef species fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+    classDef amr fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+    classDef phylo fill:#ede9fe,stroke:#6d28d9,stroke-width:1.5px,color:#3b0764
+    classDef figure fill:#e0e7ff,stroke:#4338ca,stroke-width:1.5px,color:#1e1b4b
+    classDef report fill:#0b2545,stroke:#0b2545,stroke-width:2px,color:#ffffff,font-weight:bold
+    classDef skip fill:#f1f5f9,stroke:#94a3b8,stroke-width:1.5px,stroke-dasharray:5 4,color:#475569
+
+    subgraph S1["1 · Input and read preprocessing"]
+        direction TB
+        A["Paired-end Illumina FASTQ<br/>read1 and read2 arrays"]:::input
+        B["PREPARE_READ_PAIRS<br/>Validate and pair R1/R2 files"]:::qc
+        C{"Trimming<br/>enabled?"}:::decision
+        D["TRIMMING<br/>Trimmomatic"]:::qc
+        E["Use prepared reads"]:::skip
+        F["Analysis-ready paired FASTQ"]:::input
+        G{"Quality control<br/>enabled?"}:::decision
+        H["FASTQC<br/>Per-sample sequence QC"]:::qc
+        I["MULTIQC<br/>Aggregated QC report"]:::qc
+    end
+
+    subgraph S2["2 · Species identification and MTBC/NTM routing"]
+        direction TB
+        J{"Species typing<br/>enabled?"}:::decision
+        K["SPECIES_TYPING<br/>Kraken2, Mycobacterium-only database"]:::species
+        L["MYCOBACTERIA_SAMPLE_ROUTER<br/>Species evidence and MTBC complex support"]:::species
+        N["Non-MTBC / NTM / unresolved<br/>Species and routing summaries"]:::species
+        O["Kraken2-supported MTBC samples"]:::species
+        AD["No MTBC-supported samples<br/>MTBC-specific analyses skipped"]:::skip
+    end
+
+    subgraph S3["3 · MTBC resistance and lineage profiling"]
+        direction TB
+        P{"TB-Profiler enabled and<br/>MTBC samples present?"}:::decision
+        Q["TB_PROFILER_AND_MTBC_FILTER<br/>Lineage, WHO resistance category,<br/>mutation evidence, mixed-infection flag"]:::amr
+    end
+
+    subgraph S4["4 · Core-SNP phylogenomics"]
+        direction TB
+        R{"Phylogeny enabled and<br/>at least 3 MTBC samples?"}:::decision
+        S["SNIPPY_CORE_MTBC<br/>Reference-based variant calling"]:::phylo
+        V["TB_DRUG_GENE_NONSYNONYMOUS_MUTATIONS<br/>Drug-gene mutation summary"]:::amr
+        T["Coverage gate<br/>Mean depth and 10x breadth"]:::decision
+        U["snippy-core<br/>Optional PE/PPE mask, core alignment"]:::phylo
+        W["SNP_DISTANCE_CLUSTERING<br/>Pairwise distances and<br/>eligibility-gated clusters"]:::phylo
+        X{"Gubbins<br/>enabled?"}:::decision
+        Y["GUBBINS_RECOMBINATION<br/>Recombination filtering"]:::phylo
+        Z["IQTREE2_PHYLOGENY<br/>Alignment QC and ML tree inference"]:::phylo
+    end
+
+    subgraph S5["5 · Figures and integrated report"]
+        direction TB
+        AA["TREE_VISUALIZATION<br/>Vector SVG tree, ETE3 raster, render status"]:::figure
+        AB["TB_SURVEILLANCE_SUMMARY_VISUALS<br/>Lineage summary, SNP heatmap,<br/>QC rationale, surveillance metadata"]:::figure
+        AC(["MERGE_TB_REPORTS<br/>Integrated HTML surveillance report"]):::report
+    end
 
     A --> B --> C
     C -->|Yes| D --> F
@@ -116,12 +149,12 @@ flowchart TD
     G -->|No| J
     J -->|Yes| K --> L
     J -->|No| AD
-    L --> N
-    L --> O
+    L -->|non-MTBC| N
+    L -->|MTBC| O
     O --> P
     O --> R
     P -->|Yes| Q
-    R -->|Yes| S --> T --> U
+    R -->|Yes| S --> T -->|PASS| U
     S -->|Mutation reporting enabled| V
     U -->|SNP clustering enabled| W
     U --> X
@@ -132,31 +165,22 @@ flowchart TD
     W -.->|If available| AB
     T -.->|Depth data| AB
 
-    D --> AC
-    I --> AC
-    N --> AC
-    AD --> AC
-    Q --> AC
-    V --> AC
-    W --> AC
     AB --> AC
     AA --> AC
-    T -.->|Coverage QC| AC
+    S1 -->|QC and trimming reports| AC
+    S2 -->|Species and routing tables| AC
+    S3 -->|Resistance and mutation tables| AC
+    S4 -->|SNP distances, coverage QC, tree| AC
+
+    style S1 fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    style S2 fill:#f0fdfa,stroke:#5eead4,stroke-width:1px,color:#134e4a
+    style S3 fill:#fff1f2,stroke:#fda4af,stroke-width:1px,color:#881337
+    style S4 fill:#f5f3ff,stroke:#c4b5fd,stroke-width:1px,color:#3b0764
+    style S5 fill:#eef2ff,stroke:#a5b4fc,stroke-width:1px,color:#1e1b4b
+    linkStyle default stroke:#64748b,stroke-width:1.6px
 ```
 
-### 2.3 Species identification & MTBC/NTM routing
-
-`SPECIES_TYPING` classifies trimmed reads with Kraken2 against a curated *Mycobacterium*-only database (76 RefSeq sequences, 50 species, including *M. tuberculosis* H37Rv NC_000962.3 and *M. canettii* NC_015848.1; composition and documented limitations are given in `resources/kraken2_db/README.md`). The database contains no human, non-mycobacterial bacterial, viral or fungal sequences, so reads from other sources are reported as unclassified.
-
-`MYCOBACTERIA_SAMPLE_ROUTER` combines the top species-level assignment, the read support for the MTBC complex node & the configured confidence thresholds into one routing decision per sample:
-
-1. **Recognised MTBC species.** A confident MTBC top species call is routed to the MTBC branch.
-2. **MTBC-complex majority.** A sample whose MTBC complex-node support is at least `mtbc_node_override_percent` (default 50 %) with at least 1,000 supporting reads is routed as MTBC even when a non-MTBC species is the single highest species-level assignment. Genuine NTM showed 0.01–0.39 % complex-node background in the validation panel, so a majority is not background.
-3. **Confident non-MTBC species.** A high-confidence non-MTBC *Mycobacterium* call is routed to the NTM branch unless rule 2 applies.
-4. **Unresolved species with MTBC evidence.** A species call below `min_species_call_percent` (default 5 %) is treated as unresolved; MTBC support of at least 10 % and 1,000 reads rescues such a sample for the MTBC branch.
-5. **Insufficient MTBC evidence.** All other samples are excluded from MTBC-specific analyses & retained in the species & routing reports.
-
-Within the complex, the database discriminates *M. tuberculosis* from *M. canettii* only; a call is evidence of MTBC membership, not of species within the complex. Every decision & its supporting evidence is recorded in `mycobacteria_routing_summary.tsv` & routing, not downstream task output, drives all sample counts in the final report.
+*Figure 2. Execution logic of rMAP-TB. Colour denotes the stage: grey, input & preprocessing; blue, read QC; teal, species identification & routing; red, MTBC resistance & lineage profiling; purple, core-SNP phylogenomics; indigo, figures & reporting. Amber diamonds are conditional gates; dashed grey boxes mark branches that are skipped; dashed arrows carry optional inputs that are used when present.*
 
 ### 2.4 MTBC-specific analyses
 
