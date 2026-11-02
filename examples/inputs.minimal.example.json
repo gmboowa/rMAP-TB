@@ -1,0 +1,15 @@
+{
+  "rMAP_TB.read1": [
+    "/absolute/path/fastq/SAMPLE001_R1.fastq.gz",
+    "/absolute/path/fastq/SAMPLE002_R1.fastq.gz",
+    "/absolute/path/fastq/SAMPLE003_R1.fastq.gz"
+  ],
+  "rMAP_TB.read2": [
+    "/absolute/path/fastq/SAMPLE001_R2.fastq.gz",
+    "/absolute/path/fastq/SAMPLE002_R2.fastq.gz",
+    "/absolute/path/fastq/SAMPLE003_R2.fastq.gz"
+  ],
+  "rMAP_TB.adapters": "/absolute/path/rMAP-TB/resources/adapters/adapters.fa",
+  "rMAP_TB.mtbc_reference_genbank": "/absolute/path/rMAP-TB/resources/reference/H37Rv_NC_000962.3.gb",
+  "rMAP_TB.snp_mask_bed": "/absolute/path/rMAP-TB/resources/mask/H37Rv_NC_000962.3_PE_PPE_repetitive.bed"
+}

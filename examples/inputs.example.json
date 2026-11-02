@@ -1,0 +1,49 @@
+{
+  "rMAP_TB.read1": [
+    "/absolute/path/fastq/SAMPLE001_R1.fastq.gz",
+    "/absolute/path/fastq/SAMPLE002_R1.fastq.gz",
+    "/absolute/path/fastq/SAMPLE003_R1.fastq.gz"
+  ],
+  "rMAP_TB.read2": [
+    "/absolute/path/fastq/SAMPLE001_R2.fastq.gz",
+    "/absolute/path/fastq/SAMPLE002_R2.fastq.gz",
+    "/absolute/path/fastq/SAMPLE003_R2.fastq.gz"
+  ],
+  "rMAP_TB.adapters": "/absolute/path/rMAP-TB/resources/adapters/adapters.fa",
+  "rMAP_TB.mtbc_reference_genbank": "/absolute/path/rMAP-TB/resources/reference/H37Rv_NC_000962.3.gb",
+  "rMAP_TB.snp_mask_bed": "/absolute/path/rMAP-TB/resources/mask/H37Rv_NC_000962.3_PE_PPE_repetitive.bed",
+  "rMAP_TB.sample_metadata_tsv": "/absolute/path/rMAP-TB/examples/sample_metadata.example.tsv",
+
+  "rMAP_TB.do_trimming": true,
+  "rMAP_TB.do_quality_control": true,
+  "rMAP_TB.do_species_typing": true,
+  "rMAP_TB.do_tb_profiler": true,
+  "rMAP_TB.do_phylogeny": true,
+  "rMAP_TB.use_gubbins": false,
+  "rMAP_TB.report_nonsynonymous_drug_gene_mutations": true,
+  "rMAP_TB.report_snp_distance_clusters": true,
+  "rMAP_TB.generate_surveillance_summary_visuals": true,
+  "rMAP_TB.midpoint_root_tree": true,
+  "rMAP_TB.max_bootstrap_to_label": 100,
+
+  "rMAP_TB.min_species_call_percent": 5.0,
+  "rMAP_TB.mtbc_node_override_percent": 50.0,
+  "rMAP_TB.min_mtbc_samples_for_tree": 3,
+  "rMAP_TB.min_mean_depth": 15,
+  "rMAP_TB.min_breadth_10x": 0.90,
+  "rMAP_TB.min_mapping_quality": 20,
+  "rMAP_TB.min_read_length": 50,
+  "rMAP_TB.min_comparable_sites": 2205000,
+  "rMAP_TB.likely_transmission_snp_threshold": 5,
+  "rMAP_TB.possible_transmission_snp_threshold": 12,
+  "rMAP_TB.exclude_mixed_infection_from_clustering": true,
+  "rMAP_TB.max_heterozygous_sites_for_clustering": 0,
+  "rMAP_TB.iqtree2_model": "GTR+G",
+  "rMAP_TB.iqtree2_bootstraps": 1000,
+
+  "rMAP_TB.max_cpus": 16,
+  "rMAP_TB.max_memory_gb": 64,
+  "rMAP_TB.tree_image_format": "png",
+  "rMAP_TB.species_typing_docker": "gmboowa/mycobacterium-kraken2-bracken:2026.05",
+  "rMAP_TB.tbprofiler_docker": "staphb/tbprofiler:6.6.6"
+}

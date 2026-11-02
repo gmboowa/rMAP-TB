@@ -1,0 +1,4 @@
+sample	country	collection_year	collection_site	sample_source	hiv_status	previous_tb_treatment
+SAMPLE001	Uganda	2026	Kampala	Sputum	negative	no
+SAMPLE002	Kenya	2026	Nairobi	Sputum	positive	yes
+SAMPLE003	Tanzania	2026	Dar es Salaam	Sputum	unknown	no

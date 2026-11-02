@@ -1,0 +1,18 @@
+{
+  "rMAP_TB.read1": "${this.samples.read1}",
+  "rMAP_TB.read2": "${this.samples.read2}",
+  "rMAP_TB.adapters": "gs://your-workspace-bucket/rMAP-TB/resources/adapters/adapters.fa",
+  "rMAP_TB.mtbc_reference_genbank": "gs://your-workspace-bucket/rMAP-TB/resources/reference/H37Rv_NC_000962.3.gb",
+  "rMAP_TB.snp_mask_bed": "gs://your-workspace-bucket/rMAP-TB/resources/mask/H37Rv_NC_000962.3_PE_PPE_repetitive.bed",
+  "rMAP_TB.sample_metadata_tsv": "gs://your-workspace-bucket/rMAP-TB/metadata/sample_metadata.tsv",
+  "rMAP_TB.do_trimming": true,
+  "rMAP_TB.do_quality_control": true,
+  "rMAP_TB.do_species_typing": true,
+  "rMAP_TB.do_tb_profiler": true,
+  "rMAP_TB.do_phylogeny": true,
+  "rMAP_TB.use_gubbins": false,
+  "rMAP_TB.report_snp_distance_clusters": true,
+  "rMAP_TB.generate_surveillance_summary_visuals": true,
+  "rMAP_TB.max_cpus": 16,
+  "rMAP_TB.max_memory_gb": 64
+}

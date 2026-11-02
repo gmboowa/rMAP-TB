@@ -1,0 +1,51 @@
+species	taxid	complex	n_sequences	accessions	distinct_minimizers
+Candidatus Mycobacterium methanotrophicum	2943498	-	2	NZ_CP097320.1;NZ_CP097321.1	1414646
+Candidatus Mycobacterium wuenschmannii	3027808	-	1	NZ_CP126981.1	1452484
+Mycobacterium adipatum	1682113	-	2	NZ_CP015596.1;NZ_CP015597.1	1826144
+Mycobacterium avium	1764	Mycobacterium avium complex (MAC)	1	NZ_CP018019.2	1210601
+Mycobacterium basiliense	2094119	-	1	NZ_LR130759.1	1586605
+Mycobacterium branderi	43348	-	2	NZ_AP022606.1;NZ_AP022607.1	1698445
+Mycobacterium camsae	3471837	-	2	NZ_CP070973.1;NZ_CP070974.1	1930756
+Mycobacterium canetti	78331	Mycobacterium tuberculosis complex	1	NC_015848.1	170430
+Mycobacterium conspicuum	44010	-	1	NZ_AP022613.1	1662224
+Mycobacterium cookii	1775	-	1	NZ_AP022569.1	1529686
+Mycobacterium dioxanotrophicus	482462	-	5	NZ_CP020809.1;NZ_CP020810.1;NZ_CP020811.1;NZ_CP020812.1;NZ_CP020813.1	2444441
+Mycobacterium europaeum	761804	Mycobacterium simiae complex	4	NZ_CP157315.1;NZ_CP157316.1;NZ_CP157317.1;NZ_CP157318.1	1341362
+Mycobacterium florentinum	292462	Mycobacterium simiae complex	1	NZ_AP022576.1	1521467
+Mycobacterium gallinarum	39689	-	2	NZ_AP022601.1;NZ_AP022602.1	1915134
+Mycobacterium haemophilum	29311	-	1	NZ_CP011883.2	1164749
+Mycobacterium hainanense	3289775	-	1	NZ_CP169059.1	1460216
+Mycobacterium heckeshornense	110505	-	1	NZ_AP024310.1	1388441
+Mycobacterium heidelbergense	53376	Mycobacterium simiae complex	1	NZ_AP022615.1	1124576
+Mycobacterium intracellulare	1767	Mycobacterium avium complex (MAC)	1	NC_016946.1	259290
+Mycobacterium kansasii	1768	-	2	NC_022654.1;NC_022663.1	1556250
+Mycobacterium lacus	169765	-	1	NZ_AP022581.1	1309017
+Mycobacterium lentiflavum	141349	Mycobacterium simiae complex	4	NZ_CP092423.2;NZ_CP092424.2;NZ_CP092425.2;NZ_CP092426.2	1581281
+Mycobacterium leprae	1769	-	1	NZ_CP029543.1	896303
+Mycobacterium lepromatosis	480418	-	1	NZ_CP083405.1	901586
+Mycobacterium malmoense	1780	-	1	NZ_CP080999.1	1260897
+Mycobacterium mantenii	560555	Mycobacterium avium complex (MAC)	1	NZ_AP022590.1	1569645
+Mycobacterium marinum	1781	Mycobacterium ulcerans group	2	NZ_HG917972.2;NZ_HG917973.1	262426
+Mycobacterium marseillense	701042	Mycobacterium avium complex (MAC)	2	NZ_CP023147.1;NZ_CP023148.1	1150994
+Mycobacterium noviomagense	459858	-	1	NZ_AP022583.1	1362326
+Mycobacterium novum	2492438	-	1	NZ_AP022562.1	1286690
+Mycobacterium ostraviense	2738409	-	1	NZ_CP089224.1	1386512
+Mycobacterium paragordonae	1389713	-	5	NZ_CP025546.1;NZ_CP025547.1;NZ_CP025548.1;NZ_CP025549.1;NZ_CP025550.1	1830441
+Mycobacterium paraintracellulare	1138383	Mycobacterium avium complex (MAC)	1	NC_016948.1	351398
+Mycobacterium paraseoulense	590652	-	1	NZ_AP022619.1	1150576
+Mycobacterium paraterrae	577492	-	1	NZ_CP092488.2	1602244
+Mycobacterium parmense	185642	Mycobacterium simiae complex	1	NZ_AP022614.1	1499702
+Mycobacterium pseudoshottsii	265949	Mycobacterium ulcerans group	1	NZ_AP018410.1	158991
+Mycobacterium pumcae	3073562	-	2	NZ_CP134062.1;NZ_PQ821646.1	1716237
+Mycobacterium riyadhense	486698	-	3	NZ_OY970456.1;NZ_OY970457.1;NZ_OY970458.1	1743658
+Mycobacterium saskatchewanense	220927	Mycobacterium simiae complex	1	NZ_AP022573.1	1615235
+Mycobacterium seoulense	386911	-	1	NZ_AP022582.1	975781
+Mycobacterium shigaense	722731	Mycobacterium simiae complex	1	NZ_AP018164.1	1406034
+Mycobacterium shinjukuense	398694	-	1	NZ_AP022575.1	1157365
+Mycobacterium shottsii	133549	Mycobacterium ulcerans group	1	NZ_AP022572.1	229965
+Mycobacterium simiae	1784	Mycobacterium simiae complex	1	NZ_AP022568.1	1623691
+Mycobacterium spongiae	886343	-	1	NZ_CP046600.1	1564042
+Mycobacterium stomatepiae	470076	Mycobacterium simiae complex	1	NZ_AP022587.1	1542940
+Mycobacterium tuberculosis	1773	Mycobacterium tuberculosis complex	1	NC_000962.3	161068
+Mycobacterium ulcerans	1809	Mycobacterium ulcerans group	2	NZ_AP017624.1;NZ_AP017625.1	188723
+Mycobacterium vicinigordonae	1719132	-	1	NZ_CP059165.1	1836804

@@ -1,0 +1,79 @@
+# Database options: nucleotide db, k = 35, l = 31
+# Spaced mask = 11111111111111111111111111111111110011001100110011001100110011
+# Toggle mask = 1110001101111110001010001100010000100111000110110101101000101101
+# Total taxonomy nodes: 73
+# Table size: 72802354
+# Table capacity: 104487862
+# Min clear hash value = 0
+100.00	72802354	0	R	1	root
+100.00	72802354	0	R1	131567	  cellular organisms
+100.00	72802354	0	D	2	    Bacteria
+100.00	72802354	0	K	1783272	      Bacillati
+100.00	72802354	0	P	201174	        Actinomycetota
+100.00	72802354	0	C	1760	          Actinomycetes
+100.00	72802354	0	O	85007	            Mycobacteriales
+100.00	72802354	0	F	1762	              Mycobacteriaceae
+100.00	72802354	4145292	G	1763	                Mycobacterium
+ 18.92	13776304	520016	G1	2249310	                  Mycobacterium simiae complex
+  2.23	1623691	1623691	S	1784	                    Mycobacterium simiae
+  2.22	1615235	1615235	S	220927	                    Mycobacterium saskatchewanense
+  2.17	1581281	1581281	S	141349	                    Mycobacterium lentiflavum
+  2.12	1542940	1542940	S	470076	                    Mycobacterium stomatepiae
+  2.09	1521467	1521467	S	292462	                    Mycobacterium florentinum
+  2.06	1499702	1499702	S	185642	                    Mycobacterium parmense
+  1.93	1406034	1406034	S	722731	                    Mycobacterium shigaense
+  1.84	1341362	1341362	S	761804	                    Mycobacterium europaeum
+  1.54	1124576	1124576	S	53376	                    Mycobacterium heidelbergense
+  7.86	5725238	1183310	G1	120793	                  Mycobacterium avium complex (MAC)
+  2.16	1569645	1569645	S	560555	                    Mycobacterium mantenii
+  1.66	1210601	0	S	1764	                    Mycobacterium avium
+  1.66	1210601	1210601	S1	439334	                      Mycobacterium avium subsp. hominissuis
+  1.58	1150994	1150994	S	701042	                    Mycobacterium marseillense
+  0.48	351398	351398	S	1138383	                    Mycobacterium paraintracellulare
+  0.36	259290	0	S	1767	                    Mycobacterium intracellulare
+  0.36	259290	259290	S1	487521	                      Mycobacterium intracellulare ATCC 13950
+  3.80	2769001	1928896	G1	2993898	                  Mycobacterium ulcerans group
+  0.36	262426	0	S	1781	                    Mycobacterium marinum
+  0.36	262426	262426	S1	1131442	                      Mycobacterium marinum E11
+  0.32	229965	229965	S	133549	                    Mycobacterium shottsii
+  0.26	188723	0	S	1809	                    Mycobacterium ulcerans
+  0.26	188723	188723	S1	1124626	                      Mycobacterium ulcerans subsp. shinshuense
+  0.22	158991	0	S	265949	                    Mycobacterium pseudoshottsii
+  0.22	158991	158991	S1	1136880	                      Mycobacterium pseudoshottsii JCM 15466
+  3.36	2444441	2444441	S	482462	                  Mycobacterium dioxanotrophicus
+  2.65	1930756	1930756	S	3471837	                  Mycobacterium camsae
+  2.63	1915134	1915134	S	39689	                  Mycobacterium gallinarum
+  2.52	1836804	1836804	S	1719132	                  Mycobacterium vicinigordonae
+  2.51	1830441	1830441	S	1389713	                  Mycobacterium paragordonae
+  2.51	1826144	1826144	S	1682113	                  Mycobacterium adipatum
+  2.40	1743658	1743658	S	486698	                  Mycobacterium riyadhense
+  2.36	1716237	1716237	S	3073562	                  Mycobacterium pumcae
+  2.33	1698445	1698445	S	43348	                  Mycobacterium branderi
+  2.28	1662224	1662224	S	44010	                  Mycobacterium conspicuum
+  2.20	1602244	1602244	S	577492	                  Mycobacterium paraterrae
+  2.18	1586605	1586605	S	2094119	                  Mycobacterium basiliense
+  2.15	1564042	1564042	S	886343	                  Mycobacterium spongiae
+  2.14	1556250	0	S	1768	                  Mycobacterium kansasii
+  2.14	1556250	1556250	S1	557599	                    Mycobacterium kansasii ATCC 12478
+  2.10	1529686	1529686	S	1775	                  Mycobacterium cookii
+  2.01	1460216	1460216	S	3289775	                  Mycobacterium hainanense
+  2.00	1452484	1452484	S	3027808	                  Candidatus Mycobacterium wuenschmannii
+  1.94	1414646	1414646	S	2943498	                  Candidatus Mycobacterium methanotrophicum
+  1.91	1388441	1388441	S	110505	                  Mycobacterium heckeshornense
+  1.90	1386512	1386512	S	2738409	                  Mycobacterium ostraviense
+  1.89	1375819	1044321	G1	77643	                  Mycobacterium tuberculosis complex
+  0.23	170430	0	S	78331	                    Mycobacterium canetti
+  0.23	170430	170430	S1	1048245	                      Mycobacterium canettii CIPT 140010059
+  0.22	161068	0	S	1773	                    Mycobacterium tuberculosis
+  0.22	161068	161068	S1	83332	                      Mycobacterium tuberculosis H37Rv
+  1.87	1362326	1362326	S	459858	                  Mycobacterium noviomagense
+  1.80	1309017	1309017	S	169765	                  Mycobacterium lacus
+  1.77	1286690	1286690	S	2492438	                  Mycobacterium novum
+  1.73	1260897	1260897	S	1780	                  Mycobacterium malmoense
+  1.60	1164749	0	S	29311	                  Mycobacterium haemophilum
+  1.60	1164749	1164749	S1	1202450	                    Mycobacterium haemophilum DSM 44634
+  1.59	1157365	1157365	S	398694	                  Mycobacterium shinjukuense
+  1.58	1150576	1150576	S	590652	                  Mycobacterium paraseoulense
+  1.34	975781	975781	S	386911	                  Mycobacterium seoulense
+  1.24	901586	901586	S	480418	                  Mycobacterium lepromatosis
+  1.23	896303	896303	S	1769	                  Mycobacterium leprae

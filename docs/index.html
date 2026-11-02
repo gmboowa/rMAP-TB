@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Two reviewer-selected rMAP-TB genomic surveillance reports: an 18-sample MTBC-only analysis and a 20-sample mixed MTBC/non-MTBC analysis.">
+  <meta name="theme-color" content="#0b5a54">
+  <title>rMAP-TB | Two Genomic Surveillance Demonstration Reports</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg:#f5f8fa; --surface:#ffffff; --surface-soft:#f0f6f7;
+      --ink:#102434; --muted:#587081; --line:#dfe9ed; --chip:#edf4f5;
+      --accent:#097d74; --accent-strong:#075e59; --secondary:#3158b3;
+      --shadow:0 12px 36px rgba(17,52,72,.07), 0 1px 3px rgba(17,52,72,.05);
+      --hero-ink:#fff; --success:#087f5b; --success-bg:#e9f8f1;
+      --pending:#7b6170; --pending-bg:#f7f1f4; --focus:#14b8a6;
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg:#08121e; --surface:#0e1e2b; --surface-soft:#112636;
+      --ink:#eaf4f8; --muted:#adc3d0; --line:#263a4c; --chip:#193142;
+      --accent:#45d2bd; --accent-strong:#77e3d3; --secondary:#93b4ff;
+      --shadow:0 14px 34px rgba(0,0,0,.15);
+      --success:#5be2a6; --success-bg:#163b31;
+      --pending:#e6bfd0; --pending-bg:#332532; --focus:#7ee4d8;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; min-width:320px; min-height:100vh; color:var(--ink); background:var(--bg);
+      font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    a { color:inherit; }
+    a:focus-visible,button:focus-visible,input:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+    button,input { font:inherit; }
+    .shell { max-width:1230px; padding:0 clamp(20px,4.4vw,66px); margin:auto; }
+    .hero { position:relative; overflow:hidden; color:#fff;
+      background:linear-gradient(112deg,#073d43 0%,#087b73 44%,#234c99 100%); }
+    .hero:before { content:""; position:absolute; inset:0; pointer-events:none;
+      background:radial-gradient(circle at 93% 18%,rgba(181,241,237,.2) 0%,transparent 28%),
+      radial-gradient(circle at 68% 115%,rgba(82,153,250,.22),transparent 40%); }
+    .hero:after { content:""; position:absolute; right:-135px; bottom:-195px; width:540px; height:540px;
+      opacity:.18; border:1px solid white; border-radius:50%; box-shadow:0 0 0 40px rgba(255,255,255,.11),0 0 0 92px rgba(255,255,255,.1); }
+    .hero .shell { position:relative; z-index:1; padding-top:26px; padding-bottom:102px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .brand { display:flex; align-items:center; gap:12px; font-size:16px; letter-spacing:-.02em; font-weight:800; text-decoration:none; }
+    .brand-mark { width:38px; height:38px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.35); border-radius:12px; background:rgba(255,255,255,.1); }
+    .top-actions,.hero-actions { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+    .navlink { text-decoration:none; color:#efffff; font-size:13px; font-weight:700; padding:9px 11px; border-radius:9px; }
+    .navlink:hover { background:rgba(255,255,255,.12); }
+    .theme-button { background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.35); border-radius:11px;
+      padding:9px 12px; color:white; cursor:pointer; font-weight:750; min-width:96px; }
+    .theme-button:hover { background:rgba(255,255,255,.22); }
+    .eyebrow { text-transform:uppercase; letter-spacing:.16em; font-size:11px; font-weight:850; opacity:.88; margin:0 0 14px; }
+    .hero-content { margin-top:58px; max-width:825px; }
+    h1 { font-size:clamp(36px,5.3vw,62px); line-height:1.12; letter-spacing:-.052em; margin:0; font-weight:850; }
+    .hero-intro { max-width:790px; margin:20px 0 24px; font-size:clamp(15px,1.5vw,18px); line-height:1.7; color:#ecfffd; }
+    .btn { display:inline-flex; justify-content:center; align-items:center; gap:8px; padding:12px 17px;
+      border-radius:11px; border:1px solid rgba(255,255,255,.38); text-decoration:none; font-weight:800; font-size:14px; }
+    .btn-primary { color:#06454b; background:#fff; border-color:#fff; }
+    .btn-primary:hover { background:#dffdfa; }
+    .btn-ghost { color:#fff; background:rgba(255,255,255,.1); }
+    .btn-ghost:hover { background:rgba(255,255,255,.2); }
+    .main { position:relative; margin-top:-54px; padding-bottom:54px; }
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:13px; }
+    .metric { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px 22px; box-shadow:var(--shadow); }
+    .metric-label { display:block; color:var(--muted); text-transform:uppercase; letter-spacing:.09em; font-weight:800; font-size:11px; }
+    .metric-value { display:block; font-weight:850; margin-top:5px; letter-spacing:-.035em; line-height:1.25; font-size:clamp(19px,2vw,25px); }
+    .panel { margin-top:24px; padding:clamp(20px,3vw,33px); background:var(--surface); border:1px solid var(--line); border-radius:19px; box-shadow:var(--shadow); }
+    .panel-header { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; padding-bottom:17px; border-bottom:1px solid var(--line); }
+    .panel h2 { font-size:clamp(22px,3vw,28px); letter-spacing:-.034em; margin:0; line-height:1.3; }
+    .subtitle { margin:8px 0 0; max-width:765px; color:var(--muted); font-size:14px; }
+    .count { white-space:nowrap; background:var(--chip); border:1px solid var(--line); border-radius:999px; padding:6px 12px; color:var(--muted); font-size:12px; font-weight:800; }
+    .filters { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:15px; padding-top:20px; }
+    .search-wrap { position:relative; }
+    .search-wrap svg { position:absolute; left:15px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; }
+    #search { width:100%; height:48px; padding:10px 16px 10px 46px; border-radius:12px; border:1px solid var(--line); background:var(--surface-soft); color:var(--ink); outline:0; }
+    #search:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(25,163,149,.13); }
+    #search::placeholder { color:var(--muted); opacity:1; }
+    .filter-buttons { display:flex; flex-wrap:wrap; gap:6px; }
+    .filter { border:1px solid var(--line); background:var(--surface); color:var(--muted); padding:9px 12px; border-radius:10px; cursor:pointer; font-size:12px; font-weight:800; }
+    .filter:hover { border-color:var(--accent); }
+    .filter[aria-pressed="true"] { color:#fff; background:#087d74; border-color:#087d74; }
+    .toggle-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:14px 0 4px; color:var(--muted); font-size:13px; }
+    .checkbox { display:inline-flex; align-items:center; gap:8px; user-select:none; cursor:pointer; }
+    .checkbox input { width:15px; height:15px; accent-color:var(--accent); }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; margin-top:17px; }
+    .report-card { display:flex; flex-direction:column; gap:0; position:relative; min-height:310px; background:var(--surface);
+      padding:21px; border:1px solid var(--line); border-radius:16px; color:var(--ink); text-decoration:none;
+      box-shadow:0 1px 5px rgba(24,54,77,.03); transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease; }
+    a.report-card:hover { border-color:var(--accent); box-shadow:var(--shadow); transform:translateY(-3px); }
+    .report-card.unpublished { opacity:.76; background:var(--surface-soft); }
+    .card-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .glyph { width:46px; height:46px; display:grid; place-items:center; border-radius:13px; border:1px solid var(--line);
+      background:linear-gradient(140deg,rgba(18,180,165,.16),rgba(77,118,209,.13)); font-size:23px; }
+    .status { display:inline-flex; align-items:center; gap:5px; font-size:11px; border-radius:999px; padding:5px 9px; font-weight:850; white-space:nowrap; }
+    .status.is-live { color:var(--success); background:var(--success-bg); }
+    .status.is-pending { color:var(--pending); background:var(--pending-bg); }
+    .status-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+    .report-card h3 { font-size:19px; line-height:1.33; letter-spacing:-.024em; margin:17px 0 9px; }
+    .report-card p { font-size:13px; color:var(--muted); line-height:1.67; margin:0 0 15px; flex:1; }
+    .tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .tag { border-radius:999px; background:var(--chip); color:var(--muted); border:1px solid var(--line); padding:3px 8px; font-weight:700; font-size:11px; }
+    .tag.primary-tag { background:rgba(9,125,116,.1); color:var(--accent-strong); border-color:rgba(9,125,116,.2); }
+    .card-footer { margin-top:17px; display:flex; justify-content:space-between; align-items:center; gap:10px; border-top:1px solid var(--line); padding-top:13px; color:var(--accent-strong); font-size:12px; font-weight:850; }
+    .unpublished .card-footer { color:var(--muted); }
+    .empty { text-align:center; margin:27px 0 8px; padding:27px 15px; background:var(--surface-soft); color:var(--muted); border-radius:12px; }
+    .empty[hidden] { display:none; }
+    .detail-layout { margin-top:21px; display:grid; grid-template-columns:1.25fr 1fr; gap:16px; }
+    .info { background:var(--surface); border:1px solid var(--line); border-radius:17px; padding:25px; }
+    .info h2 { margin:0 0 12px; font-size:19px; letter-spacing:-.02em; }
+    .info p { color:var(--muted); font-size:13px; margin:0; }
+    .workflow-line { display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding-top:8px; }
+    .workflow-step { display:inline-block; background:var(--chip); border:1px solid var(--line); border-radius:7px; padding:5px 7px; color:var(--ink); font-size:11px; font-weight:700; }
+    .workflow-arrow { color:var(--muted); font-size:12px; }
+    .inline-link { color:var(--accent-strong); font-weight:800; text-underline-offset:3px; }
+    .code { display:block; overflow-wrap:anywhere; margin-top:11px; background:var(--surface-soft); border:1px solid var(--line); border-radius:9px; padding:10px 12px; color:var(--ink); font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+    .note { margin-top:20px; padding:13px 15px; border-radius:10px; background:var(--surface-soft); border-left:3px solid var(--accent); color:var(--muted); font-size:12px; }
+    .footer { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; padding:26px 0 32px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+    .footer a { font-weight:800; text-decoration:none; color:var(--accent-strong); }
+    .footer a:hover { text-decoration:underline; }
+
+    .sample-summary { display:flex; flex-wrap:wrap; gap:8px; margin:1px 0 15px; font-size:12px; font-weight:750; color:var(--ink); }
+    .sample-summary span { padding:5px 9px; background:var(--surface-soft); border:1px solid var(--line); border-radius:8px; }
+    .routebar { height:12px; display:flex; overflow:hidden; border-radius:100px; background:var(--surface-soft); margin:1px 0 7px; }
+    .routebar .mtbc { background:#0f8c82; }
+    .routebar .ntm { background:#5082dd; }
+    .route-note { font-size:12px; color:var(--muted); margin-bottom:17px; }
+    [hidden] { display:none !important; }
+    @media (max-width:960px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .filters { grid-template-columns:1fr; } .filter-buttons { justify-content:flex-start; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:620px) { .topbar {align-items:flex-start;} .top-actions .navlink {display:none;} .hero-content {margin-top:47px;} .hero .shell {padding-bottom:86px;} .grid,.detail-layout {grid-template-columns:1fr;} .panel-header {flex-direction:column;} .count {align-self:flex-start;} .metrics {gap:9px;} .metric {padding:16px;} .metric-value {font-size:19px;} .toggle-row {align-items:flex-start;} }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .report-card {transition:none;} }
+  </style>
+  <script>
+    /* Apply saved or system theme before rendering to avoid light/dark flashing. */
+    (function () {
+      try {
+        var theme = localStorage.getItem('rmap-tb-theme');
+        if (!theme) theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <section class="hero">
+    <div class="shell">
+      <nav class="topbar" aria-label="Primary navigation">
+        <a class="brand" href="./" aria-label="rMAP-TB home">
+          <span class="brand-mark" aria-hidden="true">🧬</span> rMAP-TB <span style="opacity:.7;font-weight:450">/ Reports</span>
+        </a>
+        <div class="top-actions">
+          <a class="navlink" href="https://github.com/gmboowa/rMAP-TB" target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>
+          <a class="navlink" href="https://github.com/gmboowa/rMAP-TB/blob/main/README.md" target="_blank" rel="noopener noreferrer">Documentation ↗</a>
+          <button class="theme-button" id="themeToggle" type="button" aria-label="Switch color theme">☾ Dark</button>
+        </div>
+      </nav>
+      <div class="hero-content">
+        <p class="eyebrow">Mycobacterial genomics · WDL / Cromwell · Open science</p>
+        <h1>rMAP-TB genomic<br>surveillance reports</h1>
+        <p class="hero-intro">Explore two reviewer-selected demonstration reports generated by rMAP-TB: a complete MTBC-only analysis and a mixed MTBC/non-MTBC dataset illustrating species-aware routing, resistance prediction, and genomic surveillance.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#reports">Browse available reports <span aria-hidden="true">↓</span></a>
+          <a class="btn btn-ghost" href="https://github.com/gmboowa/rMAP-TB" target="_blank" rel="noopener noreferrer">Explore the workflow ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="shell main">
+    <section class="metrics" aria-label="Workflow highlights">
+      <div class="metric"><span class="metric-label">Workflow</span><strong class="metric-value">rMAP-TB</strong></div>
+      <div class="metric"><span class="metric-label">Published examples</span><strong class="metric-value">2 curated reports</strong></div>
+      <div class="metric"><span class="metric-label">MTBC-only example</span><strong class="metric-value">18 samples</strong></div>
+      <div class="metric"><span class="metric-label">Mixed example</span><strong class="metric-value">20 samples</strong></div>
+    </section>
+
+    <section class="panel" id="reports" aria-labelledby="reportsTitle">
+      <div class="panel-header">
+        <div>
+          <h2 id="reportsTitle">Available reports</h2>
+          <p class="subtitle">Two complementary datasets demonstrate MTBC-only analysis and mixed MTBC/non-MTBC species routing. Each card opens a complete self-contained interactive HTML report.</p>
+        </div>
+        <span class="count" id="reportCount">2 reports</span>
+      </div>
+      <div class="filters">
+        <div class="search-wrap">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.1"/><path d="m16 16 5 5"/></svg>
+          <input id="search" type="search" autocomplete="off" placeholder="Search reports… e.g. MTBC, NTM, resistance, SNP" aria-label="Search reports">
+        </div>
+        <div class="filter-buttons" role="group" aria-label="Report categories">
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">Both reports</button>
+          <button class="filter" type="button" data-filter="mtbc" aria-pressed="false">MTBC-only</button>
+          <button class="filter" type="button" data-filter="mixed" aria-pressed="false">Mixed mycobacteria</button>
+        </div>
+      </div>
+      <div class="toggle-row"><span>Reviewer-selected demonstrations · both reports supplied as self-contained HTML files</span></div>
+      <div id="cards" class="grid" aria-live="polite">
+        <a class="report-card" href="reports/mtbc-only/report.html" data-category="mtbc" data-search="mtbc-only mycobacterium tuberculosis complex 18 samples lineage tb-profiler resistance snippy snp iqtree phylogeny" aria-label="Open MTBC-only integrated surveillance report">
+          <div class="card-top"><span class="glyph" aria-hidden="true">🧬</span><span class="status is-live"><span class="status-dot"></span> Report 01</span></div>
+          <h3>MTBC-only genomic surveillance</h3>
+          <p>End-to-end MTBC demonstration integrating quality control, Kraken2 species routing, TB-Profiler resistance and lineage profiling, SNP distances, clustering, and maximum-likelihood phylogenomics.</p>
+          <div class="sample-summary"><span>18 samples</span><span>18 MTBC</span><span>0 non-MTBC</span></div>
+          <div class="routebar" role="img" aria-label="18 of 18 samples classified as MTBC"><span class="mtbc" style="width:100%"></span></div>
+          <div class="route-note">100% MTBC-routed</div>
+          <div class="tags"><span class="tag primary-tag">MTBC-only</span><span class="tag">Drug resistance</span><span class="tag">Core SNP</span><span class="tag">Phylogeny</span></div>
+          <div class="card-footer"><span>Open interactive report</span><span aria-hidden="true">↗</span></div>
+        </a>
+        <a class="report-card" href="reports/mixed-mycobacteria/report.html" data-category="mixed" data-search="mixed mycobacteria mtbc non-mtbc ntm 20 samples 14 mtbc 6 non-mtbc kraken2 species routing resistance lineage snp phylogeny" aria-label="Open mixed MTBC and non-MTBC integrated surveillance report">
+          <div class="card-top"><span class="glyph" aria-hidden="true">🔬</span><span class="status is-live"><span class="status-dot"></span> Report 02</span></div>
+          <h3>Mixed MTBC / non-MTBC surveillance</h3>
+          <p>Demonstrates conditional routing of MTBC-supported and non-MTBC mycobacteria, retaining non-MTBC species summaries while limiting MTBC-specific resistance and phylogenomic analyses to eligible samples.</p>
+          <div class="sample-summary"><span>20 samples</span><span>14 MTBC</span><span>6 non-MTBC</span></div>
+          <div class="routebar" role="img" aria-label="14 of 20 samples classified as MTBC, 6 as non-MTBC"><span class="mtbc" style="width:70%"></span><span class="ntm" style="width:30%"></span></div>
+          <div class="route-note">70% MTBC-routed · 30% non-MTBC</div>
+          <div class="tags"><span class="tag primary-tag">Mixed mycobacteria</span><span class="tag">Species routing</span><span class="tag">MTBC/NTM</span><span class="tag">Phylogeny</span></div>
+          <div class="card-footer"><span>Open interactive report</span><span aria-hidden="true">↗</span></div>
+        </a>
+      </div>
+      <div id="empty" class="empty" hidden>No report matches that search or filter.</div>
+      <div class="note">Reports are research and public-health surveillance outputs. Genomic drug-resistance predictions and SNP linkage categories should not be used alone for clinical decisions or direct-transmission claims. Publish only reports approved for public sharing and remove identifiable patient information.</div>
+    </section>
+
+    <section class="detail-layout" aria-label="Portal information">
+      <div class="info">
+        <h2>From sequencing data to surveillance interpretation</h2>
+        <div class="workflow-line" aria-label="Workflow modules">
+          <span class="workflow-step">FASTQ / QC</span><span class="workflow-arrow">→</span>
+          <span class="workflow-step">Kraken2</span><span class="workflow-arrow">→</span>
+          <span class="workflow-step">MTBC / NTM routing</span><span class="workflow-arrow">→</span>
+          <span class="workflow-step">TB-Profiler</span><span class="workflow-arrow">→</span>
+          <span class="workflow-step">SNP / phylogeny</span><span class="workflow-arrow">→</span>
+          <span class="workflow-step">HTML report</span>
+        </div>
+        <p style="margin-top:13px">Not all analyses run on every sample. MTBC-specific tasks are conditional; non-MTBC samples are retained in species-routing summaries.</p>
+      </div>
+      <div class="info">
+        <h2>Report files and reproducibility</h2>
+        <p>These examples are published as self-contained HTML files in two fixed locations:</p>
+        <code class="code">docs/reports/mtbc-only/report.html</code>
+        <code class="code">docs/reports/mixed-mycobacteria/report.html</code>
+        <p style="margin-top:12px">Report 1 contains 18 samples (all MTBC-routed); Report 2 contains 20 samples (14 MTBC and 6 non-MTBC). Source workflows and instructions are provided in the repository.</p>
+      </div>
+    </section>
+    <footer class="footer">
+      <span>rMAP-TB · Rapid Mycobacterial Analysis Pipeline · Genomic surveillance report portal</span>
+      <span><a href="https://github.com/gmboowa/rMAP-TB" target="_blank" rel="noopener noreferrer">Source code &amp; license ↗</a></span>
+    </footer>
+  </main>
+
+  <script>
+    'use strict';
+    // The report anchors are static, so visitors can open reports even if JavaScript is disabled.
+    const search = document.getElementById('search');
+    const cards = Array.from(document.querySelectorAll('#cards > .report-card'));
+    const empty = document.getElementById('empty');
+    const filters = Array.from(document.querySelectorAll('[data-filter]'));
+    const themeButton = document.getElementById('themeToggle');
+    let activeFilter = 'all';
+
+    function updateReports() {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      cards.forEach(card => {
+        const categoryMatch = activeFilter === 'all' || card.dataset.category === activeFilter;
+        const searchMatch = (card.textContent + ' ' + card.dataset.search).toLowerCase().includes(query);
+        card.hidden = !(categoryMatch && searchMatch);
+        if (!card.hidden) visible += 1;
+      });
+      empty.hidden = visible !== 0;
+    }
+    filters.forEach(button => button.addEventListener('click', () => {
+      activeFilter = button.dataset.filter;
+      filters.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+      updateReports();
+    }));
+    search.addEventListener('input', updateReports);
+
+    function syncTheme() {
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      themeButton.textContent = dark ? '☀ Light' : '☾ Dark';
+      themeButton.setAttribute('aria-label', 'Switch to ' + (dark ? 'light' : 'dark') + ' theme');
+      themeButton.setAttribute('aria-pressed', String(dark));
+    }
+    themeButton.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('rmap-tb-theme', next); } catch (_) {}
+      syncTheme();
+    });
+    syncTheme();
+    updateReports();
+  </script>
+</body>
+</html>
