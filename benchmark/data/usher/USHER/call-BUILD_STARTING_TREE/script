@@ -1,0 +1,86 @@
+#!/bin/bash
+
+cd /mnt/disks/cromwell_root
+tmpDir=$(mktemp -d "$PWD"/tmp.XXXXXX)
+chmod 777 "$tmpDir"
+export _JAVA_OPTIONS=-Djava.io.tmpdir="$tmpDir"
+export TMPDIR="$tmpDir"
+
+
+(
+cd /mnt/disks/cromwell_root
+ln -s /mnt/disks/cromwell_root /cromwell_root
+)
+
+
+out0a3b74e0="${tmpDir}/out.$$" err0a3b74e0="${tmpDir}/err.$$"
+mkfifo "$out0a3b74e0" "$err0a3b74e0"
+trap 'rm "$out0a3b74e0" "$err0a3b74e0"' EXIT
+touch '/mnt/disks/cromwell_root/stdout' '/mnt/disks/cromwell_root/stderr'
+tee '/mnt/disks/cromwell_root/stdout' < "$out0a3b74e0" &
+tee '/mnt/disks/cromwell_root/stderr' < "$err0a3b74e0" >&2 &
+(
+cd /mnt/disks/cromwell_root
+
+
+    set -uo pipefail
+    mkdir -p starting_tree
+    LOG=starting_tree/build.log
+    : > "${LOG}"
+
+    # usher places samples onto an existing tree, so a starting topology is
+    # required. A fast parsimony/ML tree on the same alignment is used; UShER
+    # then re-places every sample by maximum parsimony, so the starting tree
+    # affects run time far more than the final topology.
+    IQ=""
+    for cand in iqtree2 iqtree /usr/local/bin/iqtree2; do
+      if command -v "$cand" >/dev/null 2>&1; then IQ="$cand"; break; fi
+    done
+
+    if [ -n "${IQ}" ]; then
+      echo "Building starting tree with ${IQ}" >> "${LOG}"
+      "${IQ}" -s "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.aln" -m GTR -fast -nt 8 \
+        -pre starting_tree/start >> "${LOG}" 2>&1 || \
+        echo "WARNING: iqtree failed; falling back to a stub tree" >> "${LOG}"
+    else
+      echo "WARNING: no iqtree binary found in gmboowa/iqtree2-python:2.3.4" >> "${LOG}"
+    fi
+
+    if [ -s starting_tree/start.treefile ]; then
+      cp starting_tree/start.treefile starting_tree/starting_tree.nwk
+      echo "Starting tree: starting_tree/start.treefile" >> "${LOG}"
+    else
+      # Fallback: a star tree over the first two sequences. usher adds the
+      # remainder by parsimony, which is slower but always valid.
+      echo "Building a two-tip stub tree as fallback" >> "${LOG}"
+      python3 - "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.aln" >> "${LOG}" 2>&1 <<'STUB'
+import sys
+from pathlib import Path
+names = [l[1:].strip().split()[0]
+         for l in Path(sys.argv[1]).read_text(errors="replace").splitlines()
+         if l.startswith(">")]
+if len(names) < 2:
+    raise SystemExit("ERROR: cannot construct starter tree with fewer than two sequences")
+stub = names[:2]
+with open("starting_tree/starting_tree.nwk", "w") as fh:
+    fh.write("(" + ",".join(f"{n}:0.0" for n in stub) + ");\n")
+print(f"stub tree with {len(stub)} tip(s): {', '.join(stub)}")
+STUB
+    fi
+
+    [ -s starting_tree/starting_tree.nwk ] || echo "();" > starting_tree/starting_tree.nwk
+)  > "$out0a3b74e0" 2> "$err0a3b74e0"
+echo $? > /mnt/disks/cromwell_root/rc.tmp
+(
+# add a .file in every empty directory to facilitate directory delocalization on the cloud
+cd /mnt/disks/cromwell_root
+find . -type d -exec sh -c '[ -z "$(ls -A '"'"'{}'"'"')" ] && touch '"'"'{}'"'"'/.file' \;
+)
+(
+cd /mnt/disks/cromwell_root
+sync
+
+
+)
+mv /mnt/disks/cromwell_root/rc.tmp /mnt/disks/cromwell_root/rc
+

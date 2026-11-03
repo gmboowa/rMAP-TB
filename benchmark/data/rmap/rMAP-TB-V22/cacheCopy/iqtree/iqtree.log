@@ -1,0 +1,186 @@
+IQ-TREE multicore version 2.3.4 COVID-edition for Linux x86 64-bit built Apr 26 2024
+Developed by Bui Quang Minh, James Barbetti, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams, Ly Trong Nhan, Thomas Wong
+
+Host:    1bcb3f9c69c1 (AVX2, FMA3, 62 GB RAM)
+Command: /iqtree-2.3.4-Linux-intel/bin/iqtree2 -s iqtree/mtbc_core_snp_alignment.fasta -m GTR+G -B 1000 -alrt 1000 -bnni -nt 16 -pre iqtree/MTBC_core_SNP_phylogeny
+Seed:    109273 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Sun Nov  1 19:25:34 2026
+Kernel:  AVX+FMA - 16 threads (16 CPU cores detected)
+
+Reading alignment file iqtree/mtbc_core_snp_alignment.fasta ... Fasta format detected
+Reading fasta file: done in 1.43398 secs using 87.21% CPU
+Alignment most likely contains DNA/RNA sequences
+WARNING: 371183 sites contain only gaps or ambiguous characters.
+Alignment has 19 sequences with 4411532 columns, 6498 distinct patterns
+1128 parsimony-informative, 442 singleton sites, 4409962 constant sites
+                                                  Gap/Ambiguity  Composition  p-value
+Analyzing sequences: done in 0.000144005 secs using 1554% CPU
+   1  0000_CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x   10.20%    failed      0.07%
+   2  0001_MIX_ERR038255_ERR13260175_05pctA_100x          9.30%    passed      8.54%
+   3  0002_MIX_ERR038255_ERR13260175_05pctB_100x          9.73%    passed     47.63%
+   4  0003_MIX_ERR038255_ERR13260175_10pctA_100x          9.19%    passed     15.21%
+   5  0004_MIX_ERR038255_ERR13260175_10pctB_100x          9.46%    passed     98.19%
+   6  0005_MIX_ERR038255_ERR13260175_10pctB_140x          9.21%    passed     97.23%
+   7  0006_MIX_ERR038255_ERR13260175_10pctB_40x          11.64%    failed      0.00%
+   8  0007_MIX_ERR038255_ERR13260175_10pctB_70x           9.88%    passed     19.49%
+   9  0008_MIX_ERR038255_ERR13260175_20pctA_100x          8.90%    passed     28.23%
+  10  0009_MIX_ERR038255_ERR13260175_20pctB_100x          9.10%    passed     84.88%
+  11  0010_MIX_ERR038255_ERR13260175_30pctA_100x          8.84%    passed     28.12%
+  12  0011_MIX_ERR038255_ERR13260175_30pctB_100x          8.97%    passed     55.60%
+  13  0012_MIX_ERR038255_ERR13260175_50pctB_100x          8.86%    passed     31.99%
+  14  0013_MIX_ERR038266_ERR13260106_10pctB_100x          9.81%    passed     32.79%
+  15  0014_MIX_ERR038266_ERR13260106_20pctB_100x          9.08%    passed     70.85%
+  16  0015_MIX_ERR038266_ERR13260106_50pctB_100x          8.83%    passed     24.84%
+  17  0016_PURE_ERR038255_100x                           10.00%    failed      2.02%
+  18  0017_PURE_ERR13260175_100x                          9.31%    passed      8.54%
+  19  Reference                                           8.41%    passed     17.22%
+****  TOTAL                                               9.41%  3 sequences failed composition chi2 test (p-value<5%; df=3)
+NOTE: minimal branch length is reduced to 0.000000022668 for long alignment
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.003 seconds
+Generating 1000 samples for ultrafast bootstrap (seed: 109273)...
+
+NOTE: 40 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -5425880.520
+2. Current log-likelihood: -5425570.719
+3. Current log-likelihood: -5425476.712
+4. Current log-likelihood: -5425417.266
+5. Current log-likelihood: -5425407.398
+6. Current log-likelihood: -5425404.096
+7. Current log-likelihood: -5425401.436
+8. Current log-likelihood: -5425399.566
+9. Current log-likelihood: -5425396.457
+10. Current log-likelihood: -5425387.793
+11. Current log-likelihood: -5425385.119
+12. Current log-likelihood: -5425384.514
+13. Current log-likelihood: -5425384.285
+14. Current log-likelihood: -5425384.003
+15. Current log-likelihood: -5425383.838
+Optimal log-likelihood: -5425383.756
+Rate parameters:  A-C: 0.99088  A-G: 2.64391  A-T: 0.17772  C-G: 0.65880  C-T: 2.71305  G-T: 1.00000
+Base frequencies:  A: 0.174  C: 0.327  G: 0.326  T: 0.174
+Gamma shape alpha: 0.020
+Parameters optimization took 15 rounds (0.353 sec)
+Wrote distance file to... 
+Computing ML distances based on estimated model parameters...
+Calculating distance matrix: done in 0.00232387 secs using 1611% CPU
+Computing ML distances took 0.002719 sec (of wall-clock time) 0.042926 sec (of CPU time)
+Setting up auxiliary I and S matrices: done in 7.20024e-05 secs using 1369% CPU
+Computing RapidNJ tree took 0.000192 sec (of wall-clock time) 0.002545 sec (of CPU time)
+Log-likelihood of RapidNJ tree: -5427316.914
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 0.281 second
+Computing log-likelihood of 98 initial trees ... 0.349 seconds
+Current best score: -5425383.756
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -5425380.557
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 7: -5425379.469
+Iteration 10 / LogL: -5425380.751 / Time: 0h:0m:3s
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 11: -5425378.171
+Iteration 20 / LogL: -5425384.645 / Time: 0h:0m:5s
+Finish initializing candidate tree set (11)
+Current best tree score: -5425378.171 / CPU time: 4.623
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 30 / LogL: -5425382.333 / Time: 0h:0m:8s (0h:0m:22s left)
+UPDATE BEST LOG-LIKELIHOOD: -5425378.170
+UPDATE BEST LOG-LIKELIHOOD: -5425378.169
+Iteration 40 / LogL: -5425378.169 / Time: 0h:0m:9s (0h:0m:17s left)
+Iteration 50 / LogL: -5425378.389 / Time: 0h:0m:11s (0h:0m:14s left)
+Estimate model parameters (epsilon = 0.100)
+UPDATE BEST LOG-LIKELIHOOD: -5425378.103
+Iteration 60 / LogL: -5425380.942 / Time: 0h:0m:13s (0h:0m:11s left)
+Iteration 70 / LogL: -5425378.366 / Time: 0h:0m:14s (0h:0m:8s left)
+Iteration 80 / LogL: -5425379.626 / Time: 0h:0m:16s (0h:0m:6s left)
+Iteration 90 / LogL: -5425378.717 / Time: 0h:0m:18s (0h:0m:4s left)
+Iteration 100 / LogL: -5425378.734 / Time: 0h:0m:20s (0h:0m:2s left)
+Iteration 110 / LogL: -5425378.431 / Time: 0h:0m:22s (0h:0m:0s left)
+Refining ufboot trees with NNI 1 branch...
+100 samples done
+WARNING: NNI search needs unusual large number of steps (19) to converge!
+200 samples done
+300 samples done
+400 samples done
+500 samples done
+600 samples done
+700 samples done
+800 samples done
+900 samples done
+1000 samples done
+Total 931 ufboot trees refined
+TREE SEARCH COMPLETED AFTER 112 ITERATIONS / Time: 0h:10m:57s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -5425378.103
+2. Current log-likelihood: -5425378.062
+3. Current log-likelihood: -5425378.023
+4. Current log-likelihood: -5425377.986
+5. Current log-likelihood: -5425377.953
+6. Current log-likelihood: -5425377.922
+7. Current log-likelihood: -5425377.893
+8. Current log-likelihood: -5425377.867
+9. Current log-likelihood: -5425377.842
+10. Current log-likelihood: -5425377.820
+11. Current log-likelihood: -5425377.799
+12. Current log-likelihood: -5425377.779
+13. Current log-likelihood: -5425377.761
+14. Current log-likelihood: -5425377.745
+15. Current log-likelihood: -5425377.729
+16. Current log-likelihood: -5425377.715
+17. Current log-likelihood: -5425377.702
+18. Current log-likelihood: -5425377.690
+19. Current log-likelihood: -5425377.678
+20. Current log-likelihood: -5425377.668
+Optimal log-likelihood: -5425377.658
+Rate parameters:  A-C: 1.04581  A-G: 2.80687  A-T: 0.19268  C-G: 0.69332  C-T: 2.87987  G-T: 1.00000
+Base frequencies:  A: 0.174  C: 0.327  G: 0.326  T: 0.174
+Gamma shape alpha: 0.020
+Parameters optimization took 20 rounds (0.455 sec)
+BEST SCORE FOUND : -5425377.658
+
+Testing tree branches by SH-like aLRT with 1000 replicates...
+0.929 sec.
+Creating bootstrap support values...
+Split supports printed to NEXUS file iqtree/MTBC_core_SNP_phylogeny.splits.nex
+Total tree length: 0.000
+
+Total number of iterations: 112
+CPU time used for tree search: 4100.758 sec (1h:8m:20s)
+Wall-clock time used for tree search: 655.992 sec (0h:10m:55s)
+Total CPU time used: 4135.765 sec (1h:8m:55s)
+Total wall-clock time used: 658.730 sec (0h:10m:58s)
+UFBoot trees printed to iqtree/MTBC_core_SNP_phylogeny.ufboot
+
+Computing bootstrap consensus tree...
+Reading input file iqtree/MTBC_core_SNP_phylogeny.splits.nex...
+19 taxa and 110 splits.
+Consensus tree written to iqtree/MTBC_core_SNP_phylogeny.contree
+Reading input trees file iqtree/MTBC_core_SNP_phylogeny.contree
+Log-likelihood of consensus tree: -5425379.153
+
+Analysis results written to: 
+  IQ-TREE report:                iqtree/MTBC_core_SNP_phylogeny.iqtree
+  Maximum-likelihood tree:       iqtree/MTBC_core_SNP_phylogeny.treefile
+  Likelihood distances:          iqtree/MTBC_core_SNP_phylogeny.mldist
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          iqtree/MTBC_core_SNP_phylogeny.splits.nex
+  Consensus tree:                iqtree/MTBC_core_SNP_phylogeny.contree
+  UFBoot trees:                  iqtree/MTBC_core_SNP_phylogeny.ufboot
+  Screen log file:               iqtree/MTBC_core_SNP_phylogeny.log
+
+Date and Time: Sun Nov  1 19:36:44 2026

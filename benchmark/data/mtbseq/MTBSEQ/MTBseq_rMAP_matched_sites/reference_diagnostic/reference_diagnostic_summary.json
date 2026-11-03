@@ -1,0 +1,35 @@
+{
+  "rmap_fasta": "/Users/gmboowa/Downloads/MTBseq_rMAP_matched_sites/core.full.aln",
+  "mtbseq_joint_amended_zip": "/Users/gmboowa/Desktop/BENCHMARK/MTBSEQ/MTBseq_rMAP_TB_Benchmark_20261103/baseline_original_outputs/MTBseq_Extra_Audit.zip",
+  "rmap_reference_name": "Reference",
+  "alignment_length": 4411532,
+  "n_fasta_sequences": 19,
+  "n_matching_sample_ids": 18,
+  "checked_noninsertion_canonical_reference_positions": 2864,
+  "reference_comparison": {
+    "MATCH": 2356,
+    "MASKED_OR_GAP": 508
+  },
+  "rmap_reference_character_counts_at_checked_positions": {
+    "C": 736,
+    "A": 453,
+    "T": 435,
+    "G": 732,
+    "X": 508
+  },
+  "final_filtered_table_reference_comparison": {
+    "MATCH": 234,
+    "MASKED_OR_GAP": 3
+  },
+  "positions_skipped_with_nonzero_insertion_index": 284,
+  "positions_skipped_with_noncanonical_mtbseq_ref": 0,
+  "positions_skipped_out_of_alignment_bounds": 0,
+  "reference_matches_with_nearby_offsets_DONT_USE_TO_CORRECT": {
+    "0": 2356,
+    "1": 602,
+    "-2": 550,
+    "2": 594,
+    "-1": 549
+  },
+  "conclusion": "Diagnostic only. Do not compute matched-site distances until coordinate assumptions are confirmed."
+}

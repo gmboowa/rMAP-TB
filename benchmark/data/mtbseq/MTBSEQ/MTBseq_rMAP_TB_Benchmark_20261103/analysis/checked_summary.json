@@ -1,0 +1,25 @@
+{
+  "n_samples": 18,
+  "n_different_lineage_mixtures_labeled_MIX": 15,
+  "n_same_lineage_mixture_controls": 1,
+  "n_pure_strain_controls": 2,
+  "candidate_joint_positions": 3148,
+  "all18_unambiguous_positions": 291,
+  "phylo_positions": 246,
+  "final_window12_positions": 237,
+  "final_informative_positions": 4,
+  "original_mtbseq_distance_values": {
+    "0": 108,
+    "4": 45
+  },
+  "mtbseq_pairwise_matrix_reconstructed_pairs": 153,
+  "pure_pair_candidate_positions_callable_both": 2201,
+  "pure_pair_candidate_different_positions": 1278,
+  "pure_pair_candidate_differences_surviving_u95": 0,
+  "rmap_pure_controls_full_core_snp_distance": 1148,
+  "rmap_pure_controls_comparable_sites": 3944469,
+  "rmap_tbprofiler_labeled_mix_flagged": 15,
+  "rmap_tbprofiler_pure_controls_without_flag": 2,
+  "different_lineage_mixtures_with_multilineage_lineage_group": 14,
+  "source_parents_12_mixture_med_minor_allele_proxy_mae": 0.976
+}

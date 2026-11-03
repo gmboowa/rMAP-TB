@@ -1,0 +1,19 @@
+Date	SampleID	LibraryID	FullID	Homolka species	Homolka lineage	Homolka group	Quality	Coll lineage (branch)	Coll lineage_name (branch)	Coll quality (branch)	Coll lineage (easy)	Coll lineage_name (easy)	Coll quality (easy)	Beijing lineage (easy)	Beijing quality (easy)
+'2026-11-02	'CTRL-SAMELIN-ERR038254-ERR038255-50pct-100x	'lib1	'CTRL-SAMELIN-ERR038254-ERR038255-50pct-100x_lib1	'M. tuberculosis	'unknown	'Clade 1	'good	'4.8	'mainly T	'good	'4.8	'mainly T	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-05pctA-100x	'lib1	'MIX-ERR038255-ERR13260175-05pctA-100x_lib1	'M. tuberculosis	'2	'Beijing	'good	'2.2.1	'Beijing	'good	'2.2.1	'Beijing	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-05pctB-100x	'lib1	'MIX-ERR038255-ERR13260175-05pctB-100x_lib1	'M. tuberculosis	'unknown	'Clade 1	'good	'4.8	'mainly T	'good	'4.8	'mainly T	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-10pctA-100x	'lib1	'MIX-ERR038255-ERR13260175-10pctA-100x_lib1	'M. tuberculosis	'2	'Beijing	'good	'2.2.1	'Beijing	'good	'2.2.1	'Beijing	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-10pctB-100x	'lib1	'MIX-ERR038255-ERR13260175-10pctB-100x_lib1	'M. tuberculosis	'unknown	'Clade 1	'good	'4.8	'mainly T	'good	'4.8	'mainly T	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-10pctB-140x	'lib1	'MIX-ERR038255-ERR13260175-10pctB-140x_lib1	'M. tuberculosis	'unknown	'Clade 1	'good	'4.8	'mainly T	'good	'4.8	'mainly T	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-10pctB-40x	'lib1	'MIX-ERR038255-ERR13260175-10pctB-40x_lib1	'M. tuberculosis	'unknown	'Clade 1	'good	'4.8	'mainly T	'good	'4.8	'mainly T	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-10pctB-70x	'lib1	'MIX-ERR038255-ERR13260175-10pctB-70x_lib1	'M. tuberculosis	'unknown	'Clade 1	'good	'4.8	'mainly T	'good	'4.8	'mainly T	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-20pctA-100x	'lib1	'MIX-ERR038255-ERR13260175-20pctA-100x_lib1	'M. tuberculosis	'2	'Beijing	'bad	'2.2.1	'Beijing	'bad	'2.2.1	'Beijing	'bad	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-20pctB-100x	'lib1	'MIX-ERR038255-ERR13260175-20pctB-100x_lib1	'M. tuberculosis	'unknown	'Clade 1	'good	'4.8	'mainly T	'bad	'4.8	'mainly T	'bad	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-30pctA-100x	'lib1	'MIX-ERR038255-ERR13260175-30pctA-100x_lib1	'M. tuberculosis	'2	'Beijing	'bad	'2.2.1	'Beijing	'bad	'2.2.1	'Beijing	'bad	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-30pctB-100x	'lib1	'MIX-ERR038255-ERR13260175-30pctB-100x_lib1	'M. tuberculosis	'unknown	'Clade 1	'bad	'4.8	'mainly T	'bad	'4.8	'mainly T	'bad	'unknown	'good
+'2026-11-02	'MIX-ERR038255-ERR13260175-50pctB-100x	'lib1	'MIX-ERR038255-ERR13260175-50pctB-100x_lib1	'M. tuberculosis	'unknown	'Clade 1	'bad	'unknown	'unkown	'bad	'4.8	'mainly T	'bad	'unknown	'good
+'2026-11-02	'MIX-ERR038266-ERR13260106-10pctB-100x	'lib1	'MIX-ERR038266-ERR13260106-10pctB-100x_lib1	'M. tuberculosis	'3	'Delhi-CAS	'good	'3.1.1	'Delhi-CAS	'good	'3.1.1	'Delhi-CAS	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038266-ERR13260106-20pctB-100x	'lib1	'MIX-ERR038266-ERR13260106-20pctB-100x_lib1	'M. tuberculosis	'3	'Delhi-CAS	'bad	'3.1.1	'Delhi-CAS	'good	'3.1.1	'Delhi-CAS	'good	'unknown	'good
+'2026-11-02	'MIX-ERR038266-ERR13260106-50pctB-100x	'lib1	'MIX-ERR038266-ERR13260106-50pctB-100x_lib1	'M. tuberculosis	'4.1.2.1	'Haarlem	'bad	'unknown	'unkown	'bad	'4.1	'Euro-American	'bad	'unknown	'good
+'2026-11-02	'PURE-ERR038255-100x	'lib1	'PURE-ERR038255-100x_lib1	'M. tuberculosis	'unknown	'Clade 1	'good	'4.8	'mainly T	'good	'4.8	'mainly T	'good	'unknown	'good
+'2026-11-02	'PURE-ERR13260175-100x	'lib1	'PURE-ERR13260175-100x_lib1	'M. tuberculosis	'2	'Beijing	'good	'2.2.1	'Beijing	'good	'2.2.1	'Beijing	'good	'unknown	'good

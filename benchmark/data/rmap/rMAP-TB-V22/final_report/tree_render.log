@@ -1,0 +1,15 @@
+TREE_VISUALIZATION started
+Copied IQ-TREE exclusion file: /mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-IQTREE2_PHYLOGENY/cacheCopy/iqtree/excluded_from_iqtree.tsv
+SVG tree rendered: tree_visualization/phylogenetic_tree.svg (18 tips)
+TREE_VISUALIZATION ETE3 render completed successfully
+Input tree: /mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-IQTREE2_PHYLOGENY/cacheCopy/iqtree/final.treefile
+Output image: tree_visualization/phylogenetic_tree.png
+Leaves rendered: 18
+Removed reference tips: Reference
+Resistance profile source: resistance_profile_summary_tsv
+Canonical resistance profiles loaded: 18
+Metadata rows loaded after normalization: 18
+Tree leaves matched to metadata after normalization: 18
+IQ-TREE-excluded samples available for reporting: 0
+All rendered tree leaves matched metadata after normalization.
+Render status: svg_status=success, png_status=success, png_renderer=ete3, tips_rendered=18, midpoint_rooted=true, reference_tips_removed=1

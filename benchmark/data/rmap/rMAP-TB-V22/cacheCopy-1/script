@@ -1,0 +1,842 @@
+#!/bin/bash
+
+cd /mnt/disks/cromwell_root
+tmpDir=$(mktemp -d "$PWD"/tmp.XXXXXX)
+chmod 777 "$tmpDir"
+export _JAVA_OPTIONS=-Djava.io.tmpdir="$tmpDir"
+export TMPDIR="$tmpDir"
+
+
+(
+cd /mnt/disks/cromwell_root
+ln -s /mnt/disks/cromwell_root /cromwell_root
+)
+
+
+out8be74a1b="${tmpDir}/out.$$" err8be74a1b="${tmpDir}/err.$$"
+mkfifo "$out8be74a1b" "$err8be74a1b"
+trap 'rm "$out8be74a1b" "$err8be74a1b"' EXIT
+touch '/mnt/disks/cromwell_root/stdout' '/mnt/disks/cromwell_root/stderr'
+tee '/mnt/disks/cromwell_root/stdout' < "$out8be74a1b" &
+tee '/mnt/disks/cromwell_root/stderr' < "$err8be74a1b" >&2 &
+(
+cd /mnt/disks/cromwell_root
+
+
+    set -uo pipefail
+
+    mkdir -p snp_distance logs
+
+    cp "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/026a83b0-c2a0-4daa-87a2-d29e7031e200/rMAP_TB/8be74a1b-3ce0-4761-9659-413332ebd1cb/call-SNIPPY_CORE_MTBC/snippy_core/core.full.aln" snp_distance/core.full.aln
+    if [ -n "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/026a83b0-c2a0-4daa-87a2-d29e7031e200/rMAP_TB/8be74a1b-3ce0-4761-9659-413332ebd1cb/call-TB_PROFILER_AND_MTBC_FILTER/tbprofiler_summary.tsv" ]; then
+      cp "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/026a83b0-c2a0-4daa-87a2-d29e7031e200/rMAP_TB/8be74a1b-3ce0-4761-9659-413332ebd1cb/call-TB_PROFILER_AND_MTBC_FILTER/tbprofiler_summary.tsv" snp_distance/tbprofiler_summary.tsv
+    fi
+
+    echo "Running fail-safe pure-Python SNP distance clustering on core.full.aln" > logs/snp_distance.command.log
+    echo "Reference/non-sample sequences are excluded from sample-level SNP distance and cluster reporting." >> logs/snp_distance.command.log
+
+    echo "Detecting system architecture and CPU features..." >> logs/snp_distance.command.log
+
+    ARCH="$(uname -m)"
+    echo "Architecture detected: ${ARCH}" >> logs/snp_distance.command.log
+
+    if command -v lscpu >/dev/null 2>&1; then
+      CPU_FLAGS="$(lscpu | grep -i 'Flags' || true)"
+    else
+      CPU_FLAGS="$(cat /proc/cpuinfo | grep -m1 -i 'flags' || true)"
+    fi
+
+    echo "CPU flags detected:" >> logs/snp_distance.command.log
+    echo "${CPU_FLAGS}" >> logs/snp_distance.command.log
+
+    apt-get update >/dev/null 2>&1 || true
+    apt-get install -y --no-install-recommends \
+      python3-pip \
+      python3-dev \
+      build-essential \
+      >/dev/null 2>&1 || true
+
+    python3 -m pip install --upgrade pip setuptools wheel >/dev/null 2>&1 || true
+
+    if [ "${ARCH}" = "x86_64" ]; then
+      echo "Using Intel/x86_64-safe Python package installation..." >> logs/snp_distance.command.log
+
+      # Helps avoid illegal-instruction crashes from optimized BLAS/NumPy builds
+      export OPENBLAS_CORETYPE=Haswell
+      export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=0
+
+      python3 -m pip install --quiet \
+        "numpy<2.0" \
+        "pandas<2.2" \
+        "matplotlib<3.9" \
+        "seaborn<0.13" \
+        || {
+          echo "WARNING: Standard x86_64 pip install failed. Retrying with no binary for numpy..." >> logs/snp_distance.command.log
+          python3 -m pip install --quiet --no-binary=numpy "numpy<2.0" || true
+          python3 -m pip install --quiet "pandas<2.2" "matplotlib<3.9" "seaborn<0.13" || true
+        }
+
+    elif [ "${ARCH}" = "aarch64" ] || [ "${ARCH}" = "arm64" ]; then
+      echo "Using ARM64/aarch64-safe Python package installation..." >> logs/snp_distance.command.log
+
+      python3 -m pip install --quiet \
+        "numpy<2.0" \
+        "pandas<2.2" \
+        "matplotlib<3.9" \
+        "seaborn<0.13" \
+        || {
+          echo "WARNING: ARM64 pip install failed. Retrying with source-compatible installation..." >> logs/snp_distance.command.log
+          python3 -m pip install --quiet --no-binary=numpy "numpy<2.0" || true
+          python3 -m pip install --quiet "pandas<2.2" "matplotlib<3.9" "seaborn<0.13" || true
+        }
+
+    else
+      echo "Unknown architecture: ${ARCH}. Using conservative package installation..." >> logs/snp_distance.command.log
+
+      python3 -m pip install --quiet \
+        "numpy<2.0" \
+        "pandas<2.2" \
+        "matplotlib<3.9" \
+        "seaborn<0.13" \
+        || true
+    fi
+
+    echo "Checking Python package imports..." >> logs/snp_distance.command.log
+
+    python3 - <<'PY' >> logs/snp_distance.command.log 2>&1
+import sys
+
+packages = ["numpy", "pandas", "matplotlib", "seaborn"]
+
+for pkg in packages:
+    try:
+        __import__(pkg)
+        print(f"OK: {pkg} imported successfully")
+    except Exception as e:
+        print(f"WARNING: {pkg} could not be imported: {e}")
+
+print("Python package check completed.")
+PY
+
+    python3 - <<'PY' >> logs/snp_distance.command.log 2>&1
+import csv
+import html
+import traceback
+from pathlib import Path
+
+alignment_file = Path("snp_distance/core.full.aln")
+matrix_file = Path("snp_distance/pairwise_snp_distance_matrix.tsv")
+pairs_file = Path("snp_distance/pairwise_snp_distance_pairs.tsv")
+clusters_file = Path("snp_distance/snp_cluster_summary.tsv")
+html_file = Path("snp_distance/snp_distance_cluster_report.html")
+status_file = Path("snp_distance/snp_distance_status.txt")
+excluded_file = Path("snp_distance/excluded_reference_or_non_sample_sequences.tsv")
+heatmap_png = Path("snp_distance/pairwise_snp_heatmap.png")
+
+likely_threshold = int("5")
+possible_threshold = int("12")
+min_comparable_sites = int("2205000")
+max_het_for_clustering = int("0")
+
+# Per-sample mixed-infection status from TB-Profiler, keyed by sample name.
+# Values are the status strings written by the TB_PROFILER task. Absent or
+# unreadable summary -> empty dict -> this gate never fires, and the
+# eligibility table says so.
+MIXED_STATUS = {}
+exclude_mixed = "true".strip().lower() == "true"
+_tb_summary = Path("snp_distance/tbprofiler_summary.tsv")
+if _tb_summary.exists() and _tb_summary.stat().st_size > 0:
+    try:
+        with _tb_summary.open(newline="") as _fh:
+            for _row in csv.DictReader(_fh, delimiter="\t"):
+                _name = str(_row.get("sample") or "").strip()
+                _st = str(_row.get("mixed_infection_status") or "").strip()
+                if _name:
+                    MIXED_STATUS[_name] = _st
+    except Exception:
+        MIXED_STATUS = {}
+
+
+def tbprofiler_gates(sample):
+    """True only for the lineage-level mixture call, which is the one that
+    distorts distances. Heteroresistance alone does not gate."""
+    if not exclude_mixed:
+        return False
+    return str(MIXED_STATUS.get(sample, "") or "").lower().startswith("possible mixed")
+
+REFERENCE_NAMES = {
+    "reference",
+    "ref",
+    "h37rv",
+    "h37rvsiena",
+    "nc_000962",
+    "mycobacterium_tuberculosis_h37rv"
+}
+
+
+def is_reference_name(name):
+    n = str(name or "").strip().lower()
+    return n in REFERENCE_NAMES or n.startswith("reference") or n.startswith("ref_")
+
+
+def write_fallback_outputs(message):
+    matrix_file.write_text("sample\n", encoding="utf-8")
+    pairs_file.write_text(
+        "sample1\tsample2\tsnp_distance\tcomparable_sites\tinterpretation\tcluster_class\n",
+        encoding="utf-8"
+    )
+    clusters_file.write_text(
+        "cluster_id\tsample1\tsample2\tsnp_distance\tinterpretation\n",
+        encoding="utf-8"
+    )
+    excluded_file.write_text("sequence\treason\n", encoding="utf-8")
+    status_file.write_text(str(message) + "\n", encoding="utf-8")
+
+    html_file.write_text(
+        "<!doctype html>\n"
+        "<html><head><meta charset='utf-8'>"
+        "<title>Pairwise SNP Distance and Cluster Summary</title>"
+        "<style>"
+        "body{font-family:Arial,Helvetica,sans-serif;margin:24px;background:#f8fafc;color:#0f172a}"
+        ".card{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:18px;margin-bottom:18px}"
+        ".note{background:#fff7ed;border-left:5px solid #f97316;padding:12px;border-radius:10px}"
+        "</style>"
+        "</head><body><div class='card'>"
+        "<h1>Pairwise SNP Distance and Cluster Summary</h1>"
+        f"<div class='note'>{html.escape(str(message))}</div>"
+        "</div></body></html>\n",
+        encoding="utf-8"
+    )
+
+
+# Per-sample composition of the core alignment, keyed by sample name and
+# measured on the raw sequence before any case folding. snippy-core symbols:
+#   ACGT  same as the reference        acgt  differs from the reference
+#   n     heterozygous or poor quality  N     low coverage (< --mincov)
+#   -     zero coverage or deletion     X     masked region (--mask)
+ALIGNMENT_COMPOSITION = {}
+
+
+def _composition(raw):
+    het = raw.count("n")
+    low = raw.count("N")
+    zero = raw.count("-")
+    masked = raw.count("X") + raw.count("x")
+    called = sum(raw.count(c) for c in "ACGTacgt")
+    total = len(raw)
+    return {
+        "alignment_length": total,
+        "called_bases": called,
+        "heterozygous_or_poor_quality": het,
+        "low_coverage": low,
+        "zero_coverage": zero,
+        "masked": masked,
+        "heterozygous_fraction": (het / total) if total else 0.0,
+    }
+
+
+def read_alignment(path):
+    text = path.read_text(errors="replace").splitlines()
+
+    records = {}
+    name = None
+    seq = []
+
+    is_fasta = any(line.startswith(">") for line in text if line.strip())
+
+    if is_fasta:
+        for line in text:
+            line = line.strip()
+
+            if not line:
+                continue
+
+            if line.startswith(">"):
+                if name is not None:
+                    raw = "".join(seq)
+                    ALIGNMENT_COMPOSITION[name] = _composition(raw)
+                    records[name] = raw.upper()
+
+                name = line[1:].split()[0]
+                seq = []
+
+            else:
+                seq.append(line)
+
+        if name is not None:
+            raw = "".join(seq)
+            ALIGNMENT_COMPOSITION[name] = _composition(raw)
+            records[name] = raw.upper()
+
+        return records
+
+    for line in text:
+        line = line.strip()
+
+        if not line:
+            continue
+
+        parts = line.split()
+
+        if len(parts) >= 2 and set(parts[1].upper()).issubset(set("ACGTNRYKMSWBDHV-.?")):
+            records[parts[0]] = "".join(parts[1:]).upper()
+
+    return records
+
+
+def snp_distance(seq1, seq2):
+    missing = {"N", "-", "?", "."}
+    comparable = set("ACGT")
+
+    n = min(len(seq1), len(seq2))
+
+    dist = 0
+    compared = 0
+
+    for i in range(n):
+        a = seq1[i]
+        b = seq2[i]
+
+        if a in missing or b in missing:
+            continue
+
+        if a not in comparable or b not in comparable:
+            continue
+
+        compared += 1
+
+        if a != b:
+            dist += 1
+
+    return dist, compared
+
+
+def interpret(distance, compared_sites, het1=0, het2=0,
+              name1="sample 1", name2="sample 2"):
+    # A SNP distance is only meaningful relative to the number of alignment
+    # columns that were actually comparable between the two samples. A pair
+    # with few or zero comparable sites can show distance 0 while sharing no
+    # usable sequence at all, so it must never be reported as close.
+    try:
+        comparable = int(compared_sites)
+    except (TypeError, ValueError):
+        comparable = 0
+
+    if comparable < min_comparable_sites:
+        return (
+            "Not interpretable: insufficient comparable sites "
+            "({} < {})".format(comparable, min_comparable_sites),
+            "uninterpretable"
+        )
+
+    # A mixed sample has the positions that distinguish its two strains
+    # called heterozygous and excluded, so this distance was computed with
+    # the informative columns missing. Reporting it as a cluster status would
+    # assert relatedness the data cannot support.
+    reasons = []
+    if max_het_for_clustering > 0:
+        for n, h in ((name1, het1), (name2, het2)):
+            if h > max_het_for_clustering:
+                reasons.append("%s has %d heterozygous sites (threshold %d)"
+                               % (n, h, max_het_for_clustering))
+    if exclude_mixed:
+        for n in (name1, name2):
+            st = str(MIXED_STATUS.get(n, "") or "")
+            if st.lower().startswith("possible mixed"):
+                reasons.append("%s is flagged '%s' by TB-Profiler" % (n, st))
+    if reasons:
+        return (
+            "Not interpretable: mixed-strain signal (%s). The positions "
+            "distinguishing the strains are excluded from this comparison, "
+            "so the SNP distance understates divergence." % "; ".join(reasons),
+            "uninterpretable"
+        )
+
+    if distance <= likely_threshold:
+        return (
+            "Genomically close; review epidemiological linkage",
+            "close"
+        )
+
+    if distance <= possible_threshold:
+        return (
+            "Intermediate SNP distance; review with epidemiological metadata",
+            "intermediate"
+        )
+
+    return (
+        "Not clustered by SNP threshold",
+        "distant"
+    )
+
+
+def write_heatmap_png(matrix, samples):
+    try:
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+        from matplotlib.colors import LinearSegmentedColormap
+
+        matrix_df = pd.DataFrame(
+            matrix,
+            index=samples,
+            columns=samples
+        )
+
+        cmap = LinearSegmentedColormap.from_list(
+            "snp_scale",
+            ["#d1fae5", "#fdba74", "#fecaca"]
+        )
+
+        plt.figure(figsize=(12, 10))
+
+        sns.heatmap(
+            matrix_df,
+            annot=True,
+            fmt=".0f",
+            cmap=cmap,
+            linewidths=0.5,
+            cbar=False,
+            square=True
+        )
+
+        plt.title(
+            "Pairwise SNP Distance Heatmap",
+            fontsize=34,
+            fontweight="bold",
+            pad=45
+        )
+
+        plt.xticks(
+            rotation=60,
+            ha="left",
+            fontsize=18
+        )
+
+        plt.yticks(
+            rotation=0,
+            fontsize=18
+        )
+
+        plt.figtext(
+            0.5,
+            0.02,
+            "Reference sequence excluded. Lower values indicate closer genomic relatedness.",
+            ha="center",
+            fontsize=16,
+            color="#475569"
+        )
+
+        plt.tight_layout(rect=[0, 0.06, 1, 0.94])
+
+        plt.savefig(
+            heatmap_png,
+            dpi=300,
+            bbox_inches="tight"
+        )
+
+        plt.close()
+
+    except Exception as exc:
+        print("WARNING: Heatmap PNG generation failed:", str(exc))
+        heatmap_png.write_bytes(b"")
+
+
+try:
+    records_all = read_alignment(alignment_file)
+
+    excluded = []
+    records = {}
+
+    for name, seq in records_all.items():
+        if is_reference_name(name):
+            excluded.append((
+                name,
+                "Reference/non-sample sequence excluded from sample-level SNP distance analysis"
+            ))
+        else:
+            records[name] = seq
+
+    with excluded_file.open("w", newline="") as out:
+        writer = csv.writer(out, delimiter="\t")
+        writer.writerow(["sequence", "reason"])
+        writer.writerows(excluded)
+
+    # Alignment ambiguity per sample. A sample carrying two strains has its
+    # distinguishing positions called heterozygous and therefore excluded from
+    # every pairwise comparison; without this table that exclusion is silent,
+    # because it is far too small a fraction to move the comparable-sites
+    # floor. The threshold below is a reporting cue, not a validated cutoff.
+    het_cue_count = max_het_for_clustering if max_het_for_clustering > 0 else None
+    ambiguity_file = Path("snp_distance/alignment_ambiguity.tsv")
+    with ambiguity_file.open("w", newline="") as out:
+        writer = csv.writer(out, delimiter="\t")
+        writer.writerow([
+            "sample", "alignment_length", "called_bases",
+            "heterozygous_or_poor_quality", "heterozygous_fraction",
+            "low_coverage", "zero_coverage", "masked", "note",
+        ])
+        for sname in records:
+            c = ALIGNMENT_COMPOSITION.get(sname)
+            if not c:
+                continue
+            frac = c["heterozygous_fraction"]
+            het_n = c["heterozygous_or_poor_quality"]
+            note = (
+                "Elevated heterozygous fraction. The positions that distinguish "
+                "two strains are called heterozygous and excluded from every "
+                "pairwise comparison, so SNP distances for this sample are "
+                "computed without them and may understate true divergence. "
+                "Review alongside the mixed-infection flag."
+                if (het_cue_count is not None and het_n > het_cue_count) else
+                "Within the usual range for a single-strain sample"
+            )
+            writer.writerow([
+                sname, c["alignment_length"], c["called_bases"],
+                c["heterozygous_or_poor_quality"], "%.6f" % frac,
+                c["low_coverage"], c["zero_coverage"], c["masked"], note,
+            ])
+
+    samples = list(records.keys())
+
+    if len(records_all) == 0:
+        write_fallback_outputs(
+            "No sequences were found in the core alignment; SNP distance outputs were generated as empty placeholders."
+        )
+        raise SystemExit(0)
+
+    if len(samples) == 0:
+        write_fallback_outputs(
+            "Only reference/non-sample sequences were found after filtering; no sample-level SNP distances were generated."
+        )
+        raise SystemExit(0)
+
+    if len(samples) == 1:
+        sample = samples[0]
+
+        matrix_file.write_text(
+            "sample\t" + sample + "\n" + sample + "\t0\n",
+            encoding="utf-8"
+        )
+
+        pairs_file.write_text(
+            "sample1\tsample2\tsnp_distance\tcomparable_sites\tinterpretation\tcluster_class\n",
+            encoding="utf-8"
+        )
+
+        clusters_file.write_text(
+            "cluster_id\tsample1\tsample2\tsnp_distance\tinterpretation\n",
+            encoding="utf-8"
+        )
+
+        status_file.write_text(
+            "Only one sample sequence was present after reference filtering; no pairwise SNP distances were calculated.\n",
+            encoding="utf-8"
+        )
+
+        html_file.write_text(
+            "<!doctype html><html><head><meta charset='utf-8'>"
+            "<title>Pairwise SNP Distance and Cluster Summary</title>"
+            "<style>"
+            "body{font-family:Arial,Helvetica,sans-serif;margin:24px;background:#f8fafc;color:#0f172a}"
+            ".card{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:18px;margin-bottom:18px}"
+            ".note{background:#eff6ff;border-left:5px solid #2563eb;padding:12px;border-radius:10px}"
+            "</style>"
+            "</head>"
+            "<body>"
+            "<div class='card'>"
+            "<h1>Pairwise SNP Distance and Cluster Summary</h1>"
+            "<div class='note'>Only one sample sequence was present after reference filtering; pairwise SNP distances could not be generated.</div>"
+            "</div>"
+            "</body></html>\n",
+            encoding="utf-8"
+        )
+
+        raise SystemExit(0)
+
+    lengths = {len(v) for v in records.values()}
+
+    if len(lengths) > 1:
+        print(
+            "WARNING: Alignment sequences have unequal lengths; distances calculated over shared aligned positions."
+        )
+
+    matrix = []
+    comparable_matrix = []
+
+    for s1 in samples:
+        row = []
+        comparable_row = []
+
+        for s2 in samples:
+            d, c = snp_distance(records[s1], records[s2])
+
+            row.append(d)
+            comparable_row.append(c)
+
+        matrix.append(row)
+        comparable_matrix.append(comparable_row)
+
+    with matrix_file.open("w", newline="") as out:
+        writer = csv.writer(out, delimiter="\t")
+
+        writer.writerow(["sample"] + samples)
+
+        for sample, row in zip(samples, matrix):
+            writer.writerow([sample] + row)
+
+    pairs = []
+
+    for i, sample1 in enumerate(samples):
+        for j, sample2 in enumerate(samples):
+
+            if j <= i:
+                continue
+
+            distance = matrix[i][j]
+            compared_sites = comparable_matrix[i][j]
+
+            het1 = ALIGNMENT_COMPOSITION.get(sample1, {}).get(
+                "heterozygous_or_poor_quality", 0)
+            het2 = ALIGNMENT_COMPOSITION.get(sample2, {}).get(
+                "heterozygous_or_poor_quality", 0)
+
+            interpretation, cluster_class = interpret(
+                distance, compared_sites, het1, het2, sample1, sample2)
+
+            pairs.append({
+                "sample1": sample1,
+                "sample2": sample2,
+                "snp_distance": distance,
+                "comparable_sites": compared_sites,
+                "interpretation": interpretation,
+                "cluster_class": cluster_class
+            })
+
+    with pairs_file.open("w", newline="") as out:
+        writer = csv.DictWriter(
+            out,
+            fieldnames=[
+                "sample1",
+                "sample2",
+                "snp_distance",
+                "comparable_sites",
+                "interpretation",
+                "cluster_class"
+            ],
+            delimiter="\t"
+        )
+
+        writer.writeheader()
+        writer.writerows(pairs)
+
+    # One row per sample: both mixed-strain signals and the clustering
+    # decision, so the basis of every exclusion is explicit and a
+    # mis-set heterozygosity threshold is obvious on the first run.
+    eligibility_file = Path("snp_distance/clustering_eligibility.tsv")
+    with eligibility_file.open("w", newline="") as out:
+        writer = csv.writer(out, delimiter="\t")
+        writer.writerow([
+            "sample", "heterozygous_sites", "heterozygous_threshold",
+            "tbprofiler_mixed_infection_status", "eligible_for_clustering",
+            "reason",
+        ])
+        for sname in samples:
+            het = ALIGNMENT_COMPOSITION.get(sname, {}).get(
+                "heterozygous_or_poor_quality", 0)
+            tb = MIXED_STATUS.get(sname, "")
+            why = []
+            if max_het_for_clustering > 0 and het > max_het_for_clustering:
+                why.append("heterozygous sites above threshold")
+            if tbprofiler_gates(sname):
+                why.append("TB-Profiler mixed-infection flag")
+            writer.writerow([
+                sname, het,
+                max_het_for_clustering if max_het_for_clustering > 0 else "disabled",
+                tb or ("not available" if not MIXED_STATUS else "not reported"),
+                "NO" if why else "YES",
+                "; ".join(why) if why else "no mixed-strain signal",
+            ])
+
+    # Uninterpretable pairs are deliberately excluded from cluster output.
+    close_pairs = [
+        p for p in pairs
+        if p["cluster_class"] in ["close", "intermediate"]
+    ]
+
+    uninterpretable_pairs = [
+        p for p in pairs
+        if p["cluster_class"] == "uninterpretable"
+    ]
+
+    with clusters_file.open("w", newline="") as out:
+        writer = csv.writer(out, delimiter="\t")
+
+        writer.writerow([
+            "cluster_id",
+            "sample1",
+            "sample2",
+            "snp_distance",
+            "interpretation"
+        ])
+
+        for idx, p in enumerate(close_pairs, start=1):
+            writer.writerow([
+                f"Cluster_{idx}",
+                p["sample1"],
+                p["sample2"],
+                p["snp_distance"],
+                p["interpretation"]
+            ])
+
+    write_heatmap_png(matrix, samples)
+
+    css = """
+body{font-family:Arial,Helvetica,sans-serif;margin:24px;background:#f8fafc;color:#0f172a}
+.card{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:18px;margin-bottom:18px;box-shadow:0 1px 4px rgba(15,23,42,.08)}
+table{border-collapse:collapse;width:100%;font-size:13px;background:white}
+th,td{border:1px solid #e2e8f0;padding:8px;vertical-align:top}
+th{background:#334155;color:white}
+.badge{display:inline-block;border-radius:999px;padding:4px 8px;font-weight:700;font-size:12px}
+.close{background:#dcfce7;color:#166534}
+.intermediate{background:#fef9c3;color:#854d0e}
+.distant{background:#e0f2fe;color:#075985}
+.uninterpretable{background:#fee2e2;color:#991b1b}
+.note{background:#eff6ff;border-left:5px solid #2563eb;padding:12px;border-radius:10px}
+img{max-width:100%;height:auto;border-radius:14px}
+"""
+
+    out = [
+        "<!doctype html>",
+        "<html>",
+        "<head>",
+        "<meta charset='utf-8'>",
+        "<title>Pairwise SNP Distance and Cluster Summary</title>",
+        "<style>",
+        css,
+        "</style>",
+        "</head>",
+        "<body>",
+
+        "<div class='card'>",
+        "<h1>Pairwise SNP Distance and Cluster Summary</h1>",
+        "<p>This section summarizes pairwise SNP distances calculated directly from the MTBC core genome alignment after excluding reference/non-sample sequences.</p>",
+        f"<div class='note'>Interpretation thresholds used: &le;{likely_threshold} SNPs = genomically close and should be reviewed with epidemiological linkage data; {likely_threshold + 1}-{possible_threshold} SNPs = intermediate SNP distance requiring epidemiological metadata review; &gt;{possible_threshold} SNPs = not clustered by SNP threshold.</div>",
+        "</div>",
+
+        "<div class='card'>",
+        "<h2>Pairwise SNP Distance Heatmap</h2>",
+        "<p>Reference/non-sample sequences are excluded. Lower SNP distances indicate closer genomic relatedness.</p>",
+        "<img src='pairwise_snp_heatmap.png' alt='Pairwise SNP Distance Heatmap'>",
+        "</div>",
+
+        "<div class='card'>",
+        "<h2>Pairwise SNP distance interpretation</h2>",
+        "<table>",
+        "<thead>",
+        "<tr>",
+        "<th>Sample 1</th>",
+        "<th>Sample 2</th>",
+        "<th>SNP distance</th>",
+        "<th>Comparable sites</th>",
+        "<th>Interpretation</th>",
+        "</tr>",
+        "</thead>",
+        "<tbody>"
+    ]
+
+    for p in pairs:
+        cls = html.escape(p["cluster_class"])
+
+        out.append("<tr>")
+        out.append(f"<td>{html.escape(p['sample1'])}</td>")
+        out.append(f"<td>{html.escape(p['sample2'])}</td>")
+        out.append(f"<td>{html.escape(str(p['snp_distance']))}</td>")
+        out.append(f"<td>{html.escape(str(p['comparable_sites']))}</td>")
+        out.append(
+            f"<td><span class='badge {cls}'>{html.escape(p['interpretation'])}</span></td>"
+        )
+        out.append("</tr>")
+
+    out.extend([
+        "</tbody>",
+        "</table>",
+        "</div>",
+
+        "<div class='card'>",
+        "<h2>Genomically close sample pairs requiring epidemiological review</h2>",
+        "<table>",
+        "<thead>",
+        "<tr>",
+        "<th>Cluster ID</th>",
+        "<th>Sample 1</th>",
+        "<th>Sample 2</th>",
+        "<th>SNP distance</th>",
+        "<th>Interpretation</th>",
+        "</tr>",
+        "</thead>",
+        "<tbody>"
+    ])
+
+    if close_pairs:
+        for idx, p in enumerate(close_pairs, start=1):
+            cls = html.escape(p["cluster_class"])
+
+            out.append("<tr>")
+            out.append(f"<td>Cluster_{idx}</td>")
+            out.append(f"<td>{html.escape(p['sample1'])}</td>")
+            out.append(f"<td>{html.escape(p['sample2'])}</td>")
+            out.append(f"<td>{html.escape(str(p['snp_distance']))}</td>")
+            out.append(
+                f"<td><span class='badge {cls}'>{html.escape(p['interpretation'])}</span></td>"
+            )
+            out.append("</tr>")
+    else:
+        out.append(
+            "<tr><td colspan='5'>No genomically close or intermediate-distance sample pairs were detected using the configured SNP thresholds.</td></tr>"
+        )
+
+    out.extend([
+        "</tbody>",
+        "</table>",
+        "</div>",
+
+        "</body>",
+        "</html>"
+    ])
+
+    html_file.write_text(
+        "\n".join(out),
+        encoding="utf-8"
+    )
+
+    status_file.write_text(
+        f"SNP distance clustering completed successfully. {len(excluded)} reference/non-sample sequence(s) excluded. {len(samples)} sample sequence(s) analyzed.\n",
+        encoding="utf-8"
+    )
+
+except Exception as exc:
+    traceback.print_exc()
+
+    write_fallback_outputs(
+        "SNP distance clustering encountered an error but fallback outputs were generated: " + str(exc)
+    )
+
+    raise SystemExit(0)
+
+PY
+)  > "$out8be74a1b" 2> "$err8be74a1b"
+echo $? > /mnt/disks/cromwell_root/rc.tmp
+(
+# add a .file in every empty directory to facilitate directory delocalization on the cloud
+cd /mnt/disks/cromwell_root
+find . -type d -exec sh -c '[ -z "$(ls -A '"'"'{}'"'"')" ] && touch '"'"'{}'"'"'/.file' \;
+)
+(
+cd /mnt/disks/cromwell_root
+sync
+
+
+)
+mv /mnt/disks/cromwell_root/rc.tmp /mnt/disks/cromwell_root/rc
+

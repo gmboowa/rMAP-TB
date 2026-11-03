@@ -1,0 +1,27 @@
+# Draft methods and results — 18-library synthetic-mixture evaluation
+
+> **Status:** scientifically restricted draft based on the currently uploaded outputs. This document does not claim completion of the native two-sample MTBseq rerun or coordinate-harmonized rMAP-TB comparison.
+
+## Methods
+
+Eighteen synthetic paired-end *Mycobacterium tuberculosis* libraries were analyzed in rMAP-TB and MTBseq v1.1.0, consisting of 15 libraries labeled as mixtures of strains from distinct lineages, one same-lineage mixed-strain control, and two pure-strain controls. MTBseq was executed with the H37Rv reference (`M._tuberculosis_H37Rv_2015-11-13`), minimum forward and reverse allele coverage of four reads each, minimum four quality-20 reads, minimum allele frequency of 75%, minimum sample-wise unambiguous-site proportion of 95%, a 12-nucleotide SNP-proximity window, and a 12-SNP grouping threshold. These parameters were retained without modification for the baseline analysis.
+
+The MTBseq joint variant and amended tables were used to enumerate the number of candidate sites retained through sample-callability filtering and phylogenetic eligibility. The 18-sample pairwise distance matrix was independently regenerated from the final filtered alignment by counting pairwise nucleotide mismatches. A separate exploratory analysis of the two pure controls identified joint-table positions where both controls had unambiguous A/C/G/T reference or SNP calls meeting the original per-sample coverage, quality and allele-frequency thresholds, without requiring unambiguous calls in any of the other 16 libraries. This is a post-hoc candidate-site calculation and is **not** an independently executed MTBseq pure-only joint analysis.
+
+The sample-label-defined synthetic-mixture design served as a descriptive reference for checking the TB-Profiler mixed-infection flags and multiple-lineage annotations already reported by rMAP-TB. At positions differentiating the two available pure parental controls, the median of 100 minus MTBseq's reported predominant-allele frequency was calculated in each corresponding synthetic mixture using positions with at least 20-fold total coverage, at least four forward and four reverse supporting reads and at least four Q20 reads. This is an exploratory marker-frequency proxy, not a validated estimator of minority strain fraction. The original rMAP-TB core-SNP distance and MTBseq filtered distance were reported separately owing to nonidentical site masks.
+
+## Results
+
+The original MTBseq joint candidate table contained 3,148 positions. The minimum 95% unambiguous-site requirement corresponded to fully unambiguous calls in all 18 libraries; 291 positions met this threshold. Subsequent phylogenetic eligibility filtering retained 246 positions and the 12-base variant-proximity window retained 237. Only four of the final 237 positions varied among libraries. All 153 originally reported pairwise distances were reproduced exactly from the filtered alignment, with 108 distances of zero and 45 of four.
+
+The two pure controls, `PURE_ERR038255_100x` and `PURE_ERR13260175_100x`, had 2,201 candidate positions meeting the specified per-control callability and allele-type criteria, including 1,278 differing nucleotide calls. None of these 1,278 differing positions survived the original all-18-sample phylogenetic filter. The original MTBseq 18-sample matrix consequently assigned these two pure controls a distance of zero, while the separately computed rMAP-TB whole-core alignment reported 1,148 SNP differences across 3,944,469 comparable genomic positions. These two estimates were produced using different callable-site masks and should not be interpreted as matched-site accuracy estimates.
+
+All 15 libraries explicitly labeled `MIX_` carried rMAP-TB/TB-Profiler's `Possible mixed infection` flag. Fourteen received explicit multiple-lineage assignments; one (`MIX_ERR038255_ERR13260175_50pctB_100x`) retained a single main-lineage assignment while still carrying the mixed-infection flag. The same-lineage mixed control and both pure controls lacked the flag. In the 12 mixtures with both pure parental controls available, the MTBseq major-allele-frequency-derived proxy closely followed the nominal mixture levels (mean absolute error of 0.98 percentage points across the 12 **sample-level medians**), with greatest deviation in the nominal 50% mixture. Neither the single-lineage MTBseq classification table nor the empty resistance-annotation extraction can be used to score MTBseq's mixed-infection sensitivity.
+
+## Interpretation and next analyses
+
+The highly compressed distance distribution is explained by the small set of candidate sites that survived sample-wide filtering in this synthetic mixture panel. The result should not be attributed to an intrinsic error of the MTBseq variant caller, nor used for transmission grouping in mixed-infection samples. A native pure-only `TBjoin/TBamend/TBgroups` subset analysis, using original Called and Position_Tables data, has been prepared but has not been executed. A formal per-site concordance analysis awaits the 18-library rMAP-TB `core.full.aln` so that both workflows can be evaluated at identical H37Rv coordinates with mutually callable unambiguous alleles. The two available pure controls provide only one independent pure–pure pair, which is insufficient to estimate generalizable SNP-distance accuracy.
+
+## References
+
+MTBseq original documentation: https://github.com/ngs-fzb/MTBseq_source/blob/master/MANUAL.md

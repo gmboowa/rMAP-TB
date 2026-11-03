@@ -1,0 +1,258 @@
+#!/bin/bash
+
+cd /mnt/disks/cromwell_root
+tmpDir=$(mktemp -d "$PWD"/tmp.XXXXXX)
+chmod 777 "$tmpDir"
+export _JAVA_OPTIONS=-Djava.io.tmpdir="$tmpDir"
+export TMPDIR="$tmpDir"
+
+
+(
+cd /mnt/disks/cromwell_root
+ln -s /mnt/disks/cromwell_root /cromwell_root
+)
+
+
+out0a3b74e0="${tmpDir}/out.$$" err0a3b74e0="${tmpDir}/err.$$"
+mkfifo "$out0a3b74e0" "$err0a3b74e0"
+trap 'rm "$out0a3b74e0" "$err0a3b74e0"' EXIT
+touch '/mnt/disks/cromwell_root/stdout' '/mnt/disks/cromwell_root/stderr'
+tee '/mnt/disks/cromwell_root/stdout' < "$out0a3b74e0" &
+tee '/mnt/disks/cromwell_root/stderr' < "$err0a3b74e0" >&2 &
+(
+cd /mnt/disks/cromwell_root
+
+
+    set -euo pipefail
+    mkdir -p usher_dist
+    cat > usher_audited_distances.py <<'AUDIT_PY'
+#!/usr/bin/env python3
+"""Audit UShER branch-path, VCF genotype and shared-alignment distances.
+
+UShER Newick branch lengths (MAT inferred mutation event counts) are NOT the
+same quantity as Snippy core-genome pairwise SNP differences. Report each
+quantity under an unambiguous name. `matUtils extract -A` lists local mutations
+at every node and is NOT an input to this distance derivation.
+
+Dependencies: Python >=3.9 standard library only.
+"""
+import argparse
+import csv
+from itertools import combinations
+from pathlib import Path
+from collections import defaultdict
+
+class Node:
+    def __init__(self,name='',length=0.0,children=None):
+        self.name=name; self.length=length; self.children=children or []
+
+def parse_tree(s):
+    s=s.strip(); pos=0
+    def parse():
+        nonlocal pos
+        kids=[]
+        if pos<len(s) and s[pos]=='(':
+            pos+=1
+            while True:
+                kids.append(parse())
+                if pos>=len(s):raise ValueError('Unexpected end of Newick in internal node')
+                if s[pos]==',':pos+=1;continue
+                if s[pos]==')':pos+=1;break
+                raise ValueError('Unexpected Newick symbol: '+repr(s[pos]))
+        st=pos
+        while pos<len(s) and s[pos] not in ',():;':pos+=1
+        name=s[st:pos].strip().strip("'\"")
+        branch=0.0
+        if pos<len(s) and s[pos]==':':
+            pos+=1;st=pos
+            while pos<len(s) and s[pos] not in ',();':pos+=1
+            branch=float(s[st:pos])
+            if branch < 0:raise ValueError('Negative mutation count')
+        if not kids and not name:raise ValueError('Unnamed leaf in Newick')
+        return Node(name,branch,kids)
+    root=parse()
+    if pos < len(s) and s[pos]==';':pos+=1
+    if pos!=len(s):raise ValueError('Trailing Newick text')
+    return root
+
+def tree_paths(root):
+    paths={}
+    def rec(node,ancestors):
+        path=ancestors+[node]
+        if not node.children:
+            if node.name in paths:raise ValueError('Duplicated tree tip '+node.name)
+            paths[node.name]=path
+        else:
+            for child in node.children:rec(child,path)
+    rec(root,[])
+    return paths
+
+def tree_distance(a,b):
+    n=0
+    for x,y in zip(a,b):
+        if x is y:n+=1
+        else:break
+    return sum(p.length for p in a[n:])+sum(p.length for p in b[n:])
+
+def read_vcf(path):
+    samples=None; calls={}; count=0
+    with open(path) as f:
+        for raw in f:
+            if raw.startswith('##'):continue
+            if raw.startswith('#CHROM'):
+                samples=raw.rstrip('\n').split('\t')[9:]
+                if len(samples)!=len(set(samples)):raise ValueError('Duplicated VCF sample columns')
+                calls={x:[] for x in samples};continue
+            if raw.startswith('#') or not raw.strip():continue
+            if samples is None:raise ValueError('VCF header missing')
+            toks=raw.rstrip('\n').split('\t')
+            if len(toks)<9+len(samples):raise ValueError('VCF row missing columns')
+            ref,alts=toks[3],toks[4].split(',')
+            if len(ref)!=1 or any(len(a)!=1 for a in alts):continue
+            fmt=toks[8].split(':')
+            try:idx=fmt.index('GT')
+            except ValueError:raise ValueError('VCF lacks GT')
+            for k,t in zip(samples,toks[9:]):
+                el=t.split(':');gt=el[idx] if idx<len(el) else '.'
+                if gt in ('.','./.','.|.') or '/' in gt or '|' in gt:
+                    calls[k].append(None)
+                else:
+                    try:
+                        code=int(gt); bases=[ref]+alts
+                        calls[k].append(bases[code] if 0<=code<len(bases) else None)
+                    except ValueError:calls[k].append(None)
+            count+=1
+    if not samples or count==0:raise ValueError('VCF has no SNP records')
+    return calls,count
+
+def read_fasta(path):
+    seqs={}; name=None; chunks=[]
+    with open(path) as f:
+        for raw in f:
+            line=raw.strip()
+            if not line:continue
+            if line.startswith('>'):
+                if name is not None:seqs[name]=''.join(chunks).upper(); chunks=[]
+                name=line[1:].split()[0]
+                if name in seqs:raise ValueError('Duplicate FASTA name')
+            else:
+                if name is None:raise ValueError('Malformed FASTA')
+                chunks.append(line)
+        if name is not None:seqs[name]=''.join(chunks).upper()
+    if not seqs:raise ValueError('Empty FASTA')
+    if len({len(s) for s in seqs.values()})!=1:raise ValueError('Unaligned FASTA')
+    return seqs
+
+def write_tables(out,tag,names,distances,extra=''):
+    with (out/(tag+'_pairwise_distances.tsv')).open('w') as f:
+        w=csv.writer(f,delimiter='\t',lineterminator='\n')
+        w.writerow(['sample1','sample2',tag+'_distance'])
+        for a,b in combinations(names,2):w.writerow([a,b,distances[(a,b)]])
+    with (out/(tag+'_distance_matrix.tsv')).open('w') as f:
+        w=csv.writer(f,delimiter='\t',lineterminator='\n')
+        w.writerow(['sample']+names)
+        for a in names:
+            w.writerow([a]+[0 if a==b else distances.get((a,b),distances.get((b,a))) for b in names])
+
+def main():
+    p=argparse.ArgumentParser()
+    p.add_argument('--tree',type=Path,required=True)
+    p.add_argument('--vcf',type=Path,required=True)
+    p.add_argument('--fasta',type=Path,required=True)
+    p.add_argument('--outdir',type=Path,default=Path('.'))
+    p.add_argument('--threshold',type=int,default=5)
+    a=p.parse_args()
+    a.outdir.mkdir(parents=True,exist_ok=True)
+    paths=tree_paths(parse_tree(a.tree.read_text()))
+    vcf,variants=read_vcf(a.vcf)
+    fasta=read_fasta(a.fasta)
+    names=sorted(vcf)
+    assert len(names)>1
+    if set(paths)!=set(names):raise ValueError('Tree tips and VCF samples mismatch: '+repr((set(paths)-set(names),set(names)-set(paths))))
+    refseq=set(fasta)-set(names)
+    if len(refseq)!=1:raise ValueError('Expected one reference in full alignment: '+repr(refseq))
+    if len(names)!=len(set(names)) or not set(names).issubset(set(fasta)):
+        raise ValueError('FASTA sample names mismatch')
+    tree_d={};vcf_d={};fasta_d={};valid_sites={}
+    for x,y in combinations(names,2):
+        tree_d[x,y]=int(round(tree_distance(paths[x],paths[y])))
+        if abs(tree_d[x,y]-tree_distance(paths[x],paths[y]))>1e-4:raise ValueError('Non-integral tree mutation branch counts')
+        vcf_d[x,y]=sum(i!=j for i,j in zip(vcf[x],vcf[y]) if i in 'ACGT' and j in 'ACGT') if None not in vcf[x] and None not in vcf[y] else sum(i!=j for i,j in zip(vcf[x],vcf[y]) if i is not None and j is not None)
+        sx,sy=fasta[x],fasta[y]
+        # Count A/C/G/T mismatches only where both sequences are comparable.
+        d=0;n=0
+        for bx,by in zip(sx,sy):
+            if bx in 'ACGT' and by in 'ACGT':
+                n+=1
+                if bx!=by:d+=1
+        fasta_d[x,y]=d;valid_sites[x,y]=n
+    write_tables(a.outdir,'usher_tree_branch',names,tree_d)
+    write_tables(a.outdir,'vcf_genotype',names,vcf_d)
+    write_tables(a.outdir,'core_alignment',names,fasta_d)
+    with (a.outdir/'usher_clusters.tsv').open('w') as f:
+        w=csv.writer(f,delimiter='\t',lineterminator='\n')
+        w.writerow(['sample','cluster','cluster_size','threshold_mutation_events'])
+        parent={x:x for x in names}
+        def root(x):
+            if parent[x]!=x:parent[x]=root(parent[x])
+            return parent[x]
+        for (x,y),d in tree_d.items():
+            if d<=a.threshold:parent[root(x)]=root(y)
+        groups=defaultdict(list)
+        for x in names:groups[root(x)].append(x)
+        for i,group in enumerate([g for g in sorted(groups.values(),key=lambda x: (-len(x),x)) if len(g)>1],start=1):
+            for x in group:w.writerow([x,'UShER_cluster_'+str(i),len(group),a.threshold])
+    with (a.outdir/'distance_audit.tsv').open('w') as f:
+        w=csv.writer(f,delimiter='\t',lineterminator='\n')
+        w.writerow(['sample1','sample2','usher_tree_branch_mutation_events','vcf_genotype_differences','core_full_alignment_SNP_differences','comparable_ACGT_sites'])
+        for x,y in combinations(names,2):
+            w.writerow([x,y,tree_d[x,y],vcf_d[x,y],fasta_d[x,y],valid_sites[x,y]])
+    with (a.outdir/'audit_summary.txt').open('w') as f:
+        f.write('Samples: '+str(len(names))+'\n')
+        f.write('VCF SNP records: '+str(variants)+'\n')
+        f.write('FASTA columns: '+str(len(fasta[names[0]]))+'\n')
+        f.write('Unique pairs: '+str(len(tree_d))+'\n')
+        f.write('UShER parsimony path branch mutation events are NOT equivalent to core SNP counts.\n')
+        f.write('Shared input core alignment distances are a consistency control, NOT an independent UShER benchmark.\n')
+    print('Audited',len(names),'samples,',len(tree_d),'pairs. Outputs:',a.outdir)
+
+if __name__=='__main__':main()
+AUDIT_PY
+
+    if ! python3 usher_audited_distances.py \
+       --tree "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/c798405b-0542-4aab-afdb-4a3126a7e223/USHER_TB_BENCHMARK/0a3b74e0-43fd-429a-851b-6a4afc6828af/call-USHER_PLACE/usher_out/usher_tree.nwk" \
+       --vcf "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/c798405b-0542-4aab-afdb-4a3126a7e223/USHER_TB_BENCHMARK/0a3b74e0-43fd-429a-851b-6a4afc6828af/call-ALIGNMENT_TO_VCF/usher_prep/alignment.vcf" \
+       --fasta "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.full.aln" \
+       --threshold 5 \
+       --outdir usher_dist > usher_dist/distances.log 2>&1; then
+      cat usher_dist/distances.log >&2
+      exit 1
+    fi
+
+    for required in \
+      usher_dist/usher_tree_branch_distance_matrix.tsv \
+      usher_dist/usher_tree_branch_pairwise_distances.tsv \
+      usher_dist/usher_clusters.tsv \
+      usher_dist/vcf_genotype_distance_matrix.tsv \
+      usher_dist/vcf_genotype_pairwise_distances.tsv \
+      usher_dist/core_alignment_distance_matrix.tsv \
+      usher_dist/core_alignment_pairwise_distances.tsv \
+      usher_dist/distance_audit.tsv \
+      usher_dist/audit_summary.txt; do
+      [ -s "$required" ] || { echo "Missing audited distance output: $required" >&2; exit 1; }
+    done
+)  > "$out0a3b74e0" 2> "$err0a3b74e0"
+echo $? > /mnt/disks/cromwell_root/rc.tmp
+(
+# add a .file in every empty directory to facilitate directory delocalization on the cloud
+cd /mnt/disks/cromwell_root
+find . -type d -exec sh -c '[ -z "$(ls -A '"'"'{}'"'"')" ] && touch '"'"'{}'"'"'/.file' \;
+)
+(
+cd /mnt/disks/cromwell_root
+sync
+
+
+)
+mv /mnt/disks/cromwell_root/rc.tmp /mnt/disks/cromwell_root/rc
+

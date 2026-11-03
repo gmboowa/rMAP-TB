@@ -1,0 +1,315 @@
+Mode: de novo build from a starting tree
+Running usher in de_novo mode
+Initializing 8 worker threads.
+
+Loading input tree.
+Completed in 0 msec 
+
+Loading VCF file.
+Completed in 0 msec 
+
+Computing parsimonious assignments for input variants.
+At variant site 4013
+At variant site 7362
+At variant site 11879
+At variant site 14785
+At variant site 34044
+At variant site 42967
+At variant site 62049
+At variant site 69989
+At variant site 70816
+At variant site 71336
+At variant site 75940
+At variant site 116000
+At variant site 122109
+At variant site 133839
+At variant site 146087
+At variant site 206339
+At variant site 223942
+At variant site 225323
+At variant site 227098
+At variant site 265554
+At variant site 278681
+At variant site 310973
+At variant site 311613
+At variant site 346275
+At variant site 356528
+At variant site 384380
+At variant site 386432
+At variant site 390828
+At variant site 403980
+At variant site 414486
+At variant site 420008
+At variant site 454295
+At variant site 459399
+At variant site 467557
+At variant site 467585
+At variant site 467590
+At variant site 467564
+At variant site 467638
+At variant site 475178
+At variant site 502589
+At variant site 503354
+At variant site 541201
+At variant site 573262
+At variant site 513257
+At variant site 598475
+At variant site 590436
+At variant site 610120
+At variant site 648002
+At variant site 669398
+At variant site 685461
+At variant site 686972
+At variant site 690465
+At variant site 698968
+At variant site 754186
+At variant site 775639
+At variant site 781395
+At variant site 852910
+At variant site 903913
+At variant site 906857
+At variant site 955524
+At variant site 979704
+At variant site 986463
+At variant site 990001
+At variant site 993346
+At variant site 1025106
+At variant site 1037911
+At variant site 1068151
+At variant site 1074558
+At variant site 1076309
+At variant site 1077312
+At variant site 1079927
+At variant site 1081681
+At variant site 1100234
+At variant site 1109975
+At variant site 1126889
+At variant site 1127648
+At variant site 1150585
+At variant site 1220680
+At variant site 1281118
+At variant site 1315191
+At variant site 1315884
+At variant site 1328687
+At variant site 1374065
+At variant site 1375724
+At variant site 1382628
+At variant site 1396922
+At variant site 1411210
+At variant site 1414021
+At variant site 1440469
+At variant site 1457144
+At variant site 1471659
+At variant site 1481185
+At variant site 1482627
+At variant site 1484708
+At variant site 1499274
+At variant site 1523575
+At variant site 1536251
+At variant site 1547125
+At variant site 1552547
+At variant site 1613035
+At variant site 1639594
+At variant site 1650072
+At variant site 1706119
+At variant site 1728837
+At variant site 1759252
+At variant site 1760292
+At variant site 1778430
+At variant site 1803265
+At variant site 1817976
+At variant site 1836286
+At variant site 1856777
+At variant site 1885772
+At variant site 1901493
+At variant site 1907296
+At variant site 1917972
+At variant site 1931179
+At variant site 1933988
+At variant site 1944402
+At variant site 1950767
+At variant site 1967237
+At variant site 2022868
+At variant site 2049065
+At variant site 2055271
+At variant site 2057774
+At variant site 2096186
+At variant site 2116903
+At variant site 2123169
+At variant site 2128870
+At variant site 2220512
+At variant site 2223293
+At variant site 2216443
+At variant site 2228967
+At variant site 2251999
+At variant site 2264782
+At variant site 2269780
+At variant site 2270102
+At variant site 2282787
+At variant site 2285251
+At variant site 2287121
+At variant site 2300237
+At variant site 2338990
+At variant site 2338994
+At variant site 2341636
+At variant site 2362041
+At variant site 2386389
+At variant site 2424925
+At variant site 2509722
+At variant site 2521342
+At variant site 2586127
+At variant site 2612632
+At variant site 2656225
+At variant site 2718852
+At variant site 2734074
+At variant site 2751804
+At variant site 2752698
+At variant site 2760152
+At variant site 2779136
+At variant site 2786952
+At variant site 2818837
+At variant site 2827984
+At variant site 2828019
+At variant site 2830525
+At variant site 2855259
+At variant site 2865760
+At variant site 2889633
+At variant site 2891267
+At variant site 2891728
+At variant site 2894208
+At variant site 2910461
+At variant site 2911293
+At variant site 2912294
+At variant site 2923391
+At variant site 2927939
+At variant site 2939373
+At variant site 2939657
+At variant site 2954439
+At variant site 2984740
+At variant site 3017465
+At variant site 3080795
+At variant site 3103682
+At variant site 3137058
+At variant site 3177884
+At variant site 3186860
+At variant site 3226181
+At variant site 3228143
+At variant site 3269581
+At variant site 3270784
+At variant site 3296843
+At variant site 3308606
+At variant site 3338603
+At variant site 3358235
+At variant site 3363338
+At variant site 3367765
+At variant site 3425854
+At variant site 3428917
+At variant site 3440464
+At variant site 3440468
+At variant site 3456666
+At variant site 3503895
+At variant site 3518555
+At variant site 3581414
+At variant site 3591063
+At variant site 3622441
+At variant site 3486977
+At variant site 3689523
+At variant site 3704596
+At variant site 3714211
+At variant site 3718357
+At variant site 3721806
+At variant site 3817117
+At variant site 3823159
+At variant site 3826684
+At variant site 3838871
+At variant site 3859893
+At variant site 3877421
+At variant site 3892671
+At variant site 3896340
+At variant site 3898408
+At variant site 3952800
+At variant site 3959418
+At variant site 4026899
+At variant site 4034827
+At variant site 4055801
+At variant site 4059904
+At variant site 4100975
+At variant site 4111303
+At variant site 4156099
+At variant site 4162339
+At variant site 4187485
+At variant site 4187817
+At variant site 4204441
+At variant site 4210274
+At variant site 4221490
+At variant site 4222073
+At variant site 4222882
+At variant site 4242643
+At variant site 4306155
+At variant site 4356110
+At variant site 4366272
+At variant site 4379680
+At variant site 4382054
+At variant site 4382275
+Completed in 4 msec 
+
+Output newick files will have branch lengths equal to the number of mutations of that branch.
+
+Collapsing input tree.
+Completed in 0 msec 
+
+Condensing identical sequences. 
+Writing condensed input tree to file /mnt/disks/cromwell_root/usher_out/condensed-tree.nh
+Completed in 0 msec 
+
+Found 0 missing samples.
+
+Writing final tree to file /mnt/disks/cromwell_root/usher_out/final-tree.nh 
+The parsimony score for this tree is: 480 
+Completed in 0 msec 
+
+Saving mutation-annotated tree object to file (after condensing identical sequences) usher_out/mtbc.pb
+Completed in 0 msec 
+
+panel samples named in the VCF: 18
+Loading input MAT file usher_out/mtbc.pb.
+Completed in 1 msec 
+
+Checking for and applying sample selection arguments
+Completed in 0 msec 
+
+Extracting subtree of 18 samples.
+Completed in 0 msec 
+
+Generating Newick file of final tree
+Loading input MAT file usher_out/mtbc.pb.
+Completed in 1 msec 
+
+Checking for and applying sample selection arguments
+Completed in 0 msec 
+
+Extracting subtree of 18 samples.
+Completed in 0 msec 
+
+Writing clade paths to /mnt/disks/cromwell_root/usher_out/clades.tsv
+Completed in 0 msec
+
+Loading input MAT file usher_out/mtbc.pb.
+Completed in 2 msec 
+
+Checking for and applying sample selection arguments
+Completed in 0 msec 
+
+Extracting subtree of 18 samples.
+Completed in 0 msec 
+
+Writing full node mutation information to /mnt/disks/cromwell_root/usher_out/all_paths.txt
+Completed in 0 msec
+
+Loading input MAT file usher_out/mtbc.pb.
+Completed in 1 msec 
+
+Writing samples to output /mnt/disks/cromwell_root/usher_out/samples.tsv
+Completed in 0 msec 
+
+status: success; mode: de_novo

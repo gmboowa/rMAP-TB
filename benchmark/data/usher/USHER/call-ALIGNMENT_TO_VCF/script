@@ -1,0 +1,174 @@
+#!/bin/bash
+
+cd /mnt/disks/cromwell_root
+tmpDir=$(mktemp -d "$PWD"/tmp.XXXXXX)
+chmod 777 "$tmpDir"
+export _JAVA_OPTIONS=-Djava.io.tmpdir="$tmpDir"
+export TMPDIR="$tmpDir"
+
+
+(
+cd /mnt/disks/cromwell_root
+ln -s /mnt/disks/cromwell_root /cromwell_root
+)
+
+
+out0a3b74e0="${tmpDir}/out.$$" err0a3b74e0="${tmpDir}/err.$$"
+mkfifo "$out0a3b74e0" "$err0a3b74e0"
+trap 'rm "$out0a3b74e0" "$err0a3b74e0"' EXIT
+touch '/mnt/disks/cromwell_root/stdout' '/mnt/disks/cromwell_root/stderr'
+tee '/mnt/disks/cromwell_root/stdout' < "$out0a3b74e0" &
+tee '/mnt/disks/cromwell_root/stderr' < "$err0a3b74e0" >&2 &
+(
+cd /mnt/disks/cromwell_root
+
+
+    set -euo pipefail
+    mkdir -p usher_prep
+    LOG=usher_prep/conversion.log
+    echo 'Starting validated Snippy-core input preparation' > "$LOG"
+    echo 'Converter image: python:3.11-slim' >> "$LOG"
+    echo 'Alignment file: /mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.full.aln' >> "$LOG"
+
+    # Uses only Python 3 standard library; no faToVcf dependency.
+    python3 - "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.full.aln" "Reference" "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.vcf" >> "$LOG" 2>&1 <<'CONVERT_PY'
+import sys
+from pathlib import Path
+
+source = Path(sys.argv[1])
+requested_ref = sys.argv[2]
+precomputed = Path(sys.argv[3]) if sys.argv[3] else None
+outdir = Path('usher_prep')
+if not source.is_file() or source.stat().st_size == 0:
+    raise SystemExit(f'ERROR: missing/empty alignment: {source}')
+
+seqs = {}
+name = None
+with source.open(errors='replace') as fh:
+    for raw in fh:
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith('>'):
+            fields = line[1:].split()
+            if not fields:
+                raise SystemExit('ERROR: blank FASTA sequence name')
+            name = fields[0]
+            if name in seqs:
+                raise SystemExit(f'ERROR: duplicated FASTA name: {name}')
+            seqs[name] = []
+        elif name is None:
+            raise SystemExit('ERROR: FASTA data before first header')
+        else:
+            seqs[name].append(line)
+seqs = {k: ''.join(v).upper() for k,v in seqs.items()}
+print(f'FASTA sequence count: {len(seqs)}', flush=True)
+if len(seqs) < 3:
+    raise SystemExit('ERROR: expected a reference and at least two samples')
+ref = next((n for n in [requested_ref,'Reference','reference','ref','NC_000962.3','NC_000962'] if n in seqs), None)
+if ref is None:
+    raise SystemExit(f'ERROR: reference sequence not found; available FASTA headers: {list(seqs)[:25]}')
+lengths = {len(s) for s in seqs.values()}
+if len(lengths) != 1 or not next(iter(lengths)):
+    raise SystemExit(f'ERROR: FASTA sequences are empty or have differing lengths: {sorted(lengths)}')
+if '-' in seqs[ref]:
+    raise SystemExit('ERROR: gaps in reference; cannot safely assign VCF reference coordinates')
+print(f'Reference: {ref}; length: {len(seqs[ref])}; panel samples: {len(seqs)-1}', flush=True)
+
+# Snippy-core missing/poor-quality symbols: X, N, -, and IUPAC ambiguity.
+# Replace these with N for building an initial phylogenetic tree.
+order = [ref] + [k for k in seqs if k != ref]
+with (outdir/'alignment.ordered.fa').open('w') as dest:
+    for sample in order:
+        clean = ''.join(c if c in 'ACGT' else 'N' for c in seqs[sample])
+        dest.write(f'>{sample}\n')
+        for pos in range(0,len(clean),100):
+            dest.write(clean[pos:pos+100]+'\n')
+(outdir/'reference_name.txt').write_text(ref+'\n')
+
+vcf = outdir/'alignment.vcf'
+if precomputed:
+    if not precomputed.is_file() or precomputed.stat().st_size == 0:
+        raise SystemExit(f'ERROR: missing/empty Snippy-core VCF: {precomputed}')
+    # Keep the original Snippy-core genotype data and reference coordinates;
+    # retain SNP records only (UShER ignores insertions/deletions).
+    expected = set(seqs)-{ref}
+    header_samples = None
+    total = 0
+    kept = 0
+    with precomputed.open(errors='replace') as fin, vcf.open('w') as fout:
+        for raw in fin:
+            if raw.startswith('##'):
+                fout.write(raw)
+            elif raw.startswith('#CHROM'):
+                fields = raw.rstrip('\n').split('\t')
+                if len(fields)<10 or fields[8]!='FORMAT':
+                    raise SystemExit('ERROR: VCF has no sample genotype columns')
+                header_samples = fields[9:]
+                if set(header_samples) != expected or len(header_samples) != len(expected):
+                    raise SystemExit(f'ERROR: VCF samples do not match FASTA panel. FASTA={sorted(expected)}; VCF={sorted(header_samples)}')
+                fout.write(raw)
+            elif raw.startswith('#'):
+                fout.write(raw)
+            else:
+                total += 1
+                fields = raw.rstrip('\n').split('\t')
+                if len(fields) != 9+len(header_samples or []):
+                    raise SystemExit(f'ERROR: malformed VCF record #{total}')
+                allele = fields[4].split(',')
+                if fields[3].upper() not in ('A','C','G','T') or not allele or any(a.upper() not in ('A','C','G','T') for a in allele):
+                    continue
+                if 'GT' not in fields[8].split(':'):
+                    raise SystemExit('ERROR: genotype GT missing from Snippy-core VCF')
+                fout.write(raw)
+                kept += 1
+    if header_samples is None:
+        raise SystemExit('ERROR: Snippy-core VCF lacks #CHROM header')
+    print(f'Reused Snippy-core VCF: {total} records, {kept} SNP-only records, {len(header_samples)} samples', flush=True)
+else:
+    # Fallback generator for SNV-only VCF. Snippy-core full alignment has one
+    # column per reference nucleotide. Do not use core.aln (SNP-only) here.
+    # For a single-chromosome H37Rv alignment, use its standard accession.
+    chrom = 'NC_000962.3'
+    reference = seqs[ref]
+    panel = [k for k in seqs if k != ref]
+    kept = 0
+    with vcf.open('w') as fout:
+        fout.write('##fileformat=VCFv4.2\n')
+        fout.write('##source=USHER_TB_BENCHMARK_alignment_converter\n')
+        fout.write(f'##contig=<ID={chrom},length={len(reference)}>\n')
+        fout.write('##FORMAT=<ID=GT,Number=1,Type=String,Description="Haploid genotype">\n')
+        fout.write('\t'.join(['#CHROM','POS','ID','REF','ALT','QUAL','FILTER','INFO','FORMAT']+panel)+'\n')
+        for i, ref_base in enumerate(reference):
+            if ref_base not in 'ACGT':
+                continue
+            alts = sorted({seqs[n][i] for n in panel if seqs[n][i] in 'ACGT' and seqs[n][i]!=ref_base})
+            if not alts:
+                continue
+            code = {ref_base:'0', **{a:str(j) for j,a in enumerate(alts,1)}}
+            genotypes = [code.get(seqs[n][i],'.') for n in panel]
+            fout.write('\t'.join([chrom,str(i+1),'.',ref_base,','.join(alts),'.','PASS','.','GT']+genotypes)+'\n')
+            kept += 1
+    print(f'Generated aligned FASTA -> VCF: {kept} SNP records, {len(panel)} samples', flush=True)
+
+if kept < 1:
+    raise SystemExit('ERROR: produced no SNP records; refusing an empty VCF')
+if not vcf.exists() or vcf.stat().st_size == 0:
+    raise SystemExit('ERROR: final VCF is empty')
+print('Alignment preparation completed successfully', flush=True)
+CONVERT_PY
+)  > "$out0a3b74e0" 2> "$err0a3b74e0"
+echo $? > /mnt/disks/cromwell_root/rc.tmp
+(
+# add a .file in every empty directory to facilitate directory delocalization on the cloud
+cd /mnt/disks/cromwell_root
+find . -type d -exec sh -c '[ -z "$(ls -A '"'"'{}'"'"')" ] && touch '"'"'{}'"'"'/.file' \;
+)
+(
+cd /mnt/disks/cromwell_root
+sync
+
+
+)
+mv /mnt/disks/cromwell_root/rc.tmp /mnt/disks/cromwell_root/rc
+

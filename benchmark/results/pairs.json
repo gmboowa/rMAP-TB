@@ -1,0 +1,75 @@
+{
+ "rMAP-TB": {
+  "pairs_scored": 3,
+  "pairs_refused": 150,
+  "called_close": 1,
+  "controls": {
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x vs PURE_ERR038255_100x": {
+    "snps": 0,
+    "called": "close",
+    "truth": "close"
+   },
+   "PURE_ERR038255_100x vs PURE_ERR13260175_100x": {
+    "snps": 1148,
+    "called": "distant",
+    "truth": "distant"
+   },
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x vs PURE_ERR13260175_100x": {
+    "snps": 1140,
+    "called": "distant",
+    "truth": "distant"
+   }
+  }
+ },
+ "MTBseq": {
+  "pairs_scored": 153,
+  "pairs_refused": 0,
+  "max_distance": 4,
+  "called_close_at_5": 153,
+  "called_close_at_12": 153,
+  "controls": {
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x vs PURE_ERR038255_100x": {
+    "snps": 0,
+    "called": "close",
+    "truth": "close"
+   },
+   "PURE_ERR038255_100x vs PURE_ERR13260175_100x": {
+    "snps": 0,
+    "called": "close",
+    "truth": "distant"
+   },
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x vs PURE_ERR13260175_100x": {
+    "snps": 0,
+    "called": "close",
+    "truth": "distant"
+   }
+  }
+ },
+ "UShER": {
+  "pairs_scored": 153,
+  "pairs_refused": 0,
+  "pairs_in_same_cluster": 153,
+  "controls": {
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x vs PURE_ERR038255_100x": {
+    "called": "close",
+    "truth": "close"
+   },
+   "PURE_ERR038255_100x vs PURE_ERR13260175_100x": {
+    "called": "close",
+    "truth": "distant"
+   },
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x vs PURE_ERR13260175_100x": {
+    "called": "close",
+    "truth": "distant"
+   }
+  }
+ },
+ "MAGMA": {
+  "note": "PURE_ERR038255_100x and the same-strain control produced no mapped reads, so none of the three control pairs can be scored",
+  "clustered_samples": 9,
+  "pure_parent_in_cluster": {
+   "PURE_ERR13260175_100x": 2
+  },
+  "controls_assessable": 0
+ }
+}

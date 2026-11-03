@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1321" height="678" viewBox="0 0 1321 678" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" role="img" aria-label="MTBC Core-SNP Phylogenetic Tree">
+<defs><filter id="rmapTipShadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="0.6" stdDeviation="0.8" flood-color="#0f172a" flood-opacity="0.25"/></filter></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="28" y="34" font-size="20" font-weight="700" fill="#0f172a">MTBC Core-SNP Phylogenetic Tree</text>
+<text x="28" y="56" font-size="11.5" fill="#64748b">18 MTBC isolates · IQ-TREE2 maximum likelihood · midpoint-rooted · reference tip removed: Reference</text>
+<text x="612" y="80" font-size="10" font-weight="700" fill="#94a3b8" letter-spacing="0.08em">SAMPLE</text>
+<text x="956.5" y="80" font-size="10" font-weight="700" fill="#94a3b8" letter-spacing="0.08em">LINEAGE</text>
+<text x="1149.26" y="80" font-size="10" font-weight="700" fill="#94a3b8" letter-spacing="0.08em">RESISTANCE PROFILE</text>
+<rect x="32" y="92.0" width="1263" height="26" fill="#f8fafc"/>
+<rect x="32" y="144.0" width="1263" height="26" fill="#f8fafc"/>
+<rect x="32" y="196.0" width="1263" height="26" fill="#f8fafc"/>
+<rect x="32" y="248.0" width="1263" height="26" fill="#f8fafc"/>
+<rect x="32" y="300.0" width="1263" height="26" fill="#f8fafc"/>
+<rect x="32" y="352.0" width="1263" height="26" fill="#f8fafc"/>
+<rect x="32" y="404.0" width="1263" height="26" fill="#f8fafc"/>
+<rect x="32" y="456.0" width="1263" height="26" fill="#f8fafc"/>
+<rect x="32" y="508.0" width="1263" height="26" fill="#f8fafc"/>
+<path d="M38.00,252.67 V130.80 H68.86" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M68.86,130.80 V105.00 H68.95" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M68.86,130.80 V156.59 H69.08" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M69.08,156.59 V131.00 H69.17" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M69.08,156.59 V182.19 H597.08" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.08,182.19 V157.00 H597.17" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.08,182.19 V207.38 H597.27" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.27,207.38 V183.00 H597.35" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.27,207.38 V231.75 H597.47" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.47,231.75 V209.00 H597.56" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.47,231.75 V254.50 H597.56" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.56,254.50 V235.00 H597.65" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.56,254.50 V274.00 H597.76" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.76,274.00 V261.00 H597.84" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.76,274.00 V287.00 H598.00" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M38.00,252.67 V374.55 H142.32" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M142.32,374.55 V332.50 H259.28" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M259.28,332.50 V313.00 H259.37" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M259.28,332.50 V352.00 H265.31" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M265.31,352.00 V339.00 H265.40" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M265.31,352.00 V365.00 H265.50" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M142.32,374.55 V416.59 H592.96" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M592.96,416.59 V391.00 H593.05" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M592.96,416.59 V442.19 H593.17" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M593.17,442.19 V417.00 H593.26" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M593.17,442.19 V467.38 H597.35" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.35,467.38 V443.00 H597.43" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.35,467.38 V491.75 H597.54" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.54,491.75 V469.00 H597.63" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.54,491.75 V514.50 H597.73" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.73,514.50 V495.00 H597.92" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.73,514.50 V534.00 H597.91" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.91,534.00 V521.00 H598.00" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M597.91,534.00 V547.00 H598.00" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M30.00,252.67 H38.00" fill="none" stroke="#334155" stroke-width="1.7" stroke-linecap="round"/>
+<text x="65.86" y="127.30" font-size="9.5" text-anchor="end" fill="#b91c1c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">50</text>
+<text x="66.08" y="153.09" font-size="9.5" text-anchor="end" fill="#c2410c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">78</text>
+<text x="594.08" y="178.69" font-size="9.5" text-anchor="end" fill="#475569" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">100</text>
+<text x="594.27" y="203.88" font-size="9.5" text-anchor="end" fill="#475569" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">100</text>
+<text x="594.47" y="228.25" font-size="9.5" text-anchor="end" fill="#475569" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">100</text>
+<text x="594.56" y="251.00" font-size="9.5" text-anchor="end" fill="#475569" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">100</text>
+<text x="594.76" y="270.50" font-size="9.5" text-anchor="end" fill="#475569" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">100</text>
+<text x="256.28" y="329.00" font-size="9.5" text-anchor="end" fill="#475569" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">100</text>
+<text x="262.31" y="348.50" font-size="9.5" text-anchor="end" fill="#b91c1c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">56</text>
+<text x="589.96" y="413.09" font-size="9.5" text-anchor="end" fill="#c2410c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">74</text>
+<text x="590.17" y="438.69" font-size="9.5" text-anchor="end" fill="#c2410c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">84</text>
+<text x="594.35" y="463.88" font-size="9.5" text-anchor="end" fill="#c2410c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">71</text>
+<text x="594.54" y="488.25" font-size="9.5" text-anchor="end" fill="#c2410c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">85</text>
+<text x="594.73" y="511.00" font-size="9.5" text-anchor="end" fill="#c2410c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">86</text>
+<text x="594.91" y="530.50" font-size="9.5" text-anchor="end" fill="#c2410c" font-weight="600" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">71</text>
+<line x1="76.45" y1="105.00" x2="606.00" y2="105.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="68.95" cy="105.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_20pctB_100x — lineage2.2.1;lineage4 — RR-TB</title></circle>
+<text x="612" y="109.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_20pctB_100x</text>
+<rect x="954.5" y="96.25" width="137.5" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="108.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1;lineage4</text>
+<rect x="1147.26" y="96.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="108.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="76.67" y1="131.00" x2="606.00" y2="131.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="69.17" cy="131.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_30pctB_100x — lineage2.2.1;lineage4.8.2 — RR-TB</title></circle>
+<text x="612" y="135.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_30pctB_100x</text>
+<rect x="954.5" y="122.25" width="161.0" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="134.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1;lineage4.8.2</text>
+<rect x="1147.26" y="122.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="134.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="604.67" y1="157.00" x2="606.00" y2="157.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="597.17" cy="157.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_50pctB_100x — lineage2.2.1 — RR-TB</title></circle>
+<text x="612" y="161.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_50pctB_100x</text>
+<rect x="954.5" y="148.25" width="84.6" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="160.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1</text>
+<rect x="1147.26" y="148.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="160.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="604.85" y1="183.00" x2="606.00" y2="183.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="597.35" cy="183.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_30pctA_100x — lineage2.2.1 — RR-TB</title></circle>
+<text x="612" y="187.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_30pctA_100x</text>
+<rect x="954.5" y="174.25" width="84.6" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="186.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1</text>
+<rect x="1147.26" y="174.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="186.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="605.06" y1="209.00" x2="606.00" y2="209.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="597.56" cy="209.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_20pctA_100x — lineage2.2.1;lineage4.8.2 — RR-TB</title></circle>
+<text x="612" y="213.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_20pctA_100x</text>
+<rect x="954.5" y="200.25" width="161.0" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="212.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1;lineage4.8.2</text>
+<rect x="1147.26" y="200.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="212.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="605.15" y1="235.00" x2="606.00" y2="235.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="597.65" cy="235.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_10pctA_100x — lineage2.2.1;lineage4.8.2 — RR-TB</title></circle>
+<text x="612" y="239.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_10pctA_100x</text>
+<rect x="954.5" y="226.25" width="161.0" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="238.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1;lineage4.8.2</text>
+<rect x="1147.26" y="226.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="238.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="605.34" y1="261.00" x2="606.00" y2="261.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="597.84" cy="261.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_05pctA_100x — lineage2.2.1;lineage4.8 — RR-TB</title></circle>
+<text x="612" y="265.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_05pctA_100x</text>
+<rect x="954.5" y="252.25" width="149.2" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="264.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1;lineage4.8</text>
+<rect x="1147.26" y="252.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="264.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="605.50" y1="287.00" x2="606.00" y2="287.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="598.00" cy="287.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>PURE_ERR13260175_100x — lineage2.2.1 — RR-TB</title></circle>
+<text x="612" y="291.50" font-size="12.5" font-weight="600" fill="#0f172a">PURE_ERR13260175_100x</text>
+<rect x="954.5" y="278.25" width="84.6" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="290.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1</text>
+<rect x="1147.26" y="278.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="290.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="266.87" y1="313.00" x2="606.00" y2="313.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="259.37" cy="313.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038266_ERR13260106_50pctB_100x — lineage3.1;lineage4.1.2 — RR-TB</title></circle>
+<text x="612" y="317.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038266_ERR13260106_50pctB_100x</text>
+<rect x="954.5" y="304.25" width="149.2" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="316.78" font-size="10.5" fill="#1d4ed8">lineage3.1;lineage4.1.2</text>
+<rect x="1147.26" y="304.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="316.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="272.90" y1="339.00" x2="606.00" y2="339.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="265.40" cy="339.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038266_ERR13260106_10pctB_100x — lineage3.1.1;lineage4.1.2.1 — RR-TB</title></circle>
+<text x="612" y="343.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038266_ERR13260106_10pctB_100x</text>
+<rect x="954.5" y="330.25" width="172.8" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="342.78" font-size="10.5" fill="#1d4ed8">lineage3.1.1;lineage4.1.2.1</text>
+<rect x="1147.26" y="330.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="342.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="273.00" y1="365.00" x2="606.00" y2="365.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="265.50" cy="365.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038266_ERR13260106_20pctB_100x — lineage3.1.1;lineage4.1 — RR-TB</title></circle>
+<text x="612" y="369.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038266_ERR13260106_20pctB_100x</text>
+<rect x="954.5" y="356.25" width="149.2" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="368.78" font-size="10.5" fill="#1d4ed8">lineage3.1.1;lineage4.1</text>
+<rect x="1147.26" y="356.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="368.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="600.55" y1="391.00" x2="606.00" y2="391.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="593.05" cy="391.00" r="4.5" fill="#2A9D8F" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_10pctB_140x — lineage2.2.1;lineage4.8.2 — Sensitive</title></circle>
+<text x="612" y="395.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_10pctB_140x</text>
+<rect x="954.5" y="382.25" width="161.0" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="394.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1;lineage4.8.2</text>
+<rect x="1147.26" y="382.25" width="70.7" height="17.5" rx="8.75" fill="#2A9D8F"/>
+<text x="1154.26" y="394.78" font-size="10.5" font-weight="600" fill="#ffffff">Sensitive</text>
+<line x1="600.76" y1="417.00" x2="606.00" y2="417.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="593.26" cy="417.00" r="4.5" fill="#2A9D8F" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_10pctB_100x — lineage2.2.1;lineage4.8.2 — Sensitive</title></circle>
+<text x="612" y="421.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_10pctB_100x</text>
+<rect x="954.5" y="408.25" width="161.0" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="420.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1;lineage4.8.2</text>
+<rect x="1147.26" y="408.25" width="70.7" height="17.5" rx="8.75" fill="#2A9D8F"/>
+<text x="1154.26" y="420.78" font-size="10.5" font-weight="600" fill="#ffffff">Sensitive</text>
+<line x1="604.93" y1="443.00" x2="606.00" y2="443.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="597.43" cy="443.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_10pctB_70x — lineage2.2.1;lineage4.8.2 — RR-TB</title></circle>
+<text x="612" y="447.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_10pctB_70x</text>
+<rect x="954.5" y="434.25" width="161.0" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="446.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1;lineage4.8.2</text>
+<rect x="1147.26" y="434.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="446.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="605.13" y1="469.00" x2="606.00" y2="469.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="597.63" cy="469.00" r="4.5" fill="#2A9D8F" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_10pctB_40x — lineage2.2.1 — Sensitive</title></circle>
+<text x="612" y="473.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_10pctB_40x</text>
+<rect x="954.5" y="460.25" width="84.6" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="472.78" font-size="10.5" fill="#1d4ed8">lineage2.2.1</text>
+<rect x="1147.26" y="460.25" width="70.7" height="17.5" rx="8.75" fill="#2A9D8F"/>
+<text x="1154.26" y="472.78" font-size="10.5" font-weight="600" fill="#ffffff">Sensitive</text>
+<line x1="605.42" y1="495.00" x2="606.00" y2="495.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="597.92" cy="495.00" r="4.5" fill="#2A9D8F" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x — lineage4.8.2 — Sensitive</title></circle>
+<text x="612" y="499.50" font-size="12.5" font-weight="600" fill="#0f172a">CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x</text>
+<rect x="954.5" y="486.25" width="84.6" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="498.78" font-size="10.5" fill="#1d4ed8">lineage4.8.2</text>
+<rect x="1147.26" y="486.25" width="70.7" height="17.5" rx="8.75" fill="#2A9D8F"/>
+<text x="1154.26" y="498.78" font-size="10.5" font-weight="600" fill="#ffffff">Sensitive</text>
+<line x1="605.50" y1="521.00" x2="606.00" y2="521.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="598.00" cy="521.00" r="4.5" fill="#F59E0B" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>MIX_ERR038255_ERR13260175_05pctB_100x — lineage2.2;lineage4.8.2 — RR-TB</title></circle>
+<text x="612" y="525.50" font-size="12.5" font-weight="600" fill="#0f172a">MIX_ERR038255_ERR13260175_05pctB_100x</text>
+<rect x="954.5" y="512.25" width="149.2" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="524.78" font-size="10.5" fill="#1d4ed8">lineage2.2;lineage4.8.2</text>
+<rect x="1147.26" y="512.25" width="45.5" height="17.5" rx="8.75" fill="#F59E0B"/>
+<text x="1154.26" y="524.78" font-size="10.5" font-weight="600" fill="#ffffff">RR-TB</text>
+<line x1="605.50" y1="547.00" x2="606.00" y2="547.00" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="1.5 3"/>
+<circle cx="598.00" cy="547.00" r="4.5" fill="#2A9D8F" stroke="#ffffff" stroke-width="1.2" filter="url(#rmapTipShadow)"><title>PURE_ERR038255_100x — lineage4.8.2 — Sensitive</title></circle>
+<text x="612" y="551.50" font-size="12.5" font-weight="600" fill="#0f172a">PURE_ERR038255_100x</text>
+<rect x="954.5" y="538.25" width="84.6" height="17.5" rx="8.75" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+<text x="961.5" y="550.78" font-size="10.5" fill="#1d4ed8">lineage4.8.2</text>
+<rect x="1147.26" y="538.25" width="70.7" height="17.5" rx="8.75" fill="#2A9D8F"/>
+<text x="1154.26" y="550.78" font-size="10.5" font-weight="600" fill="#ffffff">Sensitive</text>
+<path d="M38,594 h76.63 M38,589 v10 M114.63,589 v10" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+<text x="76.32" y="612" font-size="11" text-anchor="middle" fill="#334155">0.00002 substitutions / site</text>
+<circle cx="204.0" cy="590.0" r="5" fill="#2A9D8F" stroke="#ffffff" stroke-width="1"/>
+<text x="214.0" y="593.8" font-size="10.5" fill="#334155">Sensitive</text>
+<circle cx="280.9" cy="590.0" r="5" fill="#F59E0B" stroke="#ffffff" stroke-width="1"/>
+<text x="290.9" y="593.8" font-size="10.5" fill="#334155">RR-TB</text>
+<text x="38" y="638" font-size="10.5" fill="#64748b">Node labels: UFBoot support (%). Tips coloured by canonical resistance category; tree midpoint-rooted for display when enabled.</text>
+</svg>

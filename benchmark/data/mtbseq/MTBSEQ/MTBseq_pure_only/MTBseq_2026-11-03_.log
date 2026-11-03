@@ -1,0 +1,56 @@
+
+
+MTBseq 1.1.0 - Copyright (C) 2018   Thomas A. Kohl, Robin Koch, Christian Utpatel,
+                              Maria Rosaria De Filippo, Viola Schleusener,
+                              Patrick Beckert, Daniela M. Cirillo, Stefan Niemann
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+
+
+<INFO>	[2026-11-03 06:45:28]	You are .
+<INFO>	[2026-11-03 06:45:28]	Your current working directory is: /work
+<INFO>	[2026-11-03 06:45:28]	You requested 1 thread(s) for the pipeline.
+
+<INFO>	[2026-11-03 06:45:28]	Your parameter setting is:
+<INFO>	[2026-11-03 06:45:28]	--step		TBjoin
+<INFO>	[2026-11-03 06:45:28]	--continue	0
+<INFO>	[2026-11-03 06:45:28]	--samples	samples.tsv
+<INFO>	[2026-11-03 06:45:28]	--project	rMAPTB_pure2
+<INFO>	[2026-11-03 06:45:28]	--resilist	/usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Resistance_Mediating.txt
+<INFO>	[2026-11-03 06:45:28]	--intregions	/usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Extended_Resistance_Mediating.txt
+<INFO>	[2026-11-03 06:45:28]	--categories	/usr/local/share/mtbseq-1.1.0-1/var/cat/MTB_Gene_Categories.txt
+<INFO>	[2026-11-03 06:45:28]	--basecalib	/usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Base_Calibration_List.vcf
+<INFO>	[2026-11-03 06:45:28]	--ref		M._tuberculosis_H37Rv_2015-11-13.fasta
+<INFO>	[2026-11-03 06:45:28]	--minbqual	13
+<INFO>	[2026-11-03 06:45:28]	--all_vars	0
+<INFO>	[2026-11-03 06:45:28]	--snp_vars	0
+<INFO>	[2026-11-03 06:45:28]	--lowfreq_vars	0
+<INFO>	[2026-11-03 06:45:28]	--mincovf	4
+<INFO>	[2026-11-03 06:45:28]	--mincovr	4
+<INFO>	[2026-11-03 06:45:28]	--minphred20	4
+<INFO>	[2026-11-03 06:45:28]	--minfreq	75
+<INFO>	[2026-11-03 06:45:28]	--unambig	95
+<INFO>	[2026-11-03 06:45:28]	--window	12
+<INFO>	[2026-11-03 06:45:28]	--distance	12
+<INFO>	[2026-11-03 06:45:28]	--quiet		0
+
+<INFO>	[2026-11-03 06:45:28]	The following programs will be used, if necessary:
+<INFO>	[2026-11-03 06:45:28]	/usr/local/share/mtbseq-1.1.0-1/opt/bwa_0.7.17
+<INFO>	[2026-11-03 06:45:28]	/usr/local/share/mtbseq-1.1.0-1/opt/samtools_1.6
+<INFO>	[2026-11-03 06:45:28]	/usr/local/share/mtbseq-1.1.0-1/opt/picard_2.17.0
+<INFO>	[2026-11-03 06:45:28]	/usr/local/share/mtbseq-1.1.0-1/opt/GenomeAnalysisTK_3.8
+
+<INFO>	[2026-11-03 06:45:28]	The following directories will be used, if necessary:
+<INFO>	[2026-11-03 06:45:28]	/work/Bam
+<INFO>	[2026-11-03 06:45:28]	/work/GATK_Bam
+<INFO>	[2026-11-03 06:45:28]	/work/Mpileup
+<INFO>	[2026-11-03 06:45:28]	/work/Position_Tables
+<INFO>	[2026-11-03 06:45:28]	/work/Called
+<INFO>	[2026-11-03 06:45:28]	/work/Joint
+<INFO>	[2026-11-03 06:45:28]	/work/Amend
+<INFO>	[2026-11-03 06:45:28]	/work/Classification
+<INFO>	[2026-11-03 06:45:28]	/work/Groups
+
+<INFO>	[2026-11-03 06:45:28]	### [TBjoin] selected ###
+<ERROR>	[2026-11-03 06:45:28]	Can't open directory /work/Joint: MTBseq.pl line: 655 

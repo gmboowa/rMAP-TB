@@ -1,0 +1,19 @@
+sample	alignment_length	called_bases	heterozygous_or_poor_quality	heterozygous_fraction	low_coverage	zero_coverage	masked	note
+0000_CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x	4411532	3961521	5742	0.001302	42670	30416	371183	Within the usual range for a single-strain sample
+0001_MIX_ERR038255_ERR13260175_05pctA_100x	4411532	4001083	630	0.000143	25889	12747	371183	Within the usual range for a single-strain sample
+0002_MIX_ERR038255_ERR13260175_05pctB_100x	4411532	3982489	6423	0.001456	36613	14824	371183	Within the usual range for a single-strain sample
+0003_MIX_ERR038255_ERR13260175_10pctA_100x	4411532	4006036	1327	0.000301	21535	11451	371183	Within the usual range for a single-strain sample
+0004_MIX_ERR038255_ERR13260175_10pctB_100x	4411532	3994193	6781	0.001537	26177	13198	371183	Within the usual range for a single-strain sample
+0005_MIX_ERR038255_ERR13260175_10pctB_140x	4411532	4005067	6756	0.001531	16112	12414	371183	Within the usual range for a single-strain sample
+0006_MIX_ERR038255_ERR13260175_10pctB_40x	4411532	3897965	5185	0.001175	119898	17301	371183	Within the usual range for a single-strain sample
+0007_MIX_ERR038255_ERR13260175_10pctB_70x	4411532	3975606	6711	0.001521	43838	14194	371183	Within the usual range for a single-strain sample
+0008_MIX_ERR038255_ERR13260175_20pctA_100x	4411532	4019093	2288	0.000519	7707	11261	371183	Within the usual range for a single-strain sample
+0009_MIX_ERR038255_ERR13260175_20pctB_100x	4411532	4009890	6274	0.001422	12360	11825	371183	Within the usual range for a single-strain sample
+0010_MIX_ERR038255_ERR13260175_30pctA_100x	4411532	4021427	2792	0.000633	4746	11384	371183	Within the usual range for a single-strain sample
+0011_MIX_ERR038255_ERR13260175_30pctB_100x	4411532	4015810	5503	0.001247	7464	11572	371183	Within the usual range for a single-strain sample
+0012_MIX_ERR038255_ERR13260175_50pctB_100x	4411532	4020700	3917	0.000888	4468	11264	371183	Within the usual range for a single-strain sample
+0013_MIX_ERR038266_ERR13260106_10pctB_100x	4411532	3978808	6289	0.001426	42128	13124	371183	Within the usual range for a single-strain sample
+0014_MIX_ERR038266_ERR13260106_20pctB_100x	4411532	4010837	5743	0.001302	11234	12535	371183	Within the usual range for a single-strain sample
+0015_MIX_ERR038266_ERR13260106_50pctB_100x	4411532	4021968	3208	0.000727	2999	12174	371183	Within the usual range for a single-strain sample
+0016_PURE_ERR038255_100x	4411532	3970399	5898	0.001337	34307	29745	371183	Within the usual range for a single-strain sample
+0017_PURE_ERR13260175_100x	4411532	4000856	396	0.000090	2996	36101	371183	Within the usual range for a single-strain sample

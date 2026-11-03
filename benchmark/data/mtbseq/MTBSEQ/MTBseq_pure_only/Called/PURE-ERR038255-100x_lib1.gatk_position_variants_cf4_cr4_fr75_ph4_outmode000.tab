@@ -1,0 +1,582 @@
+#Pos	Insindex	Ref	Type	Allel	CovFor	CovRev	Qual20	Freq	Cov	Subst	Gene	GeneName	Product	ResistanceSNP	PhyloSNP	InterestingRegion
+4013	0	T	SNP	C	64	58	120	100.00	122	Ile245Thr (atc/aCc)	Rv0003	recF	DNA replication/repair protein RecF	 	 	 
+7362	0	G	SNP	C	53	58	110	99.11	112	Glu21Gln (gag/Cag)	Rv0006	gyrA	DNA gyrase subunit A	 	 	fluoroquinolones (FQ)
+8135	0	C	SNP	T	57	35	89	100.00	92	Val278Val (gtc/gtT)	Rv0006	gyrA	DNA gyrase subunit A	 	 	fluoroquinolones (FQ)
+11879	0	A	SNP	G	40	62	98	99.03	103	Ser145Pro (tcc/Ccc)	Rv0008c	-	cell wall synthesis protein CwsA	 	 	 
+14785	0	T	SNP	C	46	62	107	100.00	108	Cys233Arg (tgc/Cgc)	Rv0012	-	membrane protein	 	 	 
+16807	0	C	SNP	T	58	60	118	98.33	120	Val222Ile (gtc/Atc)	Rv0014c	pknB	serine/threonine-protein kinase PknB	 	 	 
+21795	0	G	SNP	A	28	20	42	100.00	48	Pro463Ser (ccg/Tcg)	Rv0018c	pstP	phosphoserine/threonine phosphatase PstP	 	 	 
+22583	0	T	SNP	C	55	55	109	100.00	110	Glu200Gly (gaa/gGa)	Rv0018c	pstP	phosphoserine/threonine phosphatase PstP	 	 	 
+26959	0	C	SNP	G	56	28	79	98.82	85	 	 	 	 	 	 	 
+28640	0	T	SNP	C	21	40	60	98.39	62	Val93Val (gtt/gtC)	Rv0024	-	NLP/P60 family protein	 	 	 
+34044	0	T	SNP	C	58	58	116	100.00	116	 	 	 	 	 	 	 
+34859	0	G	SNP	C	65	51	116	100.00	116	Glu189Gln (gag/Cag)	Rv0032	bioF2	8-amino-7-oxononanoate synthase	 	 	 
+42967	0	G	SNP	C	40	52	91	100.00	92	Pro133Pro (ccc/ccG)	Rv0040c	mtc28	hypothetical protein	 	 	 
+47782	0	C	SNP	T	62	65	126	100.00	127	Gly107Ser (ggc/Agc)	Rv0043c	-	HTH-type transcriptional regulator	 	 	 
+53278	0	C	SNP	G	6	14	18	95.24	21	 	 	 	 	 	 	 
+55553	0	C	SNP	T	37	44	76	100.00	81	Pro631Ser (ccg/Tcg)	Rv0050	ponA1	bifunctional penicillin-insensitive transglycosylase/penicillin-sensitive transpeptidase	 	 	 
+61981	0	C	SNP	T	55	45	87	98.04	102	Pro529Leu (ccg/cTg)	Rv0058	dnaB	replicative DNA helicase	 	 	 
+62049	0	A	SNP	G	55	53	105	100.00	108	Arg552Gly (agg/Ggg)	Rv0058	dnaB	replicative DNA helicase	 	 	 
+69989	0	G	SNP	A	30	56	76	100.00	86	Gly457Asp (ggt/gAt)	Rv0064	-	transmembrane protein	 	 	 
+70816	0	A	SNP	G	70	44	113	99.13	115	Asn733Asp (aac/Gac)	Rv0064	-	transmembrane protein	 	 	 
+75940	0	G	SNP	C	47	51	98	100.00	98	Val214Leu (gtg/Ctg)	Rv0068	-	oxidoreductase	 	 	 
+104915	0	T	SNP	C	18	15	30	94.29	35	Thr101Ala (acc/Gcc)	Rv0095c	-	hypothetical protein	 	 	 
+104919	0	G	SNP	A	16	10	24	96.30	27	Leu99Leu (ctc/ctT)	Rv0095c	-	hypothetical protein	 	 	 
+104962	0	G	SNP	A	34	35	64	95.83	72	Ala85Val (gcg/gTg)	Rv0095c	-	hypothetical protein	 	 	 
+116000	0	T	SNP	G	45	43	85	100.00	88	Val2000Val (gtt/gtG)	Rv0101	nrp	peptide synthetase Nrp	 	 	 
+122109	0	A	SNP	G	48	24	70	98.63	73	Leu22Ser (ttg/tCg)	Rv0103c	ctpB	cation-transporter P-type ATPase B	 	 	 
+122483	0	T	SNP	G	52	50	102	100.00	102	Ile56Ser (atc/aGc)	Rv0104	-	hypothetical protein	 	 	 
+125830	1	G	Ins	A	40	43	83	91.21	84	 	Rv0107c	ctpI	cation-transporter ATPase I	 	 	 
+131174	1	T	Ins	G	37	60	97	96.04	97	 	 	 	 	 	 	 
+133839	0	C	SNP	T	50	54	102	100.00	104	 	 	 	 	 	 	 
+146087	0	T	SNP	C	36	40	75	100.00	76	Asn562Ser (aat/aGt)	Rv0120c	fusA2	elongation factor G	 	 	 
+147926	0	C	SNP	T	63	56	117	100.00	119	Trp139_ (tgg/tgA)	Rv0121c	-	hypothetical protein	 	 	 
+154283	0	T	SNP	C	23	39	53	84.93	73	Ser18Pro (tcg/Ccg)	Rv0127	mak	maltokinase	 	 	 
+158490	0	G	SNP	A	56	32	85	100.00	88	Ser390Leu (tca/tTa)	Rv0131c	fadE1	acyl-CoA dehydrogenase FadE1	 	 	 
+166584	0	G	SNP	A	74	47	106	100.00	121	Gly253Asp (ggt/gAt)	Rv0139	-	oxidoreductase	 	 	 
+177857	0	G	SNP	A	17	48	63	100.00	65	Leu485Leu (ctg/Ttg)	Rv0151c	PE1	PE family protein PE1	 	 	 
+188800	0	T	SNP	C	49	42	89	100.00	91	Thr14Ala (acg/Gcg)	Rv0159c	PE3	PE family protein PE3	 	 	 
+206339	0	T	SNP	C	44	56	99	99.01	101	Leu370Pro (ctg/cCg)	Rv0174	mce1F	Mce family protein Mce1F	 	 	 
+212244	0	G	SNP	A	36	59	88	95.96	99	Gln3_ (caa/Taa)	Rv0180c	-	transmembrane protein	 	 	 
+225323	0	T	SNP	C	47	51	92	100.00	98	Lys417Glu (aag/Gag)	Rv0193c	-	hypothetical protein	 	 	 
+225429	0	T	SNP	G	43	69	110	100.00	112	Glu381Asp (gaa/gaC)	Rv0193c	-	hypothetical protein	 	 	 
+227098	0	T	SNP	C	54	55	109	100.00	109	Met74Thr (atg/aCg)	Rv0194	-	multidrug ABC transporter ATPase/permease	 	 	 
+234477	0	T	SNP	G	26	19	45	100.00	45	Tyr749_ (tat/taG)	Rv0197	-	oxidoreductase	 	 	 
+234496	1	C	Ins	G	31	12	43	100.00	43	 	Rv0197	-	oxidoreductase	 	 	 
+234496	2	C	Ins	T	31	12	43	100.00	43	 	Rv0197	-	oxidoreductase	 	 	 
+237164	0	T	SNP	C	33	60	88	100.00	93	Asp205Asp (gat/gaC)	Rv0199	-	membrane protein	 	 	 
+265554	0	A	SNP	C	49	53	101	100.00	102	Val16Val (gta/gtC)	Rv0222	echA1	enoyl-CoA hydratase EchA1	 	 	 
+278681	0	C	SNP	G	51	52	99	100.00	103	His33Asp (cat/Gat)	Rv0233	nrdB	ribonucleoside-diphosphate reductase subunit beta NrdB	 	 	 
+285772	0	A	SNP	C	5	8	13	100.00	13	Pro360Pro (cct/ccG)	Rv0236c	aftD	alpha-(1->3)-arabinofuranosyltransferase	 	 	 
+296141	0	C	SNP	T	45	34	64	100.00	79	Ser46Leu (tcg/tTg)	Rv0245	-	oxidoreductase	 	 	 
+310973	0	G	SNP	A	45	49	93	100.00	94	Ala182Val (gcg/gTg)	Rv0259c	-	hypothetical protein	 	 	 
+311613	0	G	SNP	T	55	51	101	100.00	106	Val349Val (gtc/gtA)	Rv0260c	-	transcriptional regulator	 	 	 
+325615	0	A	SNP	C	31	46	76	100.00	77	Glu350Ala (gag/gCg)	Rv0270	fadD2	fatty-acid--CoA ligase FadD2	 	 	 
+333120	0	A	SNP	G	12	17	29	100.00	29	Val6Ala (gtc/gCc)	Rv0277c	vapC25	ribonuclease VapC25	 	 	 
+333127	0	T	SNP	G	4	8	12	100.00	12	Ile4Leu (atc/Ctc)	Rv0277c	vapC25	ribonuclease VapC25	 	 	 
+333169	0	C	SNP	G	4	5	9	100.00	9	 	 	 	 	 	 	 
+333184	0	A	SNP	G	12	18	30	100.00	30	 	 	 	 	 	 	 
+333209	0	A	SNP	G	29	27	56	100.00	56	 	 	 	 	 	 	 
+333211	0	C	SNP	T	29	27	55	100.00	56	 	 	 	 	 	 	 
+333212	0	G	SNP	C	29	27	56	100.00	56	 	 	 	 	 	 	 
+335971	0	A	SNP	G	56	5	60	100.00	61	Leu114Leu (ttg/Ctg)	Rv0278c	-	PE-PGRS family protein PE_PGRS3	 	 	 
+338844	0	A	SNP	G	38	22	59	98.36	61	Val77Ala (gtg/gCg)	Rv0279c	PE_PGRS4	PE-PGRS family protein PE_PGRS4	 	 	 
+338845	0	C	SNP	T	38	23	55	98.39	62	Val77Met (gtg/Atg)	Rv0279c	PE_PGRS4	PE-PGRS family protein PE_PGRS4	 	 	 
+340132	0	G	SNP	A	57	73	129	99.24	131	Glu257Lys (gaa/Aaa)	Rv0280	PPE3	PPE family protein PPE3	 	 	 
+344444	0	C	SNP	T	24	53	70	100.00	77	Ser141Ser (agc/agT)	Rv0283	eccB3	ESX-3 secretion system protein EccB3	 	 	 
+346275	0	C	SNP	G	50	50	98	100.00	100	Pro214Arg (ccg/cGg)	Rv0284	eccC3	ESX-3 secretion system protein EccC3	 	 	 
+356528	0	A	SNP	G	47	46	90	100.00	93	Asn217Asp (aat/Gat)	Rv0292	eccE3	ESX-3 secretion system protein EccE	 	 	 
+370829	0	C	SNP	T	85	76	146	99.38	162	Gly646Arg (ggg/Agg)	Rv0304c	PPE5	PPE family protein PPE5	 	 	 
+373283	0	A	Del	GAP	59	59	109	92.19	128	 	Rv0305c	PPE6	PPE family protein PPE6	 	 	 
+381705	0	A	SNP	G	55	44	97	100.00	99	Ile384Val (atc/Gtc)	Rv0312	-	hypothetical protein	 	 	 
+384380	0	A	SNP	C	46	50	96	100.00	96	Lys260Thr (aag/aCg)	Rv0315	-	beta-1,3-glucanase	 	 	 
+386432	0	C	SNP	G	45	37	79	100.00	82	Gly223Ala (ggg/gCg)	Rv0318c	-	integral membrane protein	 	 	 
+390828	0	T	SNP	C	57	28	76	100.00	85	Ser142Gly (agt/Ggt)	Rv0323c	-	hypothetical protein	 	 	 
+396811	0	G	SNP	C	47	58	102	99.06	106	Gly204Ala (ggc/gCc)	Rv0331	-	dehydrogenase/reductase	 	 	 
+403980	0	G	SNP	A	42	60	98	100.00	102	Ala621Val (gcc/gTc)	Rv0338c	-	iron-sulfur-binding reductase	 	 	 
+414486	0	C	SNP	T	53	66	114	100.00	119	Glu152Glu (gag/gaA)	Rv0344c	lpqJ	lipoprotein LpqJ	 	 	 
+420008	0	A	SNP	G	52	39	89	100.00	91	Ala58Ala (gca/gcG)	Rv0350	dnaK	chaperone protein DnaK	 	 	 
+424320	1	T	Ins	C	56	42	98	87.50	98	 	Rv0354c	PPE7	PPE family protein PPE7	 	 	 
+432339	0	C	SNP	T	85	56	133	100.00	141	Asp781Asn (gac/Aac)	Rv0355c	PPE8	PPE family protein PPE8	 	 	 
+454295	0	T	SNP	C	48	48	91	100.00	96	Pro26Pro (cca/ccG)	Rv0376c	-	hypothetical protein	 	 	 
+459399	0	A	SNP	C	14	41	54	98.21	56	 	 	 	 	 	 	 
+467508	1	C	Ins	G	20	11	31	83.78	31	 	 	 	 	 	 	 
+467516	0	G	SNP	C	18	7	25	100.00	25	 	 	 	 	 	 	 
+467526	0	C	SNP	G	22	5	27	100.00	27	 	 	 	 	 	 	 
+467546	0	G	SNP	C	26	5	31	100.00	31	 	 	 	 	 	 	 
+467557	0	A	SNP	C	25	5	29	100.00	30	 	 	 	 	 	 	 
+467564	0	A	SNP	C	26	5	30	100.00	31	 	 	 	 	 	 	 
+467585	0	G	SNP	C	24	5	29	100.00	29	 	 	 	 	 	 	 
+467590	0	T	SNP	C	27	5	32	100.00	32	 	 	 	 	 	 	 
+467621	0	T	SNP	G	20	11	31	100.00	31	 	 	 	 	 	 	 
+467638	0	G	SNP	T	17	15	32	100.00	32	 	 	 	 	 	 	 
+475178	0	T	SNP	C	35	44	72	100.00	79	Val80Ala (gtc/gCc)	Rv0395	-	hypothetical protein	 	 	 
+481374	0	G	SNP	C	62	85	143	100.00	147	Arg620Gly (cgg/Ggg)	Rv0402c	mmpL1	transmembrane transport protein MmpL1	 	 	 
+489311	0	T	Del	GAP	59	70	130	91.49	141	 	Rv0405	pks6	membrane bound polyketide synthase	 	 	 
+499535	0	T	SNP	C	45	35	76	98.77	81	Ile29Val (atc/Gtc)	Rv0412c	-	membrane protein	 	 	 
+501352	0	C	SNP	T	12	12	21	100.00	24	Leu69Leu (ctg/Ttg)	Rv0415	thiO	thiamine biosynthesis oxidoreductase ThiO	 	 	 
+502589	0	C	SNP	G	58	53	106	100.00	111	Ser75Cys (tcc/tGc)	Rv0417	thiG	thiazole synthase	 	 	 
+503354	0	G	SNP	C	66	58	122	100.00	124	 	 	 	 	 	 	 
+513257	0	T	SNP	C	57	66	123	100.00	123	Met689Val (atg/Gtg)	Rv0425c	ctpH	metal cation transporting ATPase H	 	 	 
+515123	0	A	SNP	C	57	45	102	100.00	102	Cys67Gly (tgt/Ggt)	Rv0425c	ctpH	metal cation transporting ATPase H	 	 	 
+522303	0	A	SNP	G	53	43	85	100.00	96	 	 	 	 	 	 	 
+530703	0	G	SNP	A	41	65	104	100.00	106	Leu8Phe (ctc/Ttc)	Rv0441c	-	hypothetical protein	 	 	 
+541201	0	A	SNP	G	63	60	121	100.00	123	Leu97Leu (ctt/ctC)	Rv0450c	mmpL4	transmembrane transport protein MmpL4	 	 	 
+559919	0	C	SNP	G	72	85	154	99.37	158	Ser11Trp (tcg/tGg)	Rv0469	umaA	mycolic acid synthase UmaA	 	 	 
+573262	0	A	SNP	G	52	47	98	100.00	99	Gly180Gly (ggt/ggC)	Rv0484c	-	short-chain type oxidoreductase	 	 	 
+588943	0	G	SNP	A	56	42	95	98.99	99	Val207Met (gtg/Atg)	Rv0498	-	hypothetical protein	 	 	 
+590436	0	T	SNP	C	52	41	93	100.00	93	Ala118Ala (gct/gcC)	Rv0500	proC	pyrroline-5-carboxylate reductase	 	 	 
+598475	0	G	SNP	A	59	48	91	100.00	107	Arg426His (cgc/cAc)	Rv0507	mmpL2	transmembrane transport protein MmpL2	 	 	 
+610120	0	T	SNP	G	50	46	94	100.00	96	 	 	 	 	 	 	 
+623508	0	C	SNP	G	16	7	23	100.00	23	Ala239Gly (gcc/gGc)	Rv0532	PE_PGRS6	PE-PGRS family protein PE_PGRS6	 	 	 
+648002	0	T	SNP	G	76	58	132	99.26	135	Leu15Arg (ctc/cGc)	Rv0556	-	transmembrane protein	 	 	 
+656266	0	G	Del	GAP	37	53	90	100.00	90	 	Rv0565c	-	monooxygenase	 	 	 
+656267	0	T	Del	GAP	37	53	90	100.00	90	 	Rv0565c	-	monooxygenase	 	 	 
+666745	0	G	SNP	A	7	41	47	100.00	48	Asp166Asp (gac/gaT)	Rv0573c	pncB2	nicotinic acid phosphoribosyltransferase PncB2	 	 	 
+669398	0	T	SNP	C	45	39	82	100.00	84	Gln116Gln (caa/caG)	Rv0575c	-	oxidoreductase	 	 	 
+677213	0	C	SNP	T	51	40	89	98.91	92	Arg135Gln (cgg/cAg)	Rv0580c	-	hypothetical protein	 	 	 
+681313	0	C	SNP	T	65	60	122	100.00	125	Ile695Ile (atc/atT)	Rv0584	-	glycosidase	 	 	 
+685461	0	C	SNP	G	54	49	98	99.04	104	Ala111Ala (gcc/gcG)	Rv0587	yrbE2A	hypothetical protein	 	 	 
+686972	0	T	SNP	C	52	42	92	98.95	95	Phe51Ser (ttc/tCc)	Rv0589	mce2A	Mce family protein Mce2A	 	 	 
+690465	0	T	SNP	G	51	11	61	100.00	62	Leu469Leu (ctt/ctG)	Rv0591	mce2C	Mce family protein Mce2C	 	 	 
+698968	0	G	SNP	A	38	19	48	100.00	57	Gly9Gly (ggc/ggT)	Rv0601c	-	two component sensor kinase HK2	 	 	 
+699466	0	C	SNP	T	47	35	78	100.00	82	Gly112Ser (ggc/Agc)	Rv0602c	tcrA	two component DNA binding transcriptional regulator TcrA	 	 	 
+711394	0	C	SNP	T	57	50	101	100.00	107	Pro130Leu (cca/cTa)	Rv0617	vapC29	ribonuclease VapC29	 	 	 
+711697	0	G	SNP	A	10	47	56	100.00	57	 	 	 	 	 	 	 
+734658	0	A	SNP	G	42	56	97	100.00	98	Ala135Ala (gca/gcG)	Rv0639	nusG	transcription termination/antitermination protein NusG	 	 	 
+754186	0	A	SNP	G	43	58	95	100.00	101	Leu75Pro (ctc/cCc)	Rv0658c	-	integral membrane protein	 	 	 
+769320	0	G	SNP	A	50	54	104	100.00	104	Thr93Met (acg/aTg)	Rv0669c	-	neutral ceramidase	 	 	 
+771422	0	T	SNP	C	58	60	115	100.00	118	_281Arg (tga/Cga)	Rv0671	lpqP	lipoprotein LpqP	 	 	 
+775639	0	T	SNP	C	61	24	83	100.00	85	Ile948Val (att/Gtt)	Rv0676c	mmpL5	transmembrane transport protein MmpL5	 	 	 
+776891	0	C	SNP	A	44	72	116	100.00	116	Gln530His (cag/caT)	Rv0676c	mmpL5	transmembrane transport protein MmpL5	 	 	 
+780475	0	T	Del	GAP	43	49	90	98.92	93	 	 	 	 	 	 	 
+781395	0	T	SNP	C	26	57	80	100.00	83	 	 	 	 	 	 	streptomycin (SM)
+790950	0	C	SNP	T	63	14	73	98.72	78	Val42Ile (gtc/Atc)	Rv0690c	-	hypothetical protein	 	 	 
+797312	0	G	SNP	A	57	41	97	100.00	98	Arg127Gln (cgg/cAg)	Rv0697	-	dehydrogenase	 	 	 
+798808	0	G	SNP	T	45	38	78	100.00	83	 	 	 	 	 	 	 
+836538	0	A	SNP	G	4	4	8	100.00	8	Asn280Asp (aac/Gac)	Rv0746	PE_PGRS9	PE-PGRS family protein PE_PGRS9	 	 	 
+837033	0	A	SNP	G	10	7	15	100.00	17	Thr445Ala (acc/Gcc)	Rv0746	PE_PGRS9	PE-PGRS family protein PE_PGRS9	 	 	 
+852582	0	C	SNP	T	47	53	95	100.00	100	Pro63Ser (ccc/Tcc)	Rv0758	phoR	two component system response sensor kinase PhoR	 	 	 
+852910	0	C	SNP	T	44	37	81	100.00	81	Pro172Leu (ccc/cTc)	Rv0758	phoR	two component system response sensor kinase PhoR	 	 	 
+854253	0	C	Del	GAP	53	42	90	84.07	113	 	 	 	 	 	 	 
+874835	1	C	Ins	C	54	44	98	89.09	99	 	 	 	 	 	 	 
+874835	2	C	Ins	G	55	44	99	90.00	99	 	 	 	 	 	 	 
+881527	0	G	SNP	T	36	50	84	98.85	87	Arg23Arg (cgg/cgT)	Rv0787	-	hypothetical protein	 	 	 
+893733	0	T	SNP	G	32	33	57	100.00	65	Leu139Arg (ctg/cGg)	Rv0800	pepC	M18 family aminopeptidase	 	 	 
+903913	0	T	SNP	C	54	42	95	100.00	96	Gly63Gly (ggt/ggC)	Rv0809	purM	phosphoribosylformylglycinamidine cyclo-ligase PurM	 	 	 
+906857	0	A	SNP	G	34	49	76	98.81	84	Ile145Met (ata/atG)	Rv0812	-	amino acid aminotransferase	 	 	 
+921813	0	C	SNP	G	49	52	95	95.28	106	 	 	 	 	 	 	 
+930759	0	G	SNP	C	60	52	111	98.25	114	 	 	 	 	 	 	 
+953397	0	C	SNP	T	43	61	101	100.00	104	Val47Val (gtc/gtT)	Rv0857	-	hypothetical protein	 	 	 
+955524	0	A	SNP	G	46	37	82	100.00	83	Ser150Gly (agc/Ggc)	Rv0859	-	acyltransferase	 	 	 
+963973	0	C	SNP	T	59	64	119	99.19	124	Val35Val (gtc/gtT)	Rv0866	moaE2	molybdopterin synthase catalytic subunit 2	 	 	 
+964528	0	G	SNP	T	6	48	53	100.00	54	Gly336Gly (ggc/ggA)	Rv0867c	rpfA	resuscitation-promoting factor RpfA	 	 	 
+968863	0	C	SNP	T	5	8	13	100.00	13	Gly461Asp (ggc/gAc)	Rv0872c	PE_PGRS15	PE-PGRS family protein PE_PGRS15	 	 	 
+979704	0	G	SNP	C	32	42	70	98.67	75	Gly115Arg (ggc/Cgc)	Rv0881	-	tRNA/rRNA methyltransferase	 	 	 
+986463	0	G	SNP	C	69	64	133	100.00	133	 	 	 	 	 	 	 
+990001	0	G	SNP	C	40	59	98	100.00	99	Pro866Ala (ccc/Gcc)	Rv0890c	-	HTH-type transcriptional regulator	 	 	 
+993253	0	G	SNP	T	62	55	115	100.00	117	Pro68His (ccc/cAc)	Rv0891c	-	hypothetical protein	 	 	 
+993346	0	A	SNP	C	56	66	121	100.00	122	Val37Gly (gtt/gGt)	Rv0891c	-	hypothetical protein	 	 	 
+1010204	1	C	Ins	G	43	46	89	91.75	89	 	Rv0907	-	hypothetical protein	 	 	 
+1025106	0	T	SNP	C	51	51	102	99.03	103	Phe141Phe (ttt/ttC)	Rv0919	-	GCN5-like N-acetyltransferase	 	 	 
+1029671	0	T	SNP	C	51	52	103	100.00	103	Asn303Asp (aat/Gat)	Rv0923c	-	hypothetical protein	 	 	 
+1037911	0	C	SNP	T	52	51	97	100.00	103	Arg305_ (cga/Tga)	Rv0930	pstA1	phosphate ABC transporter permease PstA	 	 	 
+1068151	0	T	SNP	C	16	60	75	100.00	76	His197His (cat/caC)	Rv0956	purN	phosphoribosylglycinamide formyltransferase PurN	 	 	 
+1074558	0	G	SNP	A	35	58	84	95.88	97	Pro186Leu (ccc/cTc)	Rv0962c	lprP	lipoprotein LprP	 	 	 
+1076309	0	G	SNP	T	42	56	90	98.99	99	Pro124Thr (cct/Act)	Rv0964c	-	hypothetical protein	 	 	 
+1077312	0	A	SNP	G	52	54	106	100.00	106	Val175Ala (gtg/gCg)	Rv0966c	-	hypothetical protein	 	 	 
+1079927	0	C	SNP	A	45	45	86	98.90	91	Thr395Thr (acc/acA)	Rv0969	ctpV	copper-exporting ATPase	 	 	 
+1081681	0	T	SNP	C	42	50	87	100.00	92	Val210Val (gtt/gtC)	Rv0970	-	integral membrane protein	 	 	 
+1082445	0	T	SNP	A	53	30	80	100.00	83	Glu47Val (gaa/gTa)	Rv0971c	echA7	enoyl-CoA hydratase EchA7	 	 	 
+1093406	0	A	SNP	G	50	58	105	100.00	108	Val317Val (gtt/gtC)	Rv0978c	PE_PGRS17	PE-PGRS family protein PE_PGRS17	 	 	 
+1096633	0	T	SNP	G	45	34	78	100.00	79	 	 	 	 	 	 	 
+1096716	0	T	SNP	C	77	67	144	98.63	146	 	 	 	 	 	 	 
+1100234	0	T	SNP	C	54	54	106	100.00	108	Leu390Pro (ctg/cCg)	Rv0983	pepD	serine protease PepD	 	 	 
+1101353	0	A	SNP	C	58	51	109	100.00	109	Ile43Ser (atc/aGc)	Rv0985c	mscL	large-conductance ion mechanosensitive channel	 	 	 
+1109975	0	A	SNP	G	57	50	105	100.00	107	Gln235Arg (cag/cGg)	Rv0993	galU	UTP--glucose-1-phosphate uridylyltransferase	 	 	 
+1126889	0	G	SNP	C	43	75	113	100.00	118	Arg39Gly (cgc/Ggc)	Rv1007c	metS	methionine--tRNA ligase	 	 	 
+1127648	0	C	SNP	A	63	43	101	100.00	106	Thr187Asn (acc/aAc)	Rv1008	tatD	deoxyribonuclease TatD	 	 	 
+1130526	0	G	SNP	A	38	53	84	100.00	91	Ala112Ala (gcg/gcA)	Rv1011	ispE	4-diphosphocytidyl-2-C-methyl-D-erythritol kinase	 	 	 
+1149463	0	C	SNP	T	47	56	102	100.00	103	Gly742Arg (gga/Aga)	Rv1028c	kdpD	sensor protein KdpD	 	 	 
+1150585	0	G	SNP	A	36	48	80	100.00	84	Pro368Ser (ccc/Tcc)	Rv1028c	kdpD	sensor protein KdpD	 	 	 
+1163134	0	T	SNP	C	44	46	86	100.00	90	Gly81Gly (gga/ggG)	Rv1040c	PE8	PE family protein PE8	 	 	 
+1165521	1	T	Ins	A	43	56	99	93.40	99	 	 	 	 	 	 	 
+1168715	1	C	Ins	T	48	42	90	91.84	90	 	 	 	 	 	 	 
+1187152	1	T	Ins	G	39	15	54	87.10	54	 	Rv1064c	lpqV	lipoprotein LpqV	 	 	 
+1201778	0	C	SNP	A	66	52	111	100.00	118	Ser21Tyr (tcc/tAc)	Rv1077	cbs	cystathionine beta-synthase	 	 	 
+1204546	0	A	SNP	G	56	58	110	99.13	115	Leu160Leu (cta/ctG)	Rv1079	metB	cystathionine gamma-synthase	 	 	 
+1220680	0	T	SNP	C	56	51	106	99.07	108	Val36Ala (gta/gCa)	Rv1093	glyA1	serine hydroxymethyltransferase	 	 	 
+1223243	0	C	SNP	T	60	53	110	100.00	113	His83Tyr (cac/Tac)	Rv1095	phoH2	phosphate starvation-inducible protein PsiH	 	 	 
+1227217	0	C	SNP	T	63	47	108	100.00	110	Ala117Thr (gcg/Acg)	Rv1098c	fum	fumarate hydratase	 	 	 
+1273071	0	T	SNP	C	46	53	88	100.00	99	Ser217Pro (tcg/Ccg)	Rv1145	-	transmembrane transport protein	 	 	 
+1277869	1	G	Ins	T	49	63	112	94.92	112	 	 	 	 	 	 	 
+1281118	0	T	SNP	C	53	53	106	100.00	106	Thr123Ala (acg/Gcg)	Rv1154c	-	hypothetical protein	 	 	 
+1315191	0	A	SNP	C	36	46	79	100.00	82	_489Tyr (taa/taC)	Rv1180	pks3	polyketide beta-ketoacyl synthase	 	 	 
+1315884	0	G	SNP	A	44	55	98	100.00	99	Ala217Ala (gcg/gcA)	Rv1181	pks4	polyketide beta-ketoacyl synthase	 	 	 
+1323136	0	C	SNP	A	68	72	138	100.00	140	Asp539Glu (gac/gaA)	Rv1183	mmpL10	transmembrane transport protein MmpL10	 	 	 
+1328687	0	G	SNP	C	58	44	99	99.03	103	Pro207Ala (ccc/Gcc)	Rv1186c	-	hypothetical protein	 	 	 
+1365837	1	C	Ins	G	41	52	93	86.92	94	 	 	 	 	 	 	 
+1374065	0	T	SNP	C	52	29	78	100.00	81	Ser45Gly (agc/Ggc)	Rv1230c	-	membrane protein	 	 	 
+1375724	0	A	SNP	C	28	40	61	100.00	68	Cys149Gly (tgc/Ggc)	Rv1232c	-	hypothetical protein	 	 	 
+1382628	0	T	SNP	C	57	48	105	100.00	105	Lys139Glu (aaa/Gaa)	Rv1239c	corA	magnesium and cobalt transport transmembrane protein CorA	 	 	 
+1396922	0	T	SNP	C	36	41	77	100.00	77	Thr773Thr (aca/acG)	Rv1251c	-	hypothetical protein	 	 	 
+1411210	0	T	SNP	G	38	42	76	100.00	80	Val260Val (gtt/gtG)	Rv1263	amiB2	amidase AmiB	 	 	 
+1414021	0	C	SNP	T	65	48	113	100.00	113	Arg607Gln (cgg/cAg)	Rv1266c	pknH	serine/threonine-protein kinase PknH	 	 	 
+1424987	0	C	SNP	A	54	39	86	100.00	93	Gly79Gly (ggc/ggA)	Rv1275	lprC	lipoprotein LprC	 	 	 
+1440469	0	C	SNP	G	37	56	93	100.00	93	Pro521Pro (ccc/ccG)	Rv1286	-	bifunctional sulfate adenyltransferase subunit 1 CysN/adenylylsulfate kinase CysC	 	 	 
+1444655	0	C	SNP	T	56	52	102	99.08	109	Ser131Ser (tcg/tcA)	Rv1290c	-	hypothetical protein	 	 	 
+1445091	0	T	SNP	G	37	49	85	98.85	87	Ser12Ala (tcg/Gcg)	Rv1290A	-	hypothetical protein	 	 	 
+1457144	0	C	SNP	T	36	47	83	100.00	83	Arg194Cys (cgc/Tgc)	Rv1300	hemK	release factor glutamine methyltransferase	 	 	 
+1461309	0	C	SNP	T	61	49	106	100.00	110	 	 	 	 	 	 	 
+1468208	0	A	SNP	C	42	50	91	82.88	111	Leu433Arg (ctg/cGg)	Rv1313c	-	insertion sequence element IS1557 transposase	 	 	 
+1469564	1	C	Ins	G	45	52	97	90.65	97	 	 	 	 	 	 	 
+1469564	2	C	Ins	A	45	52	97	90.65	97	 	 	 	 	 	 	 
+1471659	0	C	SNP	T	48	52	98	100.00	100	 	 	 	 	 	 	 
+1474001	0	C	SNP	T	43	46	87	100.00	89	 	Rvnr02	-	rRNA	 	 	linezolid (LZD)
+1479049	0	C	Del	GAP	27	29	55	81.16	69	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479050	0	G	Del	GAP	27	29	55	81.16	69	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479051	0	A	Del	GAP	27	29	55	83.58	67	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479052	0	A	Del	GAP	27	29	55	82.35	68	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479053	0	C	Del	GAP	27	29	55	82.35	68	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479054	0	C	Del	GAP	27	29	55	87.50	64	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479055	0	A	Del	GAP	27	29	55	100.00	56	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479056	0	G	Del	GAP	27	29	55	100.00	56	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479057	0	C	Del	GAP	27	29	55	100.00	56	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479058	0	C	Del	GAP	27	29	55	100.00	56	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479059	0	G	Del	GAP	27	29	55	100.00	56	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1479060	0	T	Del	GAP	27	29	55	100.00	56	 	Rv1317c	alkA	bifunctional regulatory protein/DNA repair enzyme AlkA	 	 	 
+1482627	0	T	SNP	C	52	46	94	100.00	98	Thr531Ala (acg/Gcg)	Rv1320c	-	adenylate cyclase	 	 	 
+1484708	0	A	SNP	C	39	48	87	100.00	87	Ser144Arg (agc/Cgc)	Rv1321	-	endonuclease NucS	 	 	 
+1499274	0	C	SNP	G	31	36	58	100.00	67	Gly429Ala (ggc/gCc)	Rv1330c	pncB1	nicotinic acid phosphoribosyltransferase PncB1	 	 	 
+1533208	0	C	SNP	G	21	53	70	98.67	75	Gly142Gly (ggg/ggC)	Rv1361c	PPE19	PPE family protein PPE19	 	 	 
+1536251	0	G	SNP	T	37	41	73	100.00	78	Ala465Glu (gcg/gAg)	Rv1364c	-	sigma factor regulatory protein	 	 	 
+1547125	0	T	SNP	C	69	63	131	99.25	133	Thr136Ala (aca/Gca)	Rv1374c	-	hypothetical protein	 	 	 
+1547487	0	G	SNP	A	71	50	119	100.00	121	Ala15Val (gca/gTa)	Rv1374c	-	hypothetical protein	 	 	 
+1552547	0	G	SNP	A	44	18	58	100.00	62	Arg37Trp (cgg/Tgg)	Rv1378c	-	hypothetical protein	 	 	 
+1603962	0	G	SNP	A	54	19	72	98.65	74	Ala266Ala (gcc/gcT)	Rv1428c	-	hypothetical protein	 	 	 
+1613035	0	T	SNP	C	64	44	106	100.00	108	 	 	 	 	 	 	 
+1639594	0	C	SNP	A	30	48	66	100.00	78	Pro405Gln (cca/cAa)	Rv1453	-	transcriptional activator protein	 	 	 
+1650072	0	A	SNP	G	37	40	76	100.00	77	Asn183Asp (aac/Gac)	Rv1462	-	hypothetical protein	 	 	 
+1664167	0	A	SNP	G	64	41	105	100.00	105	Phe627Ser (ttt/tCt)	Rv1475c	acn	iron-regulated aconitate hydratase	 	 	 
+1706119	0	T	SNP	C	40	47	85	100.00	87	Ser159Ser (tca/tcG)	Rv1514c	-	glycosyltransferase	 	 	 
+1728837	0	A	SNP	G	60	61	117	99.18	122	 	 	 	 	 	 	 
+1753519	1	G	Ins	C	35	49	84	86.60	84	 	 	 	 	 	 	 
+1759252	0	G	SNP	T	48	56	102	100.00	104	Ser524Ser (tcg/tcT)	Rv1552	frdA	fumarate reductase flavoprotein subunit	 	 	 
+1760292	0	A	SNP	G	56	62	118	100.00	118	Met40Val (atg/Gtg)	Rv1554	frdC	fumarate reductase membrane anchor subunit	 	 	 
+1764808	0	C	SNP	T	54	46	100	100.00	100	Ala18Ala (gcc/gcT)	Rv1560	vapB11	antitoxin VapB11	 	 	 
+1772820	0	C	SNP	G	53	47	98	99.01	101	Trp337Ser (tgg/tCg)	Rv1565c	-	hypothetical protein	 	 	 
+1778430	0	T	SNP	C	14	34	45	100.00	48	Met191Thr (atg/aCg)	Rv1570	bioD	ATP-dependent dethiobiotin synthetase BioD	 	 	 
+1803265	0	G	SNP	A	41	52	91	100.00	93	Ser201Asn (agc/aAc)	Rv1602	hisH	imidazole glycerol phosphate synthase subunit HisH	 	 	 
+1813021	0	G	SNP	A	26	49	70	100.00	75	Arg221Arg (cgg/cgA)	Rv1613	trpA	tryptophan synthase subunit alpha	 	 	 
+1816692	0	C	SNP	T	43	57	99	100.00	100	Ala168Ala (gcc/gcT)	Rv1617	pykA	pyruvate kinase	 	 	 
+1817976	0	A	SNP	T	50	33	81	100.00	83	His121Leu (cac/cTc)	Rv1618	tesB1	acyl-CoA thioesterase TesB	 	 	 
+1827152	0	C	SNP	A	38	53	90	100.00	91	Ser265Ile (agt/aTt)	Rv1625c	cya	adenylyl cyclase	 	 	 
+1836286	0	G	SNP	C	34	49	78	100.00	83	 	 	 	 	 	 	 
+1856777	0	G	SNP	C	46	49	95	100.00	95	Ala2Pro (gcg/Ccg)	Rv1647	-	adenylate cyclase	 	 	 
+1861152	0	A	SNP	G	54	32	85	100.00	86	Arg465Arg (cga/cgG)	Rv1650	pheT	phenylalanine--tRNA ligase subunit beta	 	 	 
+1875473	0	G	Del	GAP	53	52	104	93.75	112	 	Rv1661	pks7	polyketide synthase	 	 	 
+1885772	0	G	SNP	A	45	53	87	100.00	98	Ala1357Thr (gcc/Acc)	Rv1662	pks8	polyketide synthase	 	 	 
+1889861	0	C	SNP	T	65	65	119	98.48	132	Ala612Ala (gcc/gcT)	Rv1664	pks9	polyketide synthase	 	 	 
+1894300	1	G	Ins	G	29	25	54	75.00	54	 	 	 	 	 	 	 
+1894300	2	G	Ins	T	29	25	54	75.00	54	 	 	 	 	 	 	 
+1894300	3	G	Ins	C	29	25	54	75.00	54	 	 	 	 	 	 	 
+1894300	4	G	Ins	T	29	25	54	75.00	54	 	 	 	 	 	 	 
+1894300	5	G	Ins	T	29	25	54	75.00	54	 	 	 	 	 	 	 
+1901267	0	G	SNP	A	50	62	110	98.25	114	Gly74Glu (gga/gAa)	Rv1676	-	hypothetical protein	 	 	 
+1901493	0	T	SNP	C	51	45	94	100.00	96	Ser149Ser (agt/agC)	Rv1676	-	hypothetical protein	 	 	 
+1907296	0	G	SNP	C	50	54	101	100.00	104	Ala298Ala (gcg/gcC)	Rv1682	-	hypothetical protein	 	 	 
+1917972	0	A	SNP	G	29	43	71	100.00	72	Leu11Leu (cta/ctG)	Rv1694	tlyA	16S/23S rRNA (cytidine-2'-O)-methyltransferase TlyA	 	 	capreomycin (CPR)
+1931179	0	C	SNP	A	63	43	104	100.00	106	Arg93Leu (cgg/cTg)	Rv1704c	cycA	D-serine/alanine/glycine transporter protein CycA	 	 	 
+1933988	0	G	SNP	A	59	55	114	100.00	114	 	 	 	 	 	 	 
+1944121	0	A	SNP	C	55	48	95	100.00	103	Ala182Ala (gca/gcC)	Rv1716	-	hypothetical protein	 	 	 
+1944402	0	T	SNP	C	40	37	76	100.00	77	Val276Ala (gtc/gCc)	Rv1716	-	hypothetical protein	 	 	 
+1950767	0	T	SNP	C	72	56	127	100.00	128	Lys95Lys (aaa/aaG)	Rv1724c	-	hypothetical protein	 	 	 
+1967052	0	G	Del	GAP	58	44	101	99.03	103	 	Rv1739c	-	sulfate ABC transporter permease	 	 	 
+1967237	0	C	SNP	A	42	59	99	100.00	101	Arg134Leu (cga/cTa)	Rv1739c	-	sulfate ABC transporter permease	 	 	 
+1983528	0	G	SNP	T	69	54	120	100.00	123	Ala416Ala (gcc/gcA)	Rv1753c	PPE24	PPE family protein PPE24	 	 	 
+1998837	0	C	SNP	A	7	5	12	85.71	14	 	 	 	 	 	 	 
+2017371	0	A	SNP	G	57	30	87	100.00	87	Leu36Leu (ttg/Ctg)	Rv1781c	malQ	4-alpha-glucanotransferase	 	 	 
+2022868	0	T	SNP	C	41	35	76	100.00	76	Ser1204Ser (agt/agC)	Rv1783	eccC5	ESX-5 type VII secretion system protein EccC5	 	 	 
+2048713	0	C	Del	GAP	37	13	49	84.75	59	 	 	 	 	 	 	 
+2049065	0	T	SNP	C	43	61	103	100.00	104	 	 	 	 	 	 	 
+2051746	0	T	SNP	C	54	52	106	99.07	107	Ala155Ala (gct/gcC)	Rv1809	PPE33	PPE family protein PPE33	 	 	 
+2055271	0	A	SNP	G	51	50	100	100.00	101	Leu30Pro (cta/cCa)	Rv1812c	-	dehydrogenase	 	 	 
+2057774	0	A	SNP	T	30	46	73	100.00	76	Ile83Phe (atc/Ttc)	Rv1815	-	hypothetical protein	 	 	 
+2073605	0	G	SNP	C	36	25	55	98.39	62	Leu175Leu (ctg/ctC)	Rv1828	-	HTH-type transcriptional regulator	 	 	 
+2096186	0	A	SNP	G	57	8	65	97.01	67	Thr138Thr (act/acC)	Rv1846c	blaI	transcriptional repressor BlaI	 	 	 
+2109523	1	C	Ins	G	13	40	53	82.81	53	 	 	 	 	 	 	 
+2116903	0	C	SNP	T	55	28	78	100.00	83	Gly380Gly (ggc/ggT)	Rv1867	-	hypothetical protein	 	 	 
+2123169	0	T	SNP	G	49	40	88	100.00	89	 	 	 	 	 	 	 
+2128870	0	A	SNP	G	50	39	86	100.00	89	Leu283Leu (cta/ctG)	Rv1878	glnA3	glutamine synthetase GlnA	 	 	 
+2143328	0	G	SNP	C	45	51	95	100.00	96	Val270Leu (gtg/Ctg)	Rv1895	-	zinc-binding alcohol dehydrogenase	 	 	 
+2144606	0	C	SNP	G	46	55	101	100.00	101	Ala93Pro (gcc/Ccc)	Rv1897c	-	D-tyrosyl-tRNA(Tyr) deacylase	 	 	 
+2159612	0	T	SNP	C	50	56	102	100.00	106	Val141Ala (gtc/gCc)	Rv1913	-	hypothetical protein	 	 	 
+2163666	0	T	SNP	C	59	78	136	98.56	139	Ile1216Val (atc/Gtc)	Rv1917c	PPE34	PPE family protein PPE34	 	 	 
+2163790	0	A	SNP	C	8	14	22	95.65	23	Pro1174Pro (cct/ccG)	Rv1917c	PPE34	PPE family protein PPE34	 	 	 
+2165286	0	A	SNP	C	51	68	118	100.00	119	Ser676Ala (tca/Gca)	Rv1917c	PPE34	PPE family protein PPE34	 	 	 
+2168149	0	G	SNP	A	60	52	110	99.12	113	Pro822Ser (cca/Tca)	Rv1918c	PPE35	PPE family protein PPE35	 	 	 
+2171630	0	C	SNP	T	39	52	87	100.00	91	Pro3Leu (ccg/cTg)	Rv1920	-	membrane protein	 	 	 
+2184176	0	G	SNP	A	17	55	70	98.63	73	Ala261Val (gcg/gTg)	Rv1933c	fadE18	acyl-CoA dehydrogenase FadE18	 	 	 
+2184716	0	G	Del	GAP	43	38	80	90.00	90	 	Rv1933c	fadE18	acyl-CoA dehydrogenase FadE18	 	 	 
+2196715	0	G	SNP	C	50	13	62	100.00	63	Val243Leu (gtc/Ctc)	Rv1945	-	hypothetical protein	 	 	 
+2205451	0	C	SNP	T	70	70	136	100.00	140	Lys33Lys (aag/aaA)	Rv1962A	vapB35	antitoxin VapB35	 	 	 
+2207591	1	T	Ins	C	57	55	112	94.92	112	 	 	 	 	 	 	 
+2215197	0	T	SNP	G	39	54	88	97.89	95	Tyr359Asp (tat/Gat)	Rv1970	lprM	Mce family lipoprotein LprM	 	 	 
+2220512	0	T	SNP	G	49	39	87	100.00	88	Ser253Ser (tct/tcG)	Rv1977	-	hypothetical protein	 	 	 
+2223293	0	T	SNP	C	56	57	113	100.00	113	 	 	 	 	 	 	 
+2223445	0	G	SNP	T	67	55	122	100.00	122	Asp195Glu (gac/gaA)	Rv1980c	mpt64	immunogenic protein Mpt64	 	 	 
+2228967	0	A	SNP	G	45	62	107	100.00	107	 	 	 	 	 	 	 
+2246603	0	C	SNP	T	55	57	112	100.00	112	Ser465Ser (tcc/tcT)	Rv2000	-	hypothetical protein	 	 	 
+2251580	0	G	SNP	A	48	55	102	100.00	103	Pro102Ser (cct/Tct)	Rv2005c	-	universal stress protein	 	 	 
+2251999	0	A	SNP	G	59	49	106	100.00	108	 	 	 	 	 	 	 
+2260525	0	C	SNP	T	18	54	71	100.00	72	 	 	 	 	 	 	 
+2260814	0	C	SNP	G	7	27	33	100.00	34	 	 	 	 	 	 	 
+2264782	0	C	SNP	A	61	47	107	100.00	108	Ala262Glu (gcg/gAg)	Rv2017	-	transcriptional regulator	 	 	 
+2269780	0	T	SNP	C	44	44	83	98.88	89	Asp154Gly (gac/gGc)	Rv2024c	-	hypothetical protein	 	 	 
+2270102	0	A	SNP	G	49	38	85	100.00	87	Trp47Arg (tgg/Cgg)	Rv2024c	-	hypothetical protein	 	 	 
+2282787	0	C	SNP	T	54	64	117	100.00	118	Cys312Tyr (tgt/tAt)	Rv2037c	-	transmembrane protein	 	 	 
+2285251	0	C	SNP	A	46	68	113	99.13	115	Val131Phe (gtc/Ttc)	Rv2039c	-	sugar ABC transporter permease	 	 	 
+2287121	0	A	SNP	G	58	46	104	100.00	104	Asp242Asp (gat/gaC)	Rv2041c	-	sugar ABC transporter substrate-binding lipoprotein	 	 	 
+2300237	0	A	SNP	G	46	35	81	82.65	98	Ala2250Ala (gct/gcC)	Rv2048c	pks12	polyketide synthase	 	 	 
+2316854	0	C	SNP	T	28	48	72	100.00	76	Val78Ile (gtc/Atc)	Rv2061c	-	hypothetical protein	 	 	 
+2340596	0	G	SNP	A	81	23	100	99.05	105	Val630Ile (gta/Ata)	Rv2082	-	hypothetical protein	 	 	 
+2340621	0	C	SNP	G	83	15	96	100.00	98	Pro638Arg (ccc/cGc)	Rv2082	-	hypothetical protein	 	 	 
+2341636	0	C	SNP	G	48	5	51	100.00	53	Leu256Val (ctg/Gtg)	Rv2083	-	hypothetical protein	 	 	 
+2362041	0	C	SNP	A	44	48	90	98.92	93	Pro601Gln (ccg/cAg)	Rv2101	helZ	helicase HelZ	 	 	 
+2368565	0	A	Del	GAP	50	51	100	99.02	102	 	 	 	 	 	 	 
+2386083	0	G	SNP	A	54	59	112	100.00	113	 	 	 	 	 	 	 
+2386389	0	G	SNP	A	45	36	75	98.78	82	Gly33Ser (ggc/Agc)	Rv2125	-	hypothetical protein	 	 	 
+2417281	0	G	SNP	A	50	41	88	100.00	91	Tyr65Tyr (tac/taT)	Rv2156c	murX	phospho-N-acetylmuramoyl-pentappeptidetransferase	 	 	 
+2424925	0	A	SNP	G	71	68	139	100.00	139	 	 	 	 	 	 	 
+2429954	0	C	SNP	A	63	60	123	100.00	123	 	 	 	 	 	 	 
+2472468	0	G	SNP	A	27	30	55	100.00	57	Arg353Gln (cgg/cAg)	Rv2207	cobT	nicotinate-nucleotide-dimethylbenzimidazolphosphoribosyltransferase	 	 	 
+2507254	0	G	SNP	A	52	42	93	100.00	94	Ala37Thr (gcg/Acg)	Rv2234	ptpA	protein-tyrosine-phosphatase	 	 	 
+2509722	0	A	SNP	G	30	70	97	100.00	100	Pro78Pro (cca/ccG)	Rv2237	-	hypothetical protein	 	 	 
+2521342	0	T	SNP	C	61	39	100	100.00	100	Asp200Asp (gat/gaC)	Rv2247	accD6	acetyl-/propionyl-CoA carboxylase subunit beta	 	 	 
+2525723	0	G	Del	GAP	48	37	85	94.44	90	 	Rv2251	-	flavoprotein	 	 	 
+2529467	0	T	SNP	C	45	52	93	100.00	97	Gln136Gln (caa/caG)	Rv2256c	-	hypothetical protein	 	 	 
+2534563	0	G	Del	GAP	27	45	68	98.63	73	 	 	 	 	 	 	 
+2534564	0	A	Del	GAP	27	45	68	100.00	72	 	 	 	 	 	 	 
+2569089	0	A	SNP	G	49	63	110	100.00	112	Tyr3Cys (tat/tGt)	Rv2298	-	oxidoreductase	 	 	 
+2586127	0	A	SNP	G	39	44	82	100.00	83	Gly388Gly (ggt/ggC)	Rv2314c	-	hypothetical protein	 	 	 
+2594301	0	C	SNP	T	52	41	91	100.00	93	 	 	 	 	 	 	 
+2604024	0	C	SNP	T	58	38	90	100.00	96	Val67Met (gtg/Atg)	Rv2330c	lppP	lipoprotein LppP	 	 	 
+2611777	0	T	SNP	C	62	66	121	100.00	128	Val314Ala (gtc/gCc)	Rv2336	-	hypothetical protein	 	 	 
+2612632	0	C	SNP	A	38	55	89	100.00	93	Gly119Val (ggc/gTc)	Rv2337c	-	hypothetical protein	 	 	 
+2614162	0	G	Del	GAP	56	59	115	95.83	120	 	 	 	 	 	 	 
+2631965	0	G	SNP	C	51	76	127	84.67	150	Pro37Pro (ccc/ccG)	Rv2351c	plcA	membrane-associated phospholipase A	 	 	 
+2650186	0	T	SNP	G	33	25	53	100.00	58	Ala21Ala (gca/gcC)	Rv2369c	-	hypothetical protein	 	 	 
+2656225	0	A	SNP	G	37	55	89	100.00	92	Val69Ala (gtc/gCc)	Rv2377c	-	hypothetical protein	 	 	 
+2667807	0	G	SNP	C	41	45	83	100.00	86	Ala821Ala (gcc/gcG)	Rv2381c	mbtD	polyketide synthetase	 	 	 
+2674009	0	G	SNP	A	37	47	81	100.00	84	Pro610Leu (ccg/cTg)	Rv2383c	mbtB	phenyloxazoline synthase	 	 	 
+2681470	0	A	SNP	G	71	71	140	99.30	143	Ile236Val (atc/Gtc)	Rv2387	-	hypothetical protein	 	 	 
+2682916	1	T	Ins	C	39	27	66	82.50	66	 	Rv2388c	hemN	oxygen-independent coproporphyrinogen III oxidase	 	 	 
+2691057	0	T	SNP	C	46	54	97	100.00	100	Leu329Pro (ctc/cCc)	Rv2395	-	integral membrane protein	 	 	 
+2703175	0	G	SNP	A	56	62	117	100.00	118	Thr25Ile (acc/aTc)	Rv2404c	lepA	GTP-binding protein LepA	 	 	 
+2709030	0	G	SNP	T	56	67	121	100.00	123	Phe312Leu (ttc/ttA)	Rv2411c	-	hypothetical protein	 	 	 
+2718852	0	T	SNP	G	57	33	87	100.00	90	 	 	 	 	 	 	 
+2734074	0	T	SNP	C	23	13	36	100.00	36	Val282Ala (gtc/gCc)	Rv2436	rbsK	ribokinase RbsK	 	 	 
+2751804	0	C	SNP	T	37	34	62	100.00	71	Arg126Gln (cgg/cAg)	Rv2450c	rpfE	resuscitation-promoting factor RpfE	 	 	 
+2752698	0	C	SNP	A	72	66	130	100.00	138	 	 	 	 	 	 	 
+2760152	0	A	SNP	G	52	41	93	100.00	93	Tyr125Cys (tac/tGc)	Rv2458	mmuM	homocysteine S-methyltransferase MmuM	 	 	 
+2775880	0	C	SNP	T	31	28	57	100.00	59	Arg105Trp (cgg/Tgg)	Rv2473	-	hypothetical protein	 	 	 
+2779136	0	T	SNP	C	59	44	100	100.00	103	Ser1043Gly (agc/Ggc)	Rv2476c	gdh	NAD-dependent glutamate dehydrogenase	 	 	 
+2786952	0	A	SNP	G	48	69	116	100.00	117	Cys778Arg (tgc/Cgc)	Rv2482c	plsB2	glycerol-3-phosphate acyltransferase	 	 	 
+2809250	0	C	SNP	T	51	43	87	100.00	94	Leu230Leu (ttg/ttA)	Rv2495c	bkdC	branched-chain keto acid dehydrogenase E2 component	 	 	 
+2809621	0	T	SNP	C	26	20	43	100.00	46	Thr107Ala (acc/Gcc)	Rv2495c	bkdC	branched-chain keto acid dehydrogenase E2 component	 	 	 
+2812917	0	G	SNP	A	48	57	105	100.00	105	Thr87Met (acg/aTg)	Rv2498c	citE	citrate (pro-3S)-lyase subunit beta	 	 	 
+2818065	0	A	SNP	G	17	49	66	100.00	66	Val137Ala (gtc/gCc)	Rv2502c	accD1	acetyl-/propionyl-CoA carboxylase subunit beta	 	 	 
+2818837	0	A	SNP	G	55	42	96	100.00	97	Gly97Gly (ggt/ggC)	Rv2503c	scoB	succinyl-CoA:3-ketoacid-CoA transferase subunit B	 	 	 
+2827984	0	G	SNP	T	62	50	108	100.00	112	 	 	 	 	 	 	 
+2828019	0	T	SNP	C	52	48	93	100.00	100	 	 	 	 	 	 	 
+2830525	0	C	SNP	A	61	44	105	100.00	105	Thr122Lys (acg/aAg)	Rv2513	-	hypothetical protein	 	 	 
+2836852	1	T	Ins	C	51	28	79	83.16	79	 	Rv2519	PE26	PE family protein PE26	 	 	 
+2836852	2	T	Ins	C	51	28	79	83.16	79	 	Rv2519	PE26	PE family protein PE26	 	 	 
+2836852	3	T	Ins	C	51	28	79	83.16	79	 	Rv2519	PE26	PE family protein PE26	 	 	 
+2836852	4	T	Ins	G	51	28	79	83.16	79	 	Rv2519	PE26	PE family protein PE26	 	 	 
+2838222	0	G	SNP	A	20	57	71	98.72	78	Ser440Ser (agc/agT)	Rv2522c	-	hypothetical protein	 	 	 
+2855259	0	A	SNP	G	64	24	85	100.00	88	Ala841Ala (gct/gcC)	Rv2531c	-	amino acid decarboxylase	 	 	 
+2865760	0	A	SNP	G	49	61	110	100.00	110	Thr211Ala (acc/Gcc)	Rv2542	-	hypothetical protein	 	 	 
+2881598	0	G	Del	GAP	48	48	93	93.20	103	 	 	 	 	 	 	 
+2884398	0	C	SNP	G	49	38	80	100.00	87	 	 	 	 	 	 	 
+2888464	0	G	SNP	A	46	41	78	98.86	88	Ala698Thr (gcg/Acg)	Rv2566	-	hypothetical protein	 	 	 
+2889633	0	T	SNP	C	45	18	59	100.00	63	Ala1087Ala (gct/gcC)	Rv2566	-	hypothetical protein	 	 	 
+2891267	0	C	SNP	T	32	54	78	98.85	87	Gly491Gly (ggc/ggT)	Rv2567	-	hypothetical protein	 	 	 
+2891728	0	A	SNP	G	41	45	83	98.85	87	Gln645Arg (cag/cGg)	Rv2567	-	hypothetical protein	 	 	 
+2894208	0	G	SNP	A	64	46	109	100.00	110	Ser67Ser (agc/agT)	Rv2569c	-	hypothetical protein	 	 	 
+2902956	0	G	SNP	C	39	37	72	100.00	76	Asp192Glu (gac/gaG)	Rv2578c	-	hypothetical protein	 	 	 
+2910461	0	G	SNP	T	25	31	50	100.00	56	Ala147Glu (gcg/gAg)	Rv2584c	apt	adenine phosphoribosyltransferase	 	 	 
+2911293	0	C	SNP	G	33	42	74	100.00	75	Cys462Ser (tgt/tCt)	Rv2585c	-	lipoprotein	 	 	 
+2912183	0	C	SNP	A	61	49	108	99.10	111	Pro165Pro (ccg/ccT)	Rv2585c	-	lipoprotein	 	 	 
+2912294	0	T	SNP	G	47	60	102	100.00	107	Ala128Ala (gca/gcC)	Rv2585c	-	lipoprotein	 	 	 
+2923391	0	T	SNP	C	35	19	53	100.00	54	Pro281Pro (cca/ccG)	Rv2592c	ruvB	Holliday junction ATP-dependent DNA helicase RuvB	 	 	 
+2927939	0	T	SNP	C	45	49	94	100.00	94	 	 	 	 	 	 	 
+2939373	0	G	SNP	C	47	45	84	100.00	92	Ser197Cys (tct/tGt)	Rv2611c	-	phosphatidylinositol mannoside acyltransferase	 	 	 
+2939657	0	T	SNP	C	42	62	99	100.00	104	Ile102Met (ata/atG)	Rv2611c	-	phosphatidylinositol mannoside acyltransferase	 	 	 
+2954439	0	T	SNP	C	49	57	104	100.00	106	Arg104Gly (aga/Gga)	Rv2627c	-	hypothetical protein	 	 	 
+2955061	0	T	SNP	C	68	57	123	100.00	125	Ser2Pro (tcc/Ccc)	Rv2628	-	hypothetical protein	 	 	 
+2976564	0	C	SNP	T	50	47	92	100.00	97	 	 	 	 	 	 	 
+2977505	0	T	SNP	C	60	37	94	100.00	97	Glu385Gly (gaa/gGa)	Rv2655c	-	prophage protein	 	 	 
+2984740	0	A	SNP	G	6	35	39	100.00	41	His3Arg (cac/cGc)	Rv2668	-	hypothetical protein	 	 	 
+2990604	0	G	SNP	A	8	30	34	77.55	49	 	 	 	 	 	 	 
+2995848	0	G	SNP	A	31	39	70	98.59	71	Gly245Glu (ggg/gAg)	Rv2679	echA15	enoyl-CoA hydratase EchA15	 	 	 
+2999272	0	G	SNP	T	53	49	102	99.03	103	Leu233Met (ctg/Atg)	Rv2682c	dxs1	1-deoxy-D-xylulose 5-phosphate synthase	 	 	 
+3005789	0	T	SNP	C	48	54	100	99.03	103	 	 	 	 	 	 	 
+3017134	0	G	SNP	T	42	44	85	100.00	86	Ala93Ser (gcg/Tcg)	Rv2702	ppgK	polyphosphate glucokinase	 	 	 
+3017465	0	T	SNP	C	72	51	123	100.00	123	Ile203Thr (ata/aCa)	Rv2702	ppgK	polyphosphate glucokinase	 	 	 
+3021835	0	C	SNP	T	58	59	116	100.00	117	 	 	 	 	 	 	 
+3044460	0	G	SNP	A	54	46	97	100.00	100	Ala177Val (gcg/gTg)	Rv2732c	-	transmembrane protein	 	 	 
+3054321	0	A	SNP	G	20	40	57	100.00	60	Gly136Gly (gga/ggG)	Rv2741	PE_PGRS47	PE-PGRS family protein PE_PGRS47	 	 	 
+3080795	0	A	SNP	G	53	53	104	100.00	106	Leu80Pro (ctc/cCc)	Rv2771c	-	hypothetical protein	 	 	 
+3103682	0	T	SNP	C	50	66	115	99.15	117	Met87Val (atg/Gtg)	Rv2794c	pptT	phosphopantetheinyl transferase	 	 	 
+3109461	0	A	SNP	C	10	15	24	100.00	25	Gln349Pro (cag/cCg)	Rv2800	-	hydrolase	 	 	 
+3118000	0	A	SNP	G	41	10	40	100.00	51	Arg395Gly (agg/Ggg)	Rv2812	-	transposase	 	 	 
+3137058	0	G	SNP	A	44	44	82	97.78	90	Ala56Val (gcg/gTg)	Rv2830c	vapB22	antitoxin VapB22	 	 	 
+3168967	0	C	SNP	A	65	58	121	99.19	124	Val131Val (gtg/gtT)	Rv2857c	-	short-chain type dehydrogenase/reductase	 	 	 
+3177884	0	C	SNP	A	41	45	83	100.00	86	Arg21Arg (cgc/cgA)	Rv2866	relG	toxin RelG	 	 	 
+3186685	0	G	SNP	C	40	40	77	100.00	80	Leu613Leu (ctg/ctC)	Rv2874	dipZ	integral membrane C-type cytochrome biogenesis protein DipZ	 	 	 
+3186860	0	T	SNP	G	23	50	71	100.00	73	Tyr672Asp (tat/Gat)	Rv2874	dipZ	integral membrane C-type cytochrome biogenesis protein DipZ	 	 	 
+3189948	0	C	SNP	T	33	43	76	98.70	77	 	 	 	 	 	 	 
+3190721	0	C	SNP	T	49	9	57	100.00	58	Val301Ile (gtc/Atc)	Rv2881c	cdsA	phosphatidate cytidylyltransferase	 	 	 
+3226181	0	A	SNP	C	57	66	118	100.00	123	Arg35Arg (cgt/cgG)	Rv2916c	ffh	signal recognition particle protein	 	 	 
+3228143	0	G	SNP	T	55	16	61	100.00	71	Arg594Leu (cgg/cTg)	Rv2917	-	hypothetical protein	 	 	 
+3241999	0	A	SNP	G	48	69	116	100.00	117	 	 	 	 	 	 	 
+3247316	0	C	SNP	G	44	64	108	100.00	108	Asp624Glu (gac/gaG)	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	 	 	 
+3247851	0	G	SNP	A	13	7	19	100.00	20	Ala803Thr (gcc/Acc)	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	 	 	 
+3247853	0	C	SNP	T	12	5	17	100.00	17	Ala803Ala (gcc/gcT)	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	 	 	 
+3247856	0	G	SNP	C	12	6	18	100.00	18	Arg804Arg (cgg/cgC)	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	 	 	 
+3247883	0	T	SNP	C	41	28	68	98.57	70	Ser813Ser (agt/agC)	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	 	 	 
+3248074	0	G	SNP	A	52	41	88	96.88	96	Arg877His (cgc/cAc)	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	 	 	 
+3248075	0	C	SNP	T	51	39	90	95.74	94	Arg877Arg (cgc/cgT)	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	 	 	 
+3250112	0	G	SNP	A	53	14	67	100.00	67	Val1556Val (gtg/gtA)	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	 	 	 
+3267709	0	A	SNP	G	48	52	97	100.00	100	Lys1821Arg (aaa/aGa)	Rv2934	ppsD	phthiocerol synthesis polyketide synthase type I PpsD	 	 	 
+3269581	0	A	SNP	G	53	59	110	100.00	112	Ala615Ala (gca/gcG)	Rv2935	ppsE	phthiocerol synthesis polyketide synthase type I PpsE	 	 	 
+3270784	0	A	SNP	G	45	52	96	100.00	97	Gln1016Gln (caa/caG)	Rv2935	ppsE	phthiocerol synthesis polyketide synthase type I PpsE	 	 	 
+3296843	0	A	SNP	G	42	57	95	99.00	100	Val333Ala (gtg/gCg)	Rv2947c	pks15	polyketide synthase	 	 	 
+3300129	0	A	SNP	T	37	45	78	98.80	83	Ser148Thr (tcc/Acc)	Rv2949c	-	chorismate pyruvate-lyase	 	 	 
+3308606	0	G	SNP	A	53	92	142	99.32	146	 	 	 	 	 	 	 
+3338081	0	C	SNP	T	52	59	108	100.00	111	Asp307Asn (gac/Aac)	Rv2982c	gpdA2	glycerol-3-phosphate dehydrogenase	 	 	 
+3338603	0	G	SNP	C	49	45	94	100.00	94	Pro133Ala (ccg/Gcg)	Rv2982c	gpdA2	glycerol-3-phosphate dehydrogenase	 	 	 
+3358235	0	A	SNP	T	71	53	123	100.00	124	Met212Leu (atg/Ttg)	Rv2999	lppY	lipoprotein LppY	 	 	 
+3363338	0	A	SNP	G	41	53	94	98.95	95	 	 	 	 	 	 	 
+3367765	0	G	SNP	A	46	52	92	98.99	99	Gly343Gly (ggc/ggT)	Rv3009c	gatB	aspartyl/glutamyl-tRNA(Asn/Gln) amidotransferase subunit B	 	 	 
+3388081	0	T	SNP	G	61	60	120	100.00	121	Lys264Gln (aaa/Caa)	Rv3029c	fixA	electron transfer flavoprotein subunit beta	 	 	 
+3404883	0	G	SNP	A	54	55	108	100.00	109	Ala13Ala (gcc/gcT)	Rv3043c	ctaD	cytochrome C oxidase cytochrome 1	 	 	 
+3410034	0	G	SNP	A	42	53	92	97.94	97	Ala350Ala (gcc/gcT)	Rv3049c	-	monooxygenase	 	 	 
+3419467	0	C	SNP	T	70	56	122	100.00	126	 	 	 	 	 	 	 
+3425854	0	C	SNP	T	29	56	84	98.84	86	Pro91Ser (ccg/Tcg)	Rv3062	ligB	DNA ligase	 	 	 
+3428917	0	C	SNP	A	60	66	124	100.00	126	Arg559Ser (cgt/Agt)	Rv3063	cstA	carbon starvation protein A	 	 	 
+3440464	0	T	SNP	G	46	48	93	100.00	94	Arg308Arg (cgt/cgG)	Rv3077	-	hydrolase	 	 	 
+3440468	0	G	SNP	C	45	47	90	100.00	92	Gly310Arg (ggc/Cgc)	Rv3077	-	hydrolase	 	 	 
+3456666	0	A	SNP	G	59	42	97	100.00	101	Ala302Ala (gca/gcG)	Rv3089	fadD13	long chain-fatty-acid--CoA ligase FadD13	 	 	 
+3480314	0	T	SNP	G	68	67	133	100.00	135	Tyr81Asp (tat/Gat)	Rv3113	-	phosphatase	 	 	 
+3486977	0	A	SNP	G	50	47	96	100.00	97	Lys157Glu (aaa/Gaa)	Rv3121	cyp141	cytochrome P450 Cyp141	 	 	 
+3503895	0	C	SNP	T	49	48	97	100.00	97	Pro168Leu (ccg/cTg)	Rv3137	-	histidinol-phosphatase	 	 	 
+3516342	0	C	SNP	T	50	42	90	100.00	92	Leu311Leu (ctg/Ttg)	Rv3150	nuoF	NADH-quinone oxidoreductase subunit F	 	 	 
+3518555	0	A	SNP	G	63	34	97	100.00	97	Thr604Ala (acg/Gcg)	Rv3151	nuoG	NADH-quinone oxidoreductase subunit G	 	 	 
+3530507	0	T	SNP	A	55	51	102	100.00	106	His211Leu (cat/cTt)	Rv3161c	-	dioxygenase	 	 	 
+3536093	0	G	SNP	A	49	44	93	100.00	93	 	 	 	 	 	 	 
+3537318	0	C	SNP	T	57	55	111	100.00	112	Asp27Asp (gac/gaT)	Rv3169	-	hypothetical protein	 	 	 
+3554520	0	G	SNP	A	48	46	94	100.00	94	Gly75Ser (ggc/Agc)	Rv3188	-	hypothetical protein	 	 	 
+3556894	1	A	Ins	G	54	48	102	92.73	102	 	Rv3190A	-	hypothetical protein	 	 	 
+3580637	0	T	Del	GAP	45	52	96	98.98	98	 	 	 	 	 	 	 
+3581414	0	A	SNP	G	40	56	96	100.00	96	Thr34Ala (aca/Gca)	Rv3204	-	DNA-methyltransferase	 	 	 
+3585759	0	A	SNP	G	44	46	88	100.00	90	Val64Ala (gtc/gCc)	Rv3208A	TB9.4	hypothetical protein	 	 	 
+3590686	1	G	Ins	C	35	5	40	95.24	40	 	 	 	 	 	 	 
+3591063	0	T	SNP	C	42	36	77	100.00	78	Lys144Glu (aag/Gag)	Rv3213c	-	SOJ/ParA-like protein	 	 	 
+3613636	0	T	SNP	C	42	54	95	100.00	96	 	 	 	 	 	 	 
+3622441	0	A	SNP	C	29	53	78	100.00	82	Val217Val (gtt/gtG)	Rv3243c	-	hypothetical protein	 	 	 
+3625836	0	T	SNP	C	52	39	90	98.91	92	Met260Val (atg/Gtg)	Rv3245c	mtrB	two component sensory histidine kinase MtrB	 	 	 
+3630371	0	G	SNP	A	53	43	93	100.00	96	Ala6Val (gct/gTt)	Rv3249c	-	TetR family transcriptional regulator	 	 	 
+3687560	0	G	SNP	A	51	57	104	100.00	108	His6His (cac/caT)	Rv3301c	phoY1	phosphate transport system transcriptional regulator PhoY	 	 	 
+3689523	0	G	SNP	T	50	45	94	100.00	95	Cys472_ (tgc/tgA)	Rv3303c	lpdA	NAD(P)H quinone reductase LpdA	 	 	 
+3704596	0	G	SNP	C	69	56	125	100.00	125	Val54Leu (gtg/Ctg)	Rv3317	sdhD	succinate dehydrogenase hydrophobic membrane anchor subunit	 	 	 
+3705930	0	G	SNP	A	62	53	114	99.14	116	Val311Ile (gtc/Atc)	Rv3318	sdhA	succinate dehydrogenase flavoprotein subunit	 	 	 
+3706446	0	C	SNP	T	51	55	104	100.00	106	His483Tyr (cac/Tac)	Rv3318	sdhA	succinate dehydrogenase flavoprotein subunit	 	 	 
+3714211	0	G	SNP	T	43	37	78	100.00	80	Pro41Gln (ccg/cAg)	Rv3328c	sigJ	ECF RNA polymerase sigma factor SigJ	 	 	 
+3715660	0	C	SNP	A	51	51	102	99.03	103	Ile423Ile (atc/atA)	Rv3329	-	aminotransferase	 	 	 
+3718357	0	C	SNP	T	48	54	101	100.00	102	Pro423Leu (ccg/cTg)	Rv3331	sugI	sugar-transport integral membrane protein SugI	 	 	 
+3721806	0	G	SNP	C	59	61	117	100.00	120	Gly265Gly (ggc/ggG)	Rv3335c	-	integral membrane protein	 	 	 
+3730466	0	A	SNP	G	42	51	89	100.00	93	Ile2157Thr (atc/aCc)	Rv3343c	PPE54	PPE family protein PPE54	 	 	 
+3730519	0	C	SNP	G	51	52	103	100.00	103	Thr2139Thr (acg/acC)	Rv3343c	PPE54	PPE family protein PPE54	 	 	 
+3746409	0	A	SNP	G	69	51	117	100.00	120	Leu2259Pro (ctg/cCg)	Rv3347c	PPE55	PPE family protein PPE55	 	 	 
+3752207	0	A	SNP	G	80	72	152	99.35	153	Ile326Ile (att/atC)	Rv3347c	PPE55	PPE family protein PPE55	 	 	 
+3755349	0	C	SNP	T	41	38	78	100.00	79	 	 	 	 	 	 	 
+3756085	0	A	Del	GAP	20	44	64	76.19	84	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3756086	0	G	Del	GAP	20	44	64	76.19	84	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3756087	0	G	Del	GAP	20	44	64	96.97	66	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3756088	0	A	Del	GAP	20	44	64	96.97	66	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3756089	0	T	Del	GAP	20	44	64	96.97	66	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3756090	0	G	Del	GAP	20	44	64	96.97	66	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3756091	0	C	Del	GAP	20	44	64	98.46	65	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3756092	0	C	Del	GAP	20	44	64	96.97	66	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3756093	0	G	Del	GAP	20	44	64	96.97	66	 	Rv3350c	PPE56	PPE family protein PPE56	 	 	 
+3770706	0	C	Del	GAP	43	53	94	96.00	100	 	 	 	 	 	 	 
+3773336	0	G	SNP	A	58	33	84	100.00	91	Arg78Trp (cgg/Tgg)	Rv3361c	-	hypothetical protein	 	 	 
+3784205	0	C	SNP	T	22	32	52	98.18	55	Cys179Tyr (tgc/tAc)	Rv3370c	dnaE2	error-prone DNA polymerase	 	 	 
+3785227	0	G	SNP	A	56	49	101	100.00	105	Arg99His (cgt/cAt)	Rv3371	-	diacyglycerol O-acyltransferase	 	 	 
+3796635	0	T	SNP	C	75	60	134	99.26	136	Asp268Gly (gac/gGc)	Rv3382c	-	4-hydroxy-3-methylbut-2-enyl diphosphate reductase	 	 	 
+3817117	0	C	SNP	A	49	32	79	100.00	81	Ala330Glu (gcg/gAg)	Rv3399	-	S-adenosylmethionine-dependentmethyltransferase	 	 	 
+3823159	0	A	SNP	T	54	62	113	100.00	116	Val235Val (gtt/gtA)	Rv3403c	-	hypothetical protein	 	 	 
+3823324	0	G	SNP	A	48	50	96	100.00	98	Tyr180Tyr (tac/taT)	Rv3403c	-	hypothetical protein	 	 	 
+3826684	0	C	SNP	T	51	44	94	100.00	95	Ser46Leu (tcg/tTg)	Rv3408	vapC47	ribonuclease VapC47	 	 	 
+3833719	0	G	SNP	A	50	57	105	100.00	107	Ala268Val (gcc/gTc)	Rv3415c	-	hypothetical protein	 	 	 
+3836739	0	G	SNP	A	61	51	112	99.12	113	Asp51Asp (gac/gaT)	Rv3417c	groEL1	chaperonin GroEL	 	phylo (4,8)	 
+3838871	0	A	SNP	G	39	50	87	98.89	90	Ala64Ala (gct/gcC)	Rv3420c	rimI	ribosomal-protein-alanine acetyltransferase RimI	 	 	 
+3856446	0	G	SNP	C	50	45	95	100.00	95	Asp148Glu (gac/gaG)	Rv3436c	glmS	glucosamine--fructose-6-phosphate aminotransferase	 	 	 
+3859893	0	C	SNP	T	25	29	54	100.00	54	Glu28Glu (gag/gaA)	Rv3440c	-	hypothetical protein	 	 	 
+3862473	0	A	Del	GAP	23	41	54	98.46	65	 	 	 	 	 	 	 
+3877421	0	A	SNP	G	59	70	129	100.00	129	Pro4Pro (cct/ccC)	Rv3456c	rplQ	50S ribosomal protein L17	 	 	 
+3884906	0	A	SNP	G	66	83	145	89.76	166	Lys315Glu (aaa/Gaa)	Rv3467	-	hypothetical protein	 	 	 
+3884912	0	G	Del	GAP	57	78	135	85.99	157	 	Rv3467	-	hypothetical protein	 	 	 
+3884913	0	A	Del	GAP	57	78	135	88.24	153	 	Rv3467	-	hypothetical protein	 	 	 
+3884914	0	T	Del	GAP	57	78	135	92.47	146	 	Rv3467	-	hypothetical protein	 	 	 
+3884915	0	T	Del	GAP	57	78	135	93.75	144	 	Rv3467	-	hypothetical protein	 	 	 
+3888838	0	G	SNP	T	40	55	88	98.96	96	Gly168Gly (ggc/ggA)	Rv3471c	-	hypothetical protein	 	 	 
+3892671	0	A	SNP	G	66	61	125	100.00	127	 	 	 	 	 	 	 
+3894678	0	C	SNP	G	22	6	27	100.00	28	Gln85Glu (cag/Gag)	Rv3478	PPE60	PE family protein PPE60	 	 	 
+3895043	0	A	SNP	G	63	40	99	99.04	104	Gln206Gln (caa/caG)	Rv3478	PPE60	PE family protein PPE60	 	 	 
+3896340	0	T	SNP	G	63	44	106	100.00	107	Leu174Arg (ctc/cGc)	Rv3479	-	transmembrane protein	 	 	 
+3898408	0	A	SNP	G	52	52	104	100.00	104	Ala863Ala (gca/gcG)	Rv3479	-	transmembrane protein	 	 	 
+3900023	0	A	SNP	G	69	54	122	100.00	123	Ile127Thr (atc/aCc)	Rv3480c	-	diacyglycerol O-acyltransferase	 	 	 
+3921305	0	G	SNP	C	65	58	118	100.00	123	Gln246Glu (cag/Gag)	Rv3502c	-	short-chain type dehydrogenase/reductase	 	 	 
+3952800	0	G	SNP	A	43	59	96	100.00	102	Gly86Asp (ggc/gAc)	Rv3516	echA19	enoyl-CoA hydratase EchA19	 	 	 
+3958245	0	A	SNP	G	48	67	112	100.00	115	Asp242Gly (gac/gGc)	Rv3521	-	hypothetical protein	 	 	 
+3959418	0	C	SNP	T	44	56	99	100.00	100	Thr324Ile (acc/aTc)	Rv3522	ltp4	lipid transfer protein	 	 	 
+3975253	0	G	SNP	A	19	43	55	96.88	64	Ala15Val (gca/gTa)	Rv3536c	hsaE	hydratase	 	 	 
+3980219	0	G	SNP	C	51	46	96	100.00	97	Ala147Ala (gcc/gcG)	Rv3540c	ltp2	lipid transfer protein	 	 	 
+4026899	0	G	SNP	A	38	38	73	100.00	76	Gln152Gln (cag/caA)	Rv3585	radA	DNA repair protein RadA	 	 	 
+4028292	0	C	SNP	T	47	46	92	100.00	93	Val134Val (gtc/gtT)	Rv3586	-	DNA integrity scanning protein DisA	 	 	 
+4034827	0	C	SNP	T	46	41	80	100.00	87	Ala159Val (gcg/gTg)	Rv3593	lpqF	lipoprotein LpqF	 	 	 
+4039729	0	C	SNP	T	42	60	101	100.00	102	Asp326Asn (gac/Aac)	Rv3596c	clpC1	ATP-dependent protease ATP-binding subunit ClpC	 	 	 
+4055801	0	G	SNP	A	65	41	105	100.00	106	Thr192Ile (acc/aTc)	Rv3616c	espA	ESX-1 secretion-associated protein EspA	 	 	 
+4059904	0	A	SNP	G	64	47	111	100.00	111	 	 	 	 	 	 	 
+4089476	0	C	SNP	G	7	44	46	100.00	51	Ala232Ala (gcc/gcG)	Rv3649	-	helicase	 	 	 
+4095002	0	G	Del	GAP	26	17	40	100.00	43	 	Rv3655c	-	hypothetical protein	 	 	 
+4100975	0	T	SNP	C	48	58	100	99.07	107	 	 	 	 	 	 	 
+4101654	0	G	SNP	A	13	28	40	97.62	42	Leu128Phe (ctt/Ttt)	Rv3662c	-	hypothetical protein	 	 	 
+4111303	0	G	SNP	C	49	52	101	100.00	101	Val159Val (gtg/gtC)	Rv3669	-	transmembrane protein	 	 	 
+4111961	0	T	SNP	C	60	45	105	100.00	105	Cys206Arg (tgc/Cgc)	Rv3670	ephE	epoxide hydrolase EphE	 	 	 
+4128622	0	G	SNP	A	40	47	83	100.00	87	Pro35Leu (ccg/cTg)	Rv3685c	cyp137	cytochrome P450 Cyp137	 	 	 
+4140261	0	C	SNP	T	61	59	120	99.17	121	Trp68_ (tgg/tAg)	Rv3697A	vapB48	antitoxin VapB48	 	 	 
+4156099	0	C	SNP	A	33	42	74	100.00	75	Val211Leu (gtg/Ttg)	Rv3711c	dnaQ	DNA polymerase III subunit epsilon	 	 	 
+4162339	0	A	SNP	G	55	55	109	100.00	110	Thr12Ala (acg/Gcg)	Rv3719	-	hypothetical protein	 	 	 
+4187485	0	T	SNP	C	79	41	116	100.00	120	Ala284Ala (gct/gcC)	Rv3736	-	AraC/XylS family transcriptional regulator	 	 	 
+4187817	0	A	SNP	G	27	51	76	100.00	78	Asp40Gly (gat/gGt)	Rv3737	-	transmembrane protein	 	 	 
+4188020	0	A	SNP	G	50	47	97	100.00	97	Ile108Val (atc/Gtc)	Rv3737	-	transmembrane protein	 	 	 
+4204441	0	A	SNP	G	65	53	118	100.00	118	His311His (cat/caC)	Rv3759c	proX	glycine betaine/carnitine/choline/L-proline ABC transporter substrate-binding lipoprotein ProX	 	 	 
+4210274	0	A	SNP	G	51	50	93	100.00	101	Cys246Arg (tgt/Cgt)	Rv3764c	tcrY	two component sensor kinase TcrY	 	 	 
+4218944	0	C	SNP	T	59	73	128	100.00	132	Pro32Pro (ccc/ccT)	Rv3774	echA21	enoyl-CoA hydratase EchA21	 	 	 
+4221490	0	C	SNP	G	59	48	105	99.07	108	Leu134Leu (ctc/ctG)	Rv3776	-	hypothetical protein	 	 	 
+4222882	0	A	SNP	G	64	47	110	99.11	112	Leu63Leu (cta/ctG)	Rv3777	-	oxidoreductase	 	 	 
+4234664	0	G	SNP	A	76	66	140	100.00	142	 	 	 	 	 	 	 
+4242643	0	C	SNP	T	54	26	77	100.00	80	Arg927Arg (cgc/cgT)	Rv3793	embC	arabinosyltransferase C	 	 	ethambutol (EMB)
+4252931	1	G	Ins	T	41	53	94	83.19	94	 	 	 	 	 	 	 
+4252931	2	G	Ins	C	41	53	94	83.19	94	 	 	 	 	 	 	 
+4254334	1	A	Ins	T	56	70	126	95.45	126	 	 	 	 	 	 	 
+4282940	0	G	SNP	A	54	61	115	100.00	115	Ser164Ser (tcg/tcA)	Rv3818	-	hypothetical protein	 	 	 
+4283319	0	G	SNP	A	59	56	113	99.14	116	Ala291Thr (gcc/Acc)	Rv3818	-	hypothetical protein	 	 	 
+4284570	0	A	SNP	C	47	48	93	100.00	95	Val419Gly (gtc/gGc)	Rv3820c	papA2	trehalose-2-sulfate acyltransferase	 	 	 
+4291773	0	C	SNP	G	54	65	118	100.00	119	Gly468Arg (ggc/Cgc)	Rv3824c	papA1	acyltransferase PapA	 	 	 
+4295031	0	C	SNP	T	63	34	85	100.00	97	Thr1525Thr (acg/acA)	Rv3825c	pks2	phthioceranic/hydroxyphthioceranic acid synthase	 	 	 
+4295427	0	C	SNP	G	46	52	96	98.99	99	Glu1393Asp (gag/gaC)	Rv3825c	pks2	phthioceranic/hydroxyphthioceranic acid synthase	 	 	 
+4302036	0	T	SNP	C	34	38	66	100.00	72	Thr252Ala (acg/Gcg)	Rv3827c	-	transposase	 	 	 
+4306155	0	C	SNP	T	42	55	94	100.00	97	Ser133Ser (agc/agT)	Rv3831	-	hypothetical protein	 	 	 
+4338596	0	C	Del	GAP	45	44	83	98.89	90	 	 	 	 	 	 	 
+4351039	0	G	SNP	T	56	59	113	99.14	116	Glu99_ (gaa/Taa)	Rv3872	PE35	PE family protein PE35	 	 	 
+4356110	0	G	SNP	C	68	51	119	100.00	119	Leu368Leu (ctg/ctC)	Rv3877	eccD1	ESX-1 secretion system protein EccD1	 	 	 
+4359341	0	C	Del	GAP	51	42	92	88.57	105	 	Rv3879c	espK	ESX-1 secretion-associated protein EspK	 	 	 
+4362171	0	G	SNP	A	51	53	101	100.00	104	Thr417Ile (acc/aTc)	Rv3882c	eccE1	ESX-1 secretion system protein EccE1	 	 	 
+4366272	0	G	SNP	C	42	47	81	100.00	89	Ala189Ala (gcc/gcG)	Rv3884c	eccA2	ESX-2 secretion system protein EccA	 	 	 
+4369473	0	G	SNP	A	22	48	69	100.00	70	Ala233Val (gcc/gTc)	Rv3886c	mycP2	membrane-anchored mycosin	 	 	 
+4375628	0	G	SNP	T	50	51	100	100.00	101	Thr19Lys (acg/aAg)	Rv3892c	PPE69	PPE family protein PPE69	 	 	 
+4379680	0	C	SNP	G	49	37	84	100.00	86	Arg258Pro (cgc/cCc)	Rv3894c	eccC2	ESX-2 type VII secretion system protein EccC	 	 	 
+4382054	0	T	SNP	C	46	41	82	100.00	87	Ala266Ala (gca/gcG)	Rv3896c	-	hypothetical protein	 	 	 
+4382275	0	G	SNP	T	20	51	71	100.00	71	Gln193Lys (caa/Aaa)	Rv3896c	-	hypothetical protein	 	 	 
+4383144	1	C	Ins	C	8	42	50	83.33	50	 	Rv3897c	-	hypothetical protein	 	 	 
+4383144	2	C	Ins	G	8	42	50	83.33	50	 	Rv3897c	-	hypothetical protein	 	 	 
+4383144	3	C	Ins	G	8	41	49	81.67	49	 	Rv3897c	-	hypothetical protein	 	 	 
+4383144	4	C	Ins	G	7	41	48	80.00	48	 	Rv3897c	-	hypothetical protein	 	 	 
+4383144	5	C	Ins	G	7	41	48	80.00	48	 	Rv3897c	-	hypothetical protein	 	 	 
+4393733	0	G	SNP	A	43	40	79	100.00	83	Arg95Arg (cgg/cgA)	Rv3908	mutT4	mutator protein MutT	 	 	 
+4400661	0	C	Del	GAP	42	27	68	98.57	70	 	Rv3911	sigM	ECF RNA polymerase sigma factor SigM	 	 	 

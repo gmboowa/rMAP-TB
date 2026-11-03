@@ -1,0 +1,16 @@
+Resistance summaries: 9 file(s) (e.g. rMAPTB_benchmark.MIX-ERR038255-ERR13260175-05pctA-100x.xlsx)
+Resistance summaries (mixed infection): 2 file(s) (e.g. rMAPTB_benchmark.MIX-ERR038255-ERR13260175-10pctB-140x.xlsx)
+Cohort statistics: 1 file(s) (e.g. joint.merged_cohort_stats.tsv)
+SNP distances: 2 file(s), 1 matching 'IncComplex'
+ClusterPicker treefiles: 4 file(s) (e.g. joint.ExDR.ExComplex.12SNPcluster.treefile)
+Cluster tabular results: 4 file(s) (e.g. joint.ExDR.ExComplex_12SNPclusterPicks_log.txt)
+NTM profiling: 0 file(s) - none found
+Phylogeny: 2 file(s), 1 matching 'IncComplex'
+wrote magma_resistance.tsv from rMAPTB_benchmark.MIX-ERR038255-ERR13260175-05pctA-100x.xlsx
+wrote magma_cohort_stats.tsv from joint.merged_cohort_stats.tsv
+wrote magma_snp_distances.tsv from joint.ExDR.IncComplex.snp_dists.tsv
+wrote magma_clusters.tsv from joint.ExDR.ExComplex_12SNPclusterPicks_log.txt
+wrote magma_ntm.tsv as a placeholder: MAGMA produced no NTM profiling output; skip_ntmprofiler may have been set
+wrote magma_phylogeny.nwk from joint.ExDR.IncComplex.treefile
+lifted lineages from column 'LINEAGES' (18 row(s))
+wrote magma_lineage.tsv with 18 row(s)

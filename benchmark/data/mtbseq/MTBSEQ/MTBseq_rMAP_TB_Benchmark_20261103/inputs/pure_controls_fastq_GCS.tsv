@@ -1,0 +1,3 @@
+sample	r1_gcs	r2_gcs
+PURE_ERR038255_100x	gs://fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/PURE_ERR038255_100x_1.fastq.gz	gs://fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/PURE_ERR038255_100x_2.fastq.gz
+PURE_ERR13260175_100x	gs://fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/PURE_ERR13260175_100x_1.fastq.gz	gs://fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/PURE_ERR13260175_100x_2.fastq.gz

@@ -1,0 +1,109 @@
+<INFO>	[2026-11-03 07:02:46]	Found perl module: MCE
+<INFO>	[2026-11-03 07:02:46]	Found perl module: Statistics::Basic
+<INFO>	[2026-11-03 07:02:46]	Found bwa in your PATH!
+<INFO>	[2026-11-03 07:02:46]	Found samtools in your PATH!
+<INFO>	[2026-11-03 07:02:46]	Found gatk3 in your PATH!
+<INFO>	[2026-11-03 07:02:46]	Found picard in your PATH!
+
+
+MTBseq 1.1.0 - Copyright (C) 2018   Thomas A. Kohl, Robin Koch, Christian Utpatel,
+                              Maria Rosaria De Filippo, Viola Schleusener,
+                              Patrick Beckert, Daniela M. Cirillo, Stefan Niemann
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+
+
+<INFO>	[2026-11-03 07:02:46]	You are gmboowa.
+<INFO>	[2026-11-03 07:02:46]	Your current working directory is: /work
+<INFO>	[2026-11-03 07:02:46]	You requested 1 thread(s) for the pipeline.
+
+<INFO>	[2026-11-03 07:02:46]	Your parameter setting is:
+<INFO>	[2026-11-03 07:02:46]	--step		TBjoin
+<INFO>	[2026-11-03 07:02:46]	--continue	1
+<INFO>	[2026-11-03 07:02:46]	--samples	samples.tsv
+<INFO>	[2026-11-03 07:02:46]	--project	rMAPTB_pure2
+<INFO>	[2026-11-03 07:02:46]	--resilist	/usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Resistance_Mediating.txt
+<INFO>	[2026-11-03 07:02:46]	--intregions	/usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Extended_Resistance_Mediating.txt
+<INFO>	[2026-11-03 07:02:46]	--categories	/usr/local/share/mtbseq-1.1.0-1/var/cat/MTB_Gene_Categories.txt
+<INFO>	[2026-11-03 07:02:46]	--basecalib	/usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Base_Calibration_List.vcf
+<INFO>	[2026-11-03 07:02:46]	--ref		M._tuberculosis_H37Rv_2015-11-13.fasta
+<INFO>	[2026-11-03 07:02:46]	--minbqual	13
+<INFO>	[2026-11-03 07:02:46]	--all_vars	0
+<INFO>	[2026-11-03 07:02:46]	--snp_vars	0
+<INFO>	[2026-11-03 07:02:46]	--lowfreq_vars	0
+<INFO>	[2026-11-03 07:02:46]	--mincovf	4
+<INFO>	[2026-11-03 07:02:46]	--mincovr	4
+<INFO>	[2026-11-03 07:02:46]	--minphred20	4
+<INFO>	[2026-11-03 07:02:46]	--minfreq	75
+<INFO>	[2026-11-03 07:02:46]	--unambig	95
+<INFO>	[2026-11-03 07:02:46]	--window	12
+<INFO>	[2026-11-03 07:02:46]	--distance	12
+<INFO>	[2026-11-03 07:02:46]	--quiet		0
+
+<INFO>	[2026-11-03 07:02:46]	The following programs will be used, if necessary:
+<INFO>	[2026-11-03 07:02:46]	/usr/local/share/mtbseq-1.1.0-1/opt/bwa_0.7.17
+<INFO>	[2026-11-03 07:02:46]	/usr/local/share/mtbseq-1.1.0-1/opt/samtools_1.6
+<INFO>	[2026-11-03 07:02:46]	/usr/local/share/mtbseq-1.1.0-1/opt/picard_2.17.0
+<INFO>	[2026-11-03 07:02:46]	/usr/local/share/mtbseq-1.1.0-1/opt/GenomeAnalysisTK_3.8
+
+<INFO>	[2026-11-03 07:02:46]	The following directories will be used, if necessary:
+<INFO>	[2026-11-03 07:02:46]	/work/Bam
+<INFO>	[2026-11-03 07:02:46]	/work/GATK_Bam
+<INFO>	[2026-11-03 07:02:46]	/work/Mpileup
+<INFO>	[2026-11-03 07:02:46]	/work/Position_Tables
+<INFO>	[2026-11-03 07:02:46]	/work/Called
+<INFO>	[2026-11-03 07:02:46]	/work/Joint
+<INFO>	[2026-11-03 07:02:46]	/work/Amend
+<INFO>	[2026-11-03 07:02:46]	/work/Classification
+<INFO>	[2026-11-03 07:02:46]	/work/Groups
+
+<INFO>	[2026-11-03 07:02:46]	### [TBjoin] selected ###
+
+<INFO>	[2026-11-03 07:02:46]	Found PURE-ERR13260175-100x_lib1.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab! Using file for joint analysis...
+<INFO>	[2026-11-03 07:02:46]	Found PURE-ERR038255-100x_lib1.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab! Using file for joint analysis...
+
+<INFO>	[2026-11-03 07:02:46]	Creating a joint variant table from:
+<INFO>	[2026-11-03 07:02:46]	PURE-ERR038255-100x_lib1.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab
+<INFO>	[2026-11-03 07:02:46]	PURE-ERR13260175-100x_lib1.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab
+
+<INFO>	[2026-11-03 07:02:46]	Start creating joint variant table...
+<INFO>	[2026-11-03 07:02:46]	Start parsing M._tuberculosis_H37Rv_2015-11-13.fasta...
+<INFO>	[2026-11-03 07:02:46]	Finished parsing M._tuberculosis_H37Rv_2015-11-13.fasta!
+<INFO>	[2026-11-03 07:03:20]	Start parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>	[2026-11-03 07:03:30]	Finished parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>	[2026-11-03 07:03:30]	Parsing variant files...
+<INFO>	[2026-11-03 07:03:31]	Finished parsing variant files!
+<INFO>	[2026-11-03 07:03:31]	Start printing joint variant file scaffold...
+<INFO>	[2026-11-03 07:03:31]	Finished printing joint variant file scaffold!
+<INFO>	[2026-11-03 07:03:31]	Start parsing position lists, extend called variants and complete joint variant list...
+<INFO>	[2026-11-03 07:11:52]	Finished parsing position lists, extend called variants and complete joint variant list!
+<INFO>	[2026-11-03 07:11:57]	Start printing coverage breadth output...
+<INFO>	[2026-11-03 07:15:04]	Finished printing coverage breadth output!
+<INFO>	[2026-11-03 07:15:14]	Finished creating joint variant table!
+
+<INFO>	[2026-11-03 07:15:23]	Amending joint variant table:
+<INFO>	[2026-11-03 07:15:23]	rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2.tab
+
+<INFO>	[2026-11-03 07:15:23]	Start amending joint variant table...
+<INFO>	[2026-11-03 07:15:23]	Start parsing /usr/local/share/mtbseq-1.1.0-1/var/cat/MTB_Gene_Categories.txt..
+<INFO>	[2026-11-03 07:15:24]	Finished parsing /usr/local/share/mtbseq-1.1.0-1/var/cat/MTB_Gene_Categories.txt!
+<INFO>	[2026-11-03 07:15:24]	Start parsing /usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Resistance_Mediating.txt and /usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Extended_Resistance_Mediating.txt..
+<INFO>	[2026-11-03 07:15:24]	Finished parsing /usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Resistance_Mediating.txt and /usr/local/share/mtbseq-1.1.0-1/var/res/MTB_Extended_Resistance_Mediating.txt!
+<INFO>	[2026-11-03 07:15:24]	Start creating rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo.tab with window length 12...
+<INFO>	[2026-11-03 07:15:25]	Finished creating rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo.tab with window length 12!
+<INFO>	[2026-11-03 07:15:26]	Finished amending joint variant table!
+
+<INFO>	[2026-11-03 07:15:26]	Calling groups from:
+<INFO>	[2026-11-03 07:15:26]	rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo_w12.tab
+
+<INFO>	[2026-11-03 07:15:26]	Start group calling...
+<INFO>	[2026-11-03 07:15:26]	Start parsing rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo_w12.tab...
+<INFO>	[2026-11-03 07:15:26]	Finished parsing rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo_w12.tab!
+<INFO>	[2026-11-03 07:15:26]	Start building distance matrix for rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo_w12.tab...
+<INFO>	[2026-11-03 07:15:26]	Finished building distance matrix for rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo_w12.tab!
+<INFO>	[2026-11-03 07:15:26]	Start calling groups for rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo_w12.tab...
+<INFO>	[2026-11-03 07:15:26]	Finished calling groups for rMAPTB_pure2_joint_cf4_cr4_fr75_ph4_samples2_amended_u95_phylo_w12.tab!
+<INFO>	[2026-11-03 07:15:26]	Finished group calling!
+
+<INFO>	[2026-11-03 07:15:26]	### MTBseq finished!!! ###

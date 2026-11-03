@@ -1,0 +1,23 @@
+** Cluster Picker Results **
+Input sequences =	joint.variable.ExDR.ExComplex.fa
+Input tree =	joint.ExDR.ExComplex.treefile
+Initial support threshold=	0.0
+Support threshold=	0.0
+Genetic distance threshold=	5.430847212165098E-4
+Large cluster threshold=	2147483647
+-------------------------
+** Sequences with cluster assignment output with new names
+** Tree modified to contain new names
+** new names have form: Clust(C)_(SequenceName) where C = cluster number, e.g. Clust25_139320
+-------------------------
+Output sequences =	joint.variable.ExDR.ExComplex.fa_joint.ExDR.ExComplex_clusterPicks.fas
+Output tree=	joint.ExDR.ExComplex_clusterPicks.nwk
+Output figtree=	joint.ExDR.ExComplex_clusterPicks.nwk.figTree
+-------------------------
+There are	21	sequences
+Tree has	21	tips
+Found	2	clusters
+ClusterNumber	NumberOfTips	NumberOfTipsCheck	TipNames	Bootstrap	GD
+1	2	2	[rMAPTB_benchmark.MIX-ERR038266-ERR13260106-20pctB-100x, rMAPTB_benchmark.MIX-ERR038266-ERR13260106-50pctB-100x]	100.0	0.0
+2	7	7	[rMAPTB_benchmark.MIX-ERR038255-ERR13260175-05pctA-100x, rMAPTB_benchmark.MIX-ERR038255-ERR13260175-30pctB-100x, rMAPTB_benchmark.MIX-ERR038255-ERR13260175-50pctB-100x, rMAPTB_benchmark.MIX-ERR038255-ERR13260175-10pctA-100x, rMAPTB_benchmark.MIX-ERR038255-ERR13260175-30pctA-100x, rMAPTB_benchmark.PURE-ERR13260175-100x, rMAPTB_benchmark.MIX-ERR038255-ERR13260175-20pctA-100x]	100.0	4.525910839556461E-5
+-------------------------

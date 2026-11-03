@@ -1,0 +1,92 @@
+#																		PURE-ERR038255-100x_lib1								PURE-ERR13260175-100x_lib1
+#Position	Insindex	Ref	Gene	GeneName	Annotation	Strains	Count_unamb	Perc_unamb	Ns	Us	PureSNP	Main_type	Main_allel	Category	Resistance	Phylo	InterestingRegion	Type	Allel	CovFor	CovRev	Qual20	Freq	Cov	Subst	Type	Allel	CovFor	CovRev	Qual20	Freq	Cov	Subst		PURE-ERR038255-100x_lib1	PURE-ERR13260175-100x_lib1		PURE-ERR038255-100x_lib1	PURE-ERR13260175-100x_lib1
+17654	0	T	Rv0015c	pknA	serine/threonine-protein kinase PknA	2	2	100.0000	0	0	1	SNP	t	essential	 	 	 	none	t	14	53	65	100.00	67	 	SNP	G	34	23	56	100.00	57	Gln370Pro (cag/cCg)		t	G		 	Gln370Pro (cag/cCg)
+17657	0	T	Rv0015c	pknA	serine/threonine-protein kinase PknA	2	2	100.0000	0	0	1	SNP	C	essential	 	 	 	none	t	13	53	64	100.00	66	 	SNP	C	32	26	58	100.00	58	Gln369Arg (cag/cGg)		t	C		 	Gln369Arg (cag/cGg)
+163705	0	C	Rv0136	cyp138	cytochrome P450 Cyp138	2	2	100.0000	0	0	1	SNP	c	nonessential	 	 	 	none	c	17	47	62	100.00	64	 	SNP	T	30	39	63	98.57	70	Pro114Ser (cct/Tct)		c	T		 	Pro114Ser (cct/Tct)
+163706	0	C	Rv0136	cyp138	cytochrome P450 Cyp138	2	2	100.0000	0	0	1	none	T	nonessential	 	 	 	none	c	19	46	65	100.00	65	 	SNP	T	29	42	71	100.00	71	Pro114Leu (cct/cTt)		c	T		 	Pro114Leu (cct/cTt)
+206481	0	C	Rv0174	mce1F	Mce family protein Mce1F	2	2	100.0000	0	0	1	none	c	nonessential	 	 	 	none	c	63	26	89	98.89	90	 	SNP	G	44	36	80	98.77	81	Pro417Pro (ccc/ccG)		c	G		 	Pro417Pro (ccc/ccG)
+206484	0	G	Rv0174	mce1F	Mce family protein Mce1F	2	2	100.0000	0	0	1	none	T	nonessential	 	 	 	none	g	64	26	89	100.00	90	 	SNP	T	41	38	76	98.75	80	Gly418Gly (ggg/ggT)		g	T		 	Gly418Gly (ggg/ggT)
+333120	0	A	Rv0277c	vapC25	ribonuclease VapC25	2	2	100.0000	0	0	1	SNP	G	nonessential	 	 	 	SNP	G	12	17	29	100.00	29	Val6Ala (gtc/gCc)	none	a	32	42	73	100.00	74	 		G	a		Val6Ala (gtc/gCc)	 
+333127	0	T	Rv0277c	vapC25	ribonuclease VapC25	2	2	100.0000	0	0	1	none	G	nonessential	 	 	 	SNP	G	4	8	12	100.00	12	Ile4Leu (atc/Ctc)	none	t	31	40	71	100.00	71	 		G	t		Ile4Leu (atc/Ctc)	 
+333209	0	A	 	 	 	2	2	100.0000	0	0	1	SNP	G	 	 	 	 	SNP	G	29	27	56	100.00	56	 	none	a	61	47	108	100.00	108	 		G	a		 	 
+333211	0	C	 	 	 	2	2	100.0000	0	0	1	SNP	T	 	 	 	 	SNP	T	29	27	55	100.00	56	 	none	c	61	44	105	100.00	105	 		T	c		 	 
+333212	0	G	 	 	 	2	2	100.0000	0	0	1	SNP	g	 	 	 	 	SNP	C	29	27	56	100.00	56	 	none	g	63	47	110	100.00	110	 		C	g		 	 
+467516	0	G	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	SNP	C	18	7	25	100.00	25	 	SNP	C	41	32	73	100.00	73	 		C	C		 	 
+467526	0	C	 	 	 	2	2	100.0000	0	0	1	SNP	G	 	 	 	 	SNP	G	22	5	27	100.00	27	 	SNP	G	35	38	73	100.00	73	 		G	G		 	 
+467546	0	G	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	SNP	C	26	5	31	100.00	31	 	SNP	C	35	35	70	100.00	70	 		C	C		 	 
+467557	0	A	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	SNP	C	25	5	29	100.00	30	 	SNP	C	42	33	75	100.00	75	 		C	C		 	 
+467564	0	A	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	SNP	C	26	5	30	100.00	31	 	SNP	C	42	34	76	100.00	76	 		C	C		 	 
+467585	0	G	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	SNP	C	24	5	29	100.00	29	 	SNP	C	39	32	71	100.00	71	 		C	C		 	 
+467590	0	T	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	SNP	C	27	5	32	100.00	32	 	SNP	C	39	32	71	100.00	71	 		C	C		 	 
+561776	0	C	 	 	 	2	2	100.0000	0	0	1	none	T	 	 	 	 	none	c	50	58	108	100.00	108	 	SNP	T	47	26	73	100.00	73	 		c	T		 	 
+561777	0	C	 	 	 	2	2	100.0000	0	0	1	SNP	T	 	 	 	 	none	c	50	59	107	100.00	109	 	SNP	T	47	25	72	100.00	72	 		c	T		 	 
+1105686	0	C	Rv0988	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	c	nonessential	 	 	 	none	c	69	62	130	100.00	131	 	SNP	G	59	43	102	100.00	102	Leu191Val (ctg/Gtg)		c	G		 	Leu191Val (ctg/Gtg)
+1105687	0	T	Rv0988	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	C	nonessential	 	 	 	none	t	69	62	128	99.24	132	 	SNP	C	60	42	102	99.03	103	Leu191Pro (ctg/cCg)		t	C		 	Leu191Pro (ctg/cCg)
+1215742	0	G	 	 	 	2	2	100.0000	0	0	1	none	g	 	 	 	 	none	g	60	78	137	100.00	138	 	SNP	A	47	34	81	100.00	81	 		g	A		 	 
+1215743	0	C	 	 	 	2	2	100.0000	0	0	1	SNP	c	 	 	 	 	none	c	62	76	136	100.00	138	 	SNP	A	48	33	81	100.00	81	 		c	A		 	 
+1789564	0	C	Rv1588c	-	hypothetical protein	2	2	100.0000	0	0	1	none	c	nonessential	 	 	 	none	c	40	57	89	98.98	98	 	SNP	T	65	51	113	100.00	116	Arg91Arg (cgg/cgA)		c	T		 	Arg91Arg (cgg/cgA)
+1789565	0	C	Rv1588c	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	c	nonessential	 	 	 	none	c	48	58	101	100.00	106	 	SNP	A	62	53	114	100.00	115	Arg91Leu (cgg/cTg)		c	A		 	Arg91Leu (cgg/cTg)
+1789650	0	C	Rv1588c	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	c	nonessential	 	 	 	none	c	93	38	126	100.00	131	 	SNP	T	72	57	129	88.36	146	Ala63Thr (gcc/Acc)		c	T		 	Ala63Thr (gcc/Acc)
+1789654	0	A	Rv1588c	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	G	nonessential	 	 	 	none	a	90	35	120	100.00	125	 	SNP	G	73	57	130	87.84	148	Leu61Leu (ctt/ctC)		a	G		 	Leu61Leu (ctt/ctC)
+1792777	0	T	Rv1592c	-	hypothetical protein	2	2	100.0000	0	0	1	none	C	nonessential	 	 	 	none	t	38	40	74	100.00	78	 	SNP	C	25	28	53	100.00	53	Ile322Val (att/Gtt)		t	C		 	Ile322Val (att/Gtt)
+1792778	0	T	Rv1592c	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	t	nonessential	 	 	 	none	t	38	38	73	100.00	76	 	SNP	C	24	27	51	100.00	51	Glu321Glu (gaa/gaG)		t	C		 	Glu321Glu (gaa/gaG)
+1831220	0	A	Rv1629	polA	DNA polymerase I	2	2	100.0000	0	0	1	SNP	a	essential	 	 	 	none	a	46	61	105	100.00	107	 	SNP	C	27	27	54	100.00	54	Thr186Pro (acc/Ccc)		a	C		 	Thr186Pro (acc/Ccc)
+1831226	0	A	Rv1629	polA	DNA polymerase I	2	2	100.0000	0	0	1	none	G	essential	 	 	 	none	a	48	67	114	100.00	115	 	SNP	G	26	23	49	100.00	49	Arg188Gly (agg/Ggg)		a	G		 	Arg188Gly (agg/Ggg)
+1955933	0	G	Rv1730c	-	penicillin-binding protein	2	2	100.0000	0	0	1	none	T	essential	 	 	 	none	g	61	40	101	100.00	101	 	SNP	T	36	19	55	98.21	56	Thr438Lys (aca/aAa)		g	T		 	Thr438Lys (aca/aAa)
+1955941	0	G	Rv1730c	-	penicillin-binding protein	2	2	100.0000	0	0	1	none	g	essential	 	 	 	none	g	60	37	97	100.00	97	 	SNP	C	47	31	78	100.00	78	Asp435Glu (gac/gaG)		g	C		 	Asp435Glu (gac/gaG)
+2300546	0	A	Rv2048c	pks12	polyketide synthase	2	2	100.0000	0	0	1	SNP	a	essential	 	 	 	none	a	61	69	130	100.00	130	 	SNP	T	42	40	82	98.80	83	His2147Gln (cat/caA)		a	T		 	His2147Gln (cat/caA)
+2300552	0	T	Rv2048c	pks12	polyketide synthase	2	2	100.0000	0	0	1	SNP	t	essential	 	 	 	none	t	61	71	130	100.00	132	 	SNP	G	39	37	76	100.00	76	Pro2145Pro (cca/ccC)		t	G		 	Pro2145Pro (cca/ccC)
+2300555	0	A	Rv2048c	pks12	polyketide synthase	2	2	100.0000	0	0	1	none	G	essential	 	 	 	none	a	60	67	124	100.00	127	 	SNP	G	40	37	77	100.00	77	Asp2144Asp (gat/gaC)		a	G		 	Asp2144Asp (gat/gaC)
+2338810	0	T	Rv2082	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	C	nonessential	 	 	 	none	t	48	45	89	98.94	94	 	SNP	C	46	41	87	100.00	87	Arg34Arg (cgt/cgC)		t	C		 	Arg34Arg (cgt/cgC)
+2338811	0	A	Rv2082	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	G	nonessential	 	 	 	none	a	50	45	92	100.00	95	 	SNP	G	46	41	87	100.00	87	Lys35Glu (aag/Gag)		a	G		 	Lys35Glu (aag/Gag)
+2551576	0	C	 	 	 	2	2	100.0000	0	0	1	SNP	c	 	 	 	 	none	c	61	67	126	100.00	128	 	SNP	G	33	75	108	99.08	109	 		c	G		 	 
+2551577	0	T	 	 	 	2	2	100.0000	0	0	1	none	t	 	 	 	 	none	t	60	66	125	100.00	126	 	SNP	C	32	75	106	100.00	107	 		t	C		 	 
+2626004	0	G	Rv2346c	esxO	ESAT-6 like protein EsxO	2	2	100.0000	0	0	1	SNP	g	epitope	 	 	 	none	g	65	37	99	100.00	102	 	SNP	A	40	28	67	100.00	68	Leu57Leu (ctg/Ttg)		g	A		 	Leu57Leu (ctg/Ttg)
+2626011	0	G	Rv2346c	esxO	ESAT-6 like protein EsxO	2	2	100.0000	0	0	1	SNP	g	epitope	 	 	 	none	g	79	37	115	100.00	116	 	SNP	A	41	27	67	100.00	68	Ile54Ile (atc/atT)		g	A		 	Ile54Ile (atc/atT)
+2626018	0	T	Rv2346c	esxO	ESAT-6 like protein EsxO	2	2	100.0000	0	0	1	SNP	C	epitope	 	 	 	none	t	76	35	107	100.00	111	 	SNP	C	42	28	70	97.22	72	Glu52Gly (gag/gGg)		t	C		 	Glu52Gly (gag/gGg)
+2626513	0	T	Rv2347c	esxP	ESAT-6 like protein EsxP	2	2	100.0000	0	0	1	SNP	A	nonessential	 	 	 	none	t	52	53	105	100.00	105	 	SNP	A	19	29	48	100.00	48	Thr3Ser (aca/Tca)		t	A		 	Thr3Ser (aca/Tca)
+2626514	0	T	Rv2347c	esxP	ESAT-6 like protein EsxP	2	2	100.0000	0	0	1	SNP	G	nonessential	 	 	 	none	t	50	52	101	98.08	104	 	SNP	G	19	29	48	100.00	48	Ala2Ala (gca/gcC)		t	G		 	Ala2Ala (gca/gcC)
+2809621	0	T	Rv2495c	bkdC	branched-chain keto acid dehydrogenase E2 component	2	2	100.0000	0	0	1	SNP	C	nonessential	 	 	 	SNP	C	26	20	43	100.00	46	Thr107Ala (acc/Gcc)	SNP	C	47	27	74	98.67	75	Thr107Ala (acc/Gcc)		C	C		Thr107Ala (acc/Gcc)	Thr107Ala (acc/Gcc)
+2809633	0	A	Rv2495c	bkdC	branched-chain keto acid dehydrogenase E2 component	2	2	100.0000	0	0	1	SNP	C	nonessential	 	 	 	none	a	39	21	57	100.00	60	 	SNP	C	49	28	77	100.00	77	Tyr103Asp (tac/Gac)		a	C		 	Tyr103Asp (tac/Gac)
+2866671	0	G	Rv2543	lppA	lipoprotein LppA	2	2	100.0000	0	0	1	SNP	A	nonessential	 	 	 	none	g	48	48	93	100.00	96	 	SNP	A	47	60	107	100.00	107	Glu68Glu (gag/gaA)		g	A		 	Glu68Glu (gag/gaA)
+2866677	0	A	Rv2543	lppA	lipoprotein LppA	2	2	100.0000	0	0	1	SNP	a	nonessential	 	 	 	none	a	53	46	99	98.02	101	 	SNP	C	49	56	105	100.00	105	Leu70Leu (cta/ctC)		a	C		 	Leu70Leu (cta/ctC)
+2866876	0	A	Rv2543	lppA	lipoprotein LppA	2	2	100.0000	0	0	1	none	a	nonessential	 	 	 	none	a	74	36	95	100.00	110	 	SNP	G	52	64	115	100.00	116	Ile137Val (att/Gtt)		a	G		 	Ile137Val (att/Gtt)
+2866880	0	C	Rv2543	lppA	lipoprotein LppA	2	2	100.0000	0	0	1	SNP	T	nonessential	 	 	 	none	c	71	38	108	100.00	109	 	SNP	T	52	65	117	100.00	117	Ala138Val (gcc/gTc)		c	T		 	Ala138Val (gcc/gTc)
+2866882	0	G	Rv2543	lppA	lipoprotein LppA	2	2	100.0000	0	0	1	none	A	nonessential	 	 	 	none	g	68	41	107	100.00	109	 	SNP	A	54	67	121	100.00	121	Ala139Thr (gcc/Acc)		g	A		 	Ala139Thr (gcc/Acc)
+2867230	0	G	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	SNP	A	nonessential	 	 	 	none	g	57	64	120	100.00	121	 	SNP	A	5	25	30	96.77	31	Gly36Asp (ggc/gAc)		g	A		 	Gly36Asp (ggc/gAc)
+2867231	0	C	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	SNP	c	nonessential	 	 	 	none	c	57	66	122	100.00	123	 	SNP	T	5	25	29	100.00	30	Gly36Gly (ggc/ggT)		c	T		 	Gly36Gly (ggc/ggT)
+2867236	0	A	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	SNP	a	nonessential	 	 	 	none	a	62	66	128	100.00	128	 	SNP	G	5	25	29	100.00	30	Asn38Ser (aac/aGc)		a	G		 	Asn38Ser (aac/aGc)
+2867240	0	C	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	SNP	c	nonessential	 	 	 	none	c	59	63	120	99.19	123	 	SNP	T	5	25	30	100.00	30	Pro39Pro (ccc/ccT)		c	T		 	Pro39Pro (ccc/ccT)
+2867245	0	A	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	SNP	a	nonessential	 	 	 	none	a	60	63	121	99.19	124	 	SNP	C	5	25	30	100.00	30	Lys41Thr (aaa/aCa)		a	C		 	Lys41Thr (aaa/aCa)
+2867251	0	C	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	SNP	c	nonessential	 	 	 	none	c	64	55	116	99.17	120	 	SNP	G	4	26	30	100.00	30	Pro43Arg (ccg/cGg)		c	G		 	Pro43Arg (ccg/cGg)
+2867254	0	A	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	none	G	nonessential	 	 	 	none	a	62	56	114	99.16	119	 	SNP	G	5	27	32	100.00	32	His44Arg (cac/cGc)		a	G		 	His44Arg (cac/cGc)
+2867263	0	G	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	none	A	nonessential	 	 	 	none	g	58	57	111	99.14	116	 	SNP	A	8	28	35	100.00	36	Gly47Asp (ggc/gAc)		g	A		 	Gly47Asp (ggc/gAc)
+2867532	0	A	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	none	a	nonessential	 	 	 	none	a	62	30	82	100.00	92	 	SNP	G	13	6	19	100.00	19	Ile137Val (att/Gtt)		a	G		 	Ile137Val (att/Gtt)
+2867536	0	C	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	SNP	T	nonessential	 	 	 	none	c	61	48	100	100.00	109	 	SNP	T	13	6	19	100.00	19	Ala138Val (gcc/gTc)		c	T		 	Ala138Val (gcc/gTc)
+2867538	0	G	Rv2544	lppB	lipoprotein LppB	2	2	100.0000	0	0	1	none	g	nonessential	 	 	 	none	g	60	47	106	100.00	107	 	SNP	A	14	6	20	100.00	20	Ala139Thr (gcc/Acc)		g	A		 	Ala139Thr (gcc/Acc)
+3133054	0	C	Rv2825c	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	c	nonessential	 	 	 	none	c	18	4	18	100.00	22	 	SNP	G	37	43	79	100.00	80	Ser162Ser (tcg/tcC)		c	G		 	Ser162Ser (tcg/tcC)
+3133055	0	G	Rv2825c	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	C	nonessential	 	 	 	none	g	17	5	19	100.00	22	 	SNP	C	36	44	80	100.00	80	Ser162Trp (tcg/tGg)		g	C		 	Ser162Trp (tcg/tGg)
+3247851	0	G	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	2	2	100.0000	0	0	1	SNP	A	nonessential	 	 	 	SNP	A	13	7	19	100.00	20	Ala803Thr (gcc/Acc)	SNP	A	24	27	50	100.00	51	Ala803Thr (gcc/Acc)		A	A		Ala803Thr (gcc/Acc)	Ala803Thr (gcc/Acc)
+3247853	0	C	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	2	2	100.0000	0	0	1	SNP	T	nonessential	 	 	 	SNP	T	12	5	17	100.00	17	Ala803Ala (gcc/gcT)	SNP	T	24	26	50	100.00	50	Ala803Ala (gcc/gcT)		T	T		Ala803Ala (gcc/gcT)	Ala803Ala (gcc/gcT)
+3247856	0	G	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	2	2	100.0000	0	0	1	SNP	C	nonessential	 	 	 	SNP	C	12	6	18	100.00	18	Arg804Arg (cgg/cgC)	SNP	C	23	26	49	100.00	49	Arg804Arg (cgg/cgC)		C	C		Arg804Arg (cgg/cgC)	Arg804Arg (cgg/cgC)
+3248074	0	G	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	2	2	100.0000	0	0	1	SNP	A	nonessential	 	 	 	SNP	A	52	41	88	96.88	96	Arg877His (cgc/cAc)	SNP	A	58	52	110	100.00	110	Arg877His (cgc/cAc)		A	A		Arg877His (cgc/cAc)	Arg877His (cgc/cAc)
+3248075	0	C	Rv2931	ppsA	phthiocerol synthesis polyketide synthase type I PpsA	2	2	100.0000	0	0	1	SNP	T	nonessential	 	 	 	SNP	T	51	39	90	95.74	94	Arg877Arg (cgc/cgT)	SNP	T	60	52	112	100.00	112	Arg877Arg (cgc/cgT)		T	T		Arg877Arg (cgc/cgT)	Arg877Arg (cgc/cgT)
+3379708	0	G	 	 	 	2	2	100.0000	0	0	1	SNP	g	 	 	 	 	none	g	6	6	9	100.00	12	 	SNP	C	36	26	62	80.52	77	 		g	C		 	 
+3379712	0	G	 	 	 	2	2	100.0000	0	0	1	none	C	 	 	 	 	none	g	8	8	12	100.00	16	 	SNP	C	34	26	60	80.00	75	 		g	C		 	 
+3379726	0	C	 	 	 	2	2	100.0000	0	0	1	none	A	 	 	 	 	none	c	9	14	22	100.00	23	 	SNP	A	22	20	42	76.36	55	 		c	A		 	 
+3379730	0	G	 	 	 	2	2	100.0000	0	0	1	none	g	 	 	 	 	none	g	9	14	22	100.00	23	 	SNP	C	22	19	41	75.93	54	 		g	C		 	 
+3379732	0	C	 	 	 	2	2	100.0000	0	0	1	SNP	c	 	 	 	 	none	c	9	13	21	100.00	22	 	SNP	T	21	19	37	75.47	53	 		c	T		 	 
+3379735	0	A	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	none	a	10	13	23	100.00	23	 	SNP	C	22	19	41	75.93	54	 		a	C		 	 
+3379736	0	C	 	 	 	2	2	100.0000	0	0	1	none	A	 	 	 	 	none	c	10	13	22	100.00	23	 	SNP	A	23	19	40	76.36	55	 		c	A		 	 
+3379742	0	T	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	none	t	10	12	21	100.00	22	 	SNP	C	40	31	71	87.65	81	 		t	C		 	 
+3379751	0	A	 	 	 	2	2	100.0000	0	0	1	SNP	C	 	 	 	 	none	a	7	12	19	100.00	19	 	SNP	C	50	31	81	91.01	89	 		a	C		 	 
+3379757	0	A	 	 	 	2	2	100.0000	0	0	1	none	C	 	 	 	 	none	a	6	12	17	100.00	18	 	SNP	C	52	34	85	92.47	93	 		a	C		 	 
+3379763	0	G	 	 	 	2	2	100.0000	0	0	1	SNP	g	 	 	 	 	none	g	6	11	17	100.00	17	 	SNP	A	53	43	96	95.05	101	 		g	A		 	 
+3440464	0	T	Rv3077	-	hydrolase	2	2	100.0000	0	0	1	SNP	G	nonessential	 	 	 	SNP	G	46	48	93	100.00	94	Arg308Arg (cgt/cgG)	SNP	G	29	31	60	100.00	60	Arg308Arg (cgt/cgG)		G	G		Arg308Arg (cgt/cgG)	Arg308Arg (cgt/cgG)
+3440468	0	G	Rv3077	-	hydrolase	2	2	100.0000	0	0	1	SNP	C	nonessential	 	 	 	SNP	C	45	47	90	100.00	92	Gly310Arg (ggc/Cgc)	SNP	C	29	30	58	100.00	59	Gly310Arg (ggc/Cgc)		C	C		Gly310Arg (ggc/Cgc)	Gly310Arg (ggc/Cgc)
+3778011	0	G	Rv3366	spoU	tRNA/rRNA methylase SpoU	2	2	100.0000	0	0	1	none	A	nonessential	 	 	 	none	g	24	57	74	97.59	83	 	SNP	A	33	31	61	100.00	64	Arg92Gln (cgg/cAg)		g	A		 	Arg92Gln (cgg/cAg)
+3778012	0	G	Rv3366	spoU	tRNA/rRNA methylase SpoU	2	2	100.0000	0	0	1	none	T	nonessential	 	 	 	none	g	27	54	81	100.00	81	 	SNP	T	34	32	62	100.00	66	Arg92Arg (cgg/cgT)		g	T		 	Arg92Arg (cgg/cgT)
+3811672	0	G	 	 	 	2	2	100.0000	0	0	1	SNP	g	 	 	 	 	none	g	63	46	109	100.00	109	 	SNP	T	37	59	94	100.00	96	 		g	T		 	 
+3811675	0	A	 	 	 	2	2	100.0000	0	0	1	none	a	 	 	 	 	none	a	65	49	110	100.00	114	 	SNP	G	36	53	89	100.00	89	 		a	G		 	 
+3883796	0	G	Rv3466	-	hypothetical protein	2	2	100.0000	0	0	1	SNP	T	nonessential	 	 	 	none	g	55	31	75	100.00	86	 	SNP	T	46	47	92	100.00	93	Arg91Leu (cgg/cTg)		g	T		 	Arg91Leu (cgg/cTg)
+3883797	0	G	Rv3466	-	hypothetical protein	2	2	100.0000	0	0	1	none	A	nonessential	 	 	 	none	g	52	26	70	100.00	78	 	SNP	A	46	48	93	100.00	94	Arg91Arg (cgg/cgA)		g	A		 	Arg91Arg (cgg/cgA)

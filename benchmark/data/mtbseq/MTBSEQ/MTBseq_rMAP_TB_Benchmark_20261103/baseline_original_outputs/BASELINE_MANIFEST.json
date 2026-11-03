@@ -1,0 +1,117 @@
+{
+  "project": "rMAP-TB versus MTBseq 18-library mixed-strain benchmarking audit",
+  "generated_utc": "2026-11-03T05:49:47.046315+00:00",
+  "baseline_workflow": "MTBSEQ_BENCHMARK",
+  "baseline_task": "MTBSEQ_FULL",
+  "mtbseq_version": "1.1.0",
+  "original_submission": "d11eb528-1d56-496c-901b-3213d38af7de",
+  "original_workflow": "e76bf8e8-bc07-46c5-a8d6-0a390c1cc569",
+  "cloud_archive": "gs://fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/d11eb528-1d56-496c-901b-3213d38af7de/MTBSEQ_BENCHMARK/e76bf8e8-bc07-46c5-a8d6-0a390c1cc569/call-MTBSEQ_FULL/mtbseq_out/mtbseq_outputs.tar.gz",
+  "full_21_6GB_archive_included": false,
+  "raw_files": [
+    {
+      "filename": "MTBseq_Amend_Audit.zip",
+      "size_bytes": 94910,
+      "sha256": "50432412a7313a1b71a4ffb8d1bacf739e14b42bbe78298bea58b0df3e05f944"
+    },
+    {
+      "filename": "MTBseq_Extra_Audit.zip",
+      "size_bytes": 1066485,
+      "sha256": "7853624f21ce5c6c77615d77bee000d099a02a08137111ccf01921b1194ab02d"
+    },
+    {
+      "filename": "clustering_eligibility.tsv",
+      "size_bytes": 2228,
+      "sha256": "6399ca96889340a4394ee012a19bc96db908288b69575b71d8a6ccc1e448376b"
+    },
+    {
+      "filename": "collection.log",
+      "size_bytes": 1360,
+      "sha256": "97ab0e69b117a8980058425e7f556fed12db6c83d7a8f5573e4bf10adefb49e3"
+    },
+    {
+      "filename": "mtbseq_classification.tsv",
+      "size_bytes": 3764,
+      "sha256": "ff4b71113f8719077f8fb0c843c4986791b0ad5f922ffe011214a130d418bc3a"
+    },
+    {
+      "filename": "mtbseq_distance_matrix.tsv",
+      "size_bytes": 983,
+      "sha256": "28fc382cb2086f94e242c23ae83acf1ed70493eff6d480abcc38046489b851fc"
+    },
+    {
+      "filename": "mtbseq_groups.tsv",
+      "size_bytes": 1508,
+      "sha256": "eb871717e5fa652dfc39632048bd01d840bf92ff24f62c8489c76cc7144b9ad7"
+    },
+    {
+      "filename": "mtbseq_resistance.tsv",
+      "size_bytes": 65,
+      "sha256": "d2b1b9ded3da86b7da112aae45312c7ce8643776b0365a79e54bbc837a5ed7a5"
+    },
+    {
+      "filename": "mtbseq_run(1).log",
+      "size_bytes": 259347,
+      "sha256": "ccd852f3c541c4116eb73e736051a85be4ea0d9ceb8bd2eff1a9d3341621897a"
+    },
+    {
+      "filename": "mtbseq_statistics.tsv",
+      "size_bytes": 4547,
+      "sha256": "4c0592832681edb7bf258cfaf055d3f197283f2ae7f8f750901eea2b14c80da4"
+    },
+    {
+      "filename": "pairwise_snp_distance_matrix.tsv",
+      "size_bytes": 2398,
+      "sha256": "d05a73882812af9e60a7c99b31392d122fe89360e020410cc58abb6cab266c96"
+    },
+    {
+      "filename": "pairwise_snp_distance_pairs.tsv",
+      "size_bytes": 65910,
+      "sha256": "e1c62457234fd12f1821447293e7e8216412baa5e03241ff3c7f523715b50b2b"
+    },
+    {
+      "filename": "resistance_profile_summary.tsv",
+      "size_bytes": 74451,
+      "sha256": "89451c95622a7a60331177535408c4cd8e2fe8c0752caabeeb259088d05fcd04"
+    },
+    {
+      "filename": "run_metadata(1).txt",
+      "size_bytes": 93,
+      "sha256": "b585a0a7ab0e22ecd45b38a4a9969ca4c8a4ba736ba3eaf4de9b3d8505e24a49"
+    },
+    {
+      "filename": "sample_map.tsv",
+      "size_bytes": 3383,
+      "sha256": "5fb4b1e49b7a3b9693644cec90fe45d81a8993bd948376be381c4e93e5a7ec14"
+    },
+    {
+      "filename": "script(20261103-041350)",
+      "size_bytes": 15674,
+      "sha256": "b06a10402957f78d35b3dd413689d949e2578025eece34a1d83416e5a48d729f"
+    },
+    {
+      "filename": "status(1).txt",
+      "size_bytes": 8,
+      "sha256": "81b2bd4ea98c8db66554fbc8d7637a1a69a130f331feb732b75caab4c4868fd5"
+    },
+    {
+      "filename": "tb_surveillance_metadata(1).tsv",
+      "size_bytes": 6352,
+      "sha256": "1acb5f617f252fbf37f7f7d5524f0df863d575a7ef3758b97393cab0c44fe077"
+    }
+  ],
+  "parameters": {
+    "step": "TBfull",
+    "mincovf": 4,
+    "mincovr": 4,
+    "minphred20": 4,
+    "minfreq": 75,
+    "unambig": 95,
+    "window": 12,
+    "distance": 12,
+    "threads": 8,
+    "reference": "M._tuberculosis_H37Rv_2015-11-13"
+  },
+  "rmap_18_workflow": "06425efe-8104-42ef-b8f4-7f4b69f4e3b5",
+  "rmap_18_submission": "3d10dc72-6796-4f83-85ac-6ebbbf7a816"
+}

@@ -1,0 +1,7 @@
+Starting validated Snippy-core input preparation
+Converter image: python:3.11-slim
+Alignment file: /mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.full.aln
+FASTA sequence count: 19
+Reference: Reference; length: 4411532; panel samples: 18
+Reused Snippy-core VCF: 242 records, 242 SNP-only records, 18 samples
+Alignment preparation completed successfully

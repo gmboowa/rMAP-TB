@@ -1,0 +1,209 @@
+IQ-TREE 2.3.4 COVID-edition built Apr 26 2024
+
+Input file name: iqtree/mtbc_core_snp_alignment.fasta
+Type of analysis: tree reconstruction + ultrafast bootstrap (1000 replicates)
+Random seed number: 109273
+
+REFERENCES
+----------
+
+To cite IQ-TREE please use:
+
+Bui Quang Minh, Heiko A. Schmidt, Olga Chernomor, Dominik Schrempf,
+Michael D. Woodhams, Arndt von Haeseler, and Robert Lanfear (2020)
+IQ-TREE 2: New models and efficient methods for phylogenetic inference
+in the genomic era. Mol. Biol. Evol., in press.
+https://doi.org/10.1093/molbev/msaa015
+
+Since you used ultrafast bootstrap (UFBoot) please also cite: 
+
+Diep Thi Hoang, Olga Chernomor, Arndt von Haeseler, Bui Quang Minh,
+and Le Sy Vinh (2018) UFBoot2: Improving the ultrafast bootstrap
+approximation. Mol. Biol. Evol., 35:518–522.
+https://doi.org/10.1093/molbev/msx281
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 19 sequences with 4411532 nucleotide sites
+Number of constant sites: 4.40996e+06 (= 99.9644% of all sites)
+Number of invariant (constant or ambiguous constant) sites: 4.40996e+06 (= 99.9644% of all sites)
+Number of parsimony informative sites: 1128
+Number of distinct site patterns: 6498
+
+SUBSTITUTION PROCESS
+--------------------
+
+Model of substitution: GTR+F+G4
+
+Rate parameter R:
+
+  A-C: 1.0458
+  A-G: 2.8069
+  A-T: 0.1927
+  C-G: 0.6933
+  C-T: 2.8799
+  G-T: 1.0000
+
+State frequencies: (empirical counts from alignment)
+
+  pi(A) = 0.1736
+  pi(C) = 0.3269
+  pi(G) = 0.3259
+  pi(T) = 0.1735
+
+Rate matrix Q:
+
+  A    -1.246    0.3302    0.8834   0.03229
+  C    0.1753   -0.8761    0.2182    0.4826
+  G    0.4705    0.2189    -0.857    0.1676
+  T    0.0323    0.9091    0.3147    -1.256
+
+Model of rate heterogeneity: Gamma with 4 categories
+Gamma shape alpha: 0.02004
+
+ Category  Relative_rate  Proportion
+  1         5.067e-31      0.25
+  2         1.065e-15      0.25
+  3         9.782e-07      0.25
+  4         4              0.25
+Relative rates are computed as MEAN of the portion of the Gamma distribution falling in the category.
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -5425377.6577 (s.e. 1068.5697)
+Unconstrained log-likelihood (without tree): -8182287.3383
+Number of free parameters (#branches + #model parameters): 44
+Akaike information criterion (AIC) score: 10850843.3155
+Corrected Akaike information criterion (AICc) score: 10850843.3164
+Bayesian information criterion (BIC) score: 10851428.5037
+
+Total tree length (sum of branch lengths): 0.0004
+Sum of internal branch lengths: 0.0003 (82.2196% of tree length)
+
+WARNING: 9 near-zero internal branches (<0.0000) should be treated with caution
+         Such branches are denoted by '**' in the figure below
+
+NOTE: Tree is UNROOTED although outgroup taxon '0000_CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x' is drawn at root
+Numbers in parentheses are SH-aLRT support (%) / ultrafast bootstrap support (%)
+
++**0000_CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x
+|
+|                                                                                    +**0001_MIX_ERR038255_ERR13260175_05pctA_100x
+|                                                                                 +**| (100/100)
+|                                                                                 |  +**0017_PURE_ERR13260175_100x
+|                                                                              +**| (0/100)
+|                                                                              |  +**0003_MIX_ERR038255_ERR13260175_10pctA_100x
+|                                                                           +**| (0/100)
+|                                                                           |  +**0008_MIX_ERR038255_ERR13260175_20pctA_100x
+|                                                                        +**| (0/100)
+|                                                                        |  +**0010_MIX_ERR038255_ERR13260175_30pctA_100x
+|                                            +---------------------------| (99.7/100)
+|                                            |                           +**0012_MIX_ERR038255_ERR13260175_50pctB_100x
+|                                         +**| (0/78)
+|                                         |  +**0011_MIX_ERR038255_ERR13260175_30pctB_100x
+|                                  +------| (40.9/50)
+|                                  |      +**0009_MIX_ERR038255_ERR13260175_20pctB_100x
+|                    +-------------| (100/74)
+|                    |             |        +**0013_MIX_ERR038266_ERR13260106_10pctB_100x
+|                    |             |     +--| (76.3/56)
+|                    |             |     |  +**0014_MIX_ERR038266_ERR13260106_20pctB_100x
+|                    |             +-----| (99.9/100)
+|                    |                   +**0015_MIX_ERR038266_ERR13260106_50pctB_100x
+|           +--------| (100/90)
+|           |        +------------Reference
+|        +**| (32.1/84)
+|        |  +**0005_MIX_ERR038255_ERR13260175_10pctB_140x
+|     +--| (63.8/71)
+|     |  +**0004_MIX_ERR038255_ERR13260175_10pctB_100x
+|  +**| (0/85)
+|  |  +**0007_MIX_ERR038255_ERR13260175_10pctB_70x
++**| (61.9/86)
+|  +**0006_MIX_ERR038255_ERR13260175_10pctB_40x
+|
+|  +**0002_MIX_ERR038255_ERR13260175_05pctB_100x
++**| (0/71)
+   +**0016_PURE_ERR038255_100x
+
+Tree in newick format:
+
+(0000_CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x:0.0000000482,(((((((((((((0001_MIX_ERR038255_ERR13260175_05pctA_100x:0.0000000227,0017_PURE_ERR13260175_100x:0.0000000639)100/100:0.0000000512,0003_MIX_ERR038255_ERR13260175_10pctA_100x:0.0000000227)0/100:0.0000000227,0008_MIX_ERR038255_ERR13260175_20pctA_100x:0.0000000227)0/100:0.0000000539,0010_MIX_ERR038255_ERR13260175_30pctA_100x:0.0000000227)0/100:0.0000000472,0012_MIX_ERR038255_ERR13260175_50pctB_100x:0.0000000227)99.7/100:0.0001378063,0011_MIX_ERR038255_ERR13260175_30pctB_100x:0.0000000227)0/78:0.0000000575,0009_MIX_ERR038255_ERR13260175_20pctB_100x:0.0000000227)40.9/50:0.0000352801,((0013_MIX_ERR038266_ERR13260106_10pctB_100x:0.0000000227,0014_MIX_ERR038266_ERR13260106_20pctB_100x:0.0000000482)76.3/56:0.0000015740,0015_MIX_ERR038266_ERR13260106_50pctB_100x:0.0000000227)99.9/100:0.0000305271)100/74:0.0000689191,Reference:0.0000675093)100/90:0.0000486963,0005_MIX_ERR038255_ERR13260175_10pctB_140x:0.0000000227)32.1/84:0.0000000549,0004_MIX_ERR038255_ERR13260175_10pctB_100x:0.0000000227)63.8/71:0.0000010900,0007_MIX_ERR038255_ERR13260175_10pctB_70x:0.0000000227)0/85:0.0000000513,0006_MIX_ERR038255_ERR13260175_10pctB_40x:0.0000000227)61.9/86:0.0000000492,(0002_MIX_ERR038255_ERR13260175_05pctB_100x:0.0000000227,0016_PURE_ERR038255_100x:0.0000000227)0/71:0.0000000472);
+
+CONSENSUS TREE
+--------------
+
+Consensus tree is constructed from 1000 bootstrap trees
+Log-likelihood of consensus tree: -5425379.152718194
+Robinson-Foulds distance between ML tree and consensus tree: 0
+
+Branches with support >0.000000000% are kept (extended consensus)
+Branch lengths are optimized by maximum likelihood on original alignment
+Numbers in parentheses are bootstrap supports (%)
+
++**0000_CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x
+|
+|                                                                                    +**0001_MIX_ERR038255_ERR13260175_05pctA_100x
+|                                                                                 +**| (100)
+|                                                                                 |  +**0017_PURE_ERR13260175_100x
+|                                                                              +**| (100)
+|                                                                              |  +**0003_MIX_ERR038255_ERR13260175_10pctA_100x
+|                                                                           +**| (100)
+|                                                                           |  +**0008_MIX_ERR038255_ERR13260175_20pctA_100x
+|                                                                        +**| (100)
+|                                                                        |  +**0010_MIX_ERR038255_ERR13260175_30pctA_100x
+|                                             +--------------------------| (100)
+|                                             |                          +**0012_MIX_ERR038255_ERR13260175_50pctB_100x
+|                                          +**| (78)
+|                                          |  +**0011_MIX_ERR038255_ERR13260175_30pctB_100x
+|                                   +------| (50)
+|                                   |      +**0009_MIX_ERR038255_ERR13260175_20pctB_100x
+|                     +-------------| (74)
+|                     |             |        +**0013_MIX_ERR038266_ERR13260106_10pctB_100x
+|                     |             |     +**| (56)
+|                     |             |     |  +**0014_MIX_ERR038266_ERR13260106_20pctB_100x
+|                     |             +-----| (100)
+|                     |                   +**0015_MIX_ERR038266_ERR13260106_50pctB_100x
+|           +---------| (90)
+|           |         +------------Reference
+|        +**| (84)
+|        |  +**0005_MIX_ERR038255_ERR13260175_10pctB_140x
+|     +**| (71)
+|     |  +**0004_MIX_ERR038255_ERR13260175_10pctB_100x
+|  +**| (85)
+|  |  +**0007_MIX_ERR038255_ERR13260175_10pctB_70x
++**| (86)
+|  +**0006_MIX_ERR038255_ERR13260175_10pctB_40x
+|
+|  +**0002_MIX_ERR038255_ERR13260175_05pctB_100x
++**| (71)
+   +**0016_PURE_ERR038255_100x
+
+
+Consensus tree in newick format: 
+
+(0000_CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x:0.0000000482,(((((((((((((0001_MIX_ERR038255_ERR13260175_05pctA_100x:0.0000000496,0017_PURE_ERR13260175_100x:0.0000000669)100:0.0000000473,0003_MIX_ERR038255_ERR13260175_10pctA_100x:0.0000000482)100:0.0000000472,0008_MIX_ERR038255_ERR13260175_20pctA_100x:0.0000000482)100:0.0000000566,0010_MIX_ERR038255_ERR13260175_30pctA_100x:0.0000000482)100:0.0000000615,0012_MIX_ERR038255_ERR13260175_50pctB_100x:0.0000000482)100:0.0001358156,0011_MIX_ERR038255_ERR13260175_30pctB_100x:0.0000000482)78:0.0000000562,0009_MIX_ERR038255_ERR13260175_20pctB_100x:0.0000000482)50:0.0000370798,((0013_MIX_ERR038266_ERR13260106_10pctB_100x:0.0000000670,0014_MIX_ERR038266_ERR13260106_20pctB_100x:0.0000000496)56:0.0000015944,0015_MIX_ERR038266_ERR13260106_50pctB_100x:0.0000000613)100:0.0000304540)74:0.0000689441,Reference:0.0000674979)90:0.0000487542,0005_MIX_ERR038255_ERR13260175_10pctB_140x:0.0000000482)84:0.0000000561,0004_MIX_ERR038255_ERR13260175_10pctB_100x:0.0000000482)71:0.0000010056,0007_MIX_ERR038255_ERR13260175_10pctB_70x:0.0000000482)85:0.0000000678,0006_MIX_ERR038255_ERR13260175_10pctB_40x:0.0000000482)86:0.0000000561,(0002_MIX_ERR038255_ERR13260175_05pctB_100x:0.0000000482,0016_PURE_ERR038255_100x:0.0000000496)71:0.0000000503);
+
+ALISIM COMMAND
+--------------
+To simulate an alignment of the same length as the original alignment, using the tree and model parameters estimated from this analysis, you can use the following command:
+
+--alisim simulated_MSA -t iqtree/MTBC_core_SNP_phylogeny.treefile -m "GTR{1.04581,2.80687,0.192681,0.693322,2.87987}+F{0.173603,0.326934,0.325924,0.173539}+G4{0.0200399}" --length 4411532
+
+To mimic the alignment used to produce this analysis, i.e. simulate an alignment of the same length as the original alignment, using the tree and model parameters estimated from this analysis *and* copying the same gap positions as the original alignment, you can use the following command:
+
+iqtree -s iqtree/mtbc_core_snp_alignment.fasta --alisim mimicked_MSA
+
+To simulate any number of alignments in either of the two commandlines above, use the --num-alignments options, for example mimic 100 alignments you would use the command line:
+
+iqtree -s iqtree/mtbc_core_snp_alignment.fasta --alisim mimicked_MSA --num-alignments 100
+
+For more information on using AliSim, please visit: www.iqtree.org/doc/AliSim
+
+TIME STAMP
+----------
+
+Date and time: Sun Nov  1 19:36:44 2026
+Total CPU time used: 4135.76507 seconds (1h:8m:55s)
+Total wall-clock time used: 659.0432482 seconds (0h:10m:59s)
+

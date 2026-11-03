@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+"""Compute MTBseq vs rMAP-TB distances on EXACTLY THE SAME REFERENCE COORDINATES.
+
+Requires the 18-library rMAP-TB Snippy 'core.full.aln' (not the separate
+10-isolate UShER alignment). It checks H37Rv coordinate/reference consistency
+and requires all 18 sample IDs to match. It never compares unmatched masks.
+
+Example:
+ python3 compare_matched_callable_sites.py \
+  --rmap-fasta ~/Downloads/MTBseq_rMAP_matched_sites/core.full.aln \
+  --audit-zip ./baseline_original_outputs/MTBseq_Extra_Audit.zip \
+  --amend-zip ./baseline_original_outputs/MTBseq_Amend_Audit.zip \
+  --outdir ~/Downloads/MTBseq_rMAP_matched_sites/analysis
+"""
+import argparse, csv, io, re, collections, zipfile, json, hashlib
+from pathlib import Path
+
+ACGT=set('ACGT')
+canon=lambda s:re.sub(r'^\d{4}_','',s.strip().strip("'").removesuffix('_lib1').replace('-','_'))
+
+def get_table(archive,suffix):
+ with zipfile.ZipFile(archive) as z:
+  ns=[n for n in z.namelist() if n.endswith(suffix) and not n.startswith('__MACOSX/')]
+  if len(ns)!=1:raise ValueError(f'Need one {suffix} in {archive}; found {ns}')
+  return list(csv.reader(io.StringIO(z.read(ns[0]).decode()),delimiter='\t'))
+
+def load_fasta(path):
+ seq={}; name=None; parts=[]
+ def commit():
+  if name:
+   if name in seq: raise ValueError(f'Duplicate FASTA ID {name}')
+   seq[name]=''.join(parts).upper()
+ with open(path) as fh:
+  for line in fh:
+   line=line.strip()
+   if not line:continue
+   if line.startswith('>'):
+    commit();name=line[1:].split()[0];parts=[]
+   else:parts.append(line)
+ commit();return seq
+
+def qualcall(row,i):
+ j=18+i*8
+ al=row[j+1].strip().upper();typ=row[j].strip().upper()
+ try:fr,rev,q,freq=(float(row[j+k].strip() or 0) for k in (2,3,4,5))
+ except ValueError:return None
+ return al if len(al)==1 and al in ACGT and typ in ('SNP','NONE') and fr>=4 and rev>=4 and q>=4 and freq>=75 else None
+
+def main():
+ p=argparse.ArgumentParser(description=__doc__)
+ p.add_argument('--rmap-fasta',type=Path,required=True)
+ p.add_argument('--audit-zip',type=Path,required=True)
+ p.add_argument('--amend-zip',type=Path,required=True)
+ p.add_argument('--outdir',type=Path,required=True)
+ args=p.parse_args()
+ rows=get_table(args.audit_zip,'_amended.tab')
+ after=get_table(args.amend_zip,'_amended_u95_phylo_w12.tab')
+ samples=[canon(rows[0][18+8*i]) for i in range(18)]
+ assert len(samples)==len(set(samples))==18
+ filtered_keys={(r[0].strip(),r[1].strip()) for r in after[2:]}
+ seqs0=load_fasta(args.rmap_fasta.expanduser())
+ seqs={canon(k):v for k,v in seqs0.items()}
+ missing=set(samples)-set(seqs)
+ if missing:raise SystemExit(f'FAIL: These 18-panel samples missing from alignment: {sorted(missing)}. Do not use the 10-isolate alignment.')
+ extras=set(seqs)-set(samples)
+ if len(extras)!=1:raise SystemExit(f'FAIL: Expected exactly one reference sequence, found extra IDs {extras}')
+ ref=seqs[next(iter(extras))]
+ if len(ref)!=4411532:raise SystemExit(f'FAIL: reference alignment length {len(ref)} != 4411532; coordinate indexing unsafe')
+ if any(len(seqs[s])!=len(ref) for s in samples):raise SystemExit('FAIL: sample and reference sequences differ in alignment length')
+ matches=0;mis=[];checked=0
+ for r in rows[2:]:
+  pos=int(r[0]);ins=r[1].strip(); al=r[2].strip().upper()
+  if ins!='0' or al not in ACGT:continue
+  checked+=1
+  if ref[pos-1]==al:matches+=1
+  else:mis.append({'position':pos,'mtbseq_ref':al,'rmap_ref':ref[pos-1]})
+ if checked<1000 or any(m["rmap_ref"] in ACGT for m in mis):
+  raise SystemExit(f'FAIL: reference mismatches: {len(mis)}/{checked}. Alignments/reference may be non-coordinates or different. Stop rather than fabricate matches.')
+ masks={'final_237':[], 'joint_candidate_3148':[], 'pure_panel_2201':[]}
+ for r in rows[2:]:
+  if r[1].strip()!='0':continue
+  pos=int(r[0])
+  if ref[pos-1]!=r[2].strip().upper():continue
+  k=(r[0].strip(),r[1].strip())
+  cc=[qualcall(r,i) for i in range(18)]
+  record=(pos,cc)
+  masks['joint_candidate_3148'].append(record)
+  if k in filtered_keys:masks['final_237'].append(record)
+  if cc[16] is not None and cc[17] is not None:masks['pure_panel_2201'].append(record)
+ out=args.outdir.expanduser();out.mkdir(parents=True,exist_ok=True)
+ summary={'fasta':str(args.rmap_fasta),'fasta_sha256':hashlib.sha256(args.rmap_fasta.expanduser().read_bytes()).hexdigest(),
+          'reference':next(iter(extras)),'ref_comparable_positions_checked':checked,
+          'reference_matches':matches,'reference_mismatches':mis[:25], 'masks_after_reference_matching':{x:len(y) for x,y in masks.items()}}
+ fields=['mask','sample_a','sample_b','shared_callable_sites','mtbseq_differences_on_shared_sites','rmap_differences_on_shared_sites',
+    'distance_delta_on_same_sites','mtbseq_rmap_sample_allele_disagreements','matched_site_analysis_valid']
+ for mask,items in masks.items():
+  result=[]
+  for i,a in enumerate(samples):
+   for j in range(i+1,len(samples)):
+    b=samples[j]; n=0;ma=0;ra=0;discord=0
+    for pos,call_list in items:
+     x,y=call_list[i],call_list[j]
+     u,v=seqs[a][pos-1],seqs[b][pos-1]
+     if x not in ACGT or y not in ACGT or u not in ACGT or v not in ACGT:continue
+     n+=1;ma+=(x!=y);ra+=(u!=v);discord+=(x!=u)+(y!=v)
+    result.append(dict(mask=mask,sample_a=a,sample_b=b,shared_callable_sites=n,
+      mtbseq_differences_on_shared_sites=ma,rmap_differences_on_shared_sites=ra,
+      distance_delta_on_same_sites=ma-ra,mtbseq_rmap_sample_allele_disagreements=discord,
+      matched_site_analysis_valid='YES' if n>0 else 'NO SITES'))
+  with open(out/f'matched_{mask}.tsv','w',newline='') as f:
+   w=csv.DictWriter(f,fieldnames=fields,delimiter='\t');w.writeheader();w.writerows(result)
+  summary[f'{mask}_pairs_with_0_shared_sites']=sum(int(z['shared_callable_sites'])==0 for z in result)
+ (out/'reference_validation.json').write_text(json.dumps(summary,indent=2)+'\n')
+ print(json.dumps(summary,indent=2))
+ print('Completed coordinate- and callability-matched analysis without using unmatched distance denominators.')
+
+if __name__=='__main__':main()

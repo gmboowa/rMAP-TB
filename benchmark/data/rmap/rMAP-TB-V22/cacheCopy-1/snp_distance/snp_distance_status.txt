@@ -1,0 +1,1 @@
+SNP distance clustering completed successfully. 1 reference/non-sample sequence(s) excluded. 18 sample sequence(s) analyzed.

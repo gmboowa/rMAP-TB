@@ -1,0 +1,19 @@
+sample	heterozygous_sites	heterozygous_threshold	tbprofiler_mixed_infection_status	eligible_for_clustering	reason
+0000_CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x	5742	disabled	No mixed-infection signal detected	YES	no mixed-strain signal
+0001_MIX_ERR038255_ERR13260175_05pctA_100x	630	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0002_MIX_ERR038255_ERR13260175_05pctB_100x	6423	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0003_MIX_ERR038255_ERR13260175_10pctA_100x	1327	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0004_MIX_ERR038255_ERR13260175_10pctB_100x	6781	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0005_MIX_ERR038255_ERR13260175_10pctB_140x	6756	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0006_MIX_ERR038255_ERR13260175_10pctB_40x	5185	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0007_MIX_ERR038255_ERR13260175_10pctB_70x	6711	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0008_MIX_ERR038255_ERR13260175_20pctA_100x	2288	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0009_MIX_ERR038255_ERR13260175_20pctB_100x	6274	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0010_MIX_ERR038255_ERR13260175_30pctA_100x	2792	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0011_MIX_ERR038255_ERR13260175_30pctB_100x	5503	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0012_MIX_ERR038255_ERR13260175_50pctB_100x	3917	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0013_MIX_ERR038266_ERR13260106_10pctB_100x	6289	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0014_MIX_ERR038266_ERR13260106_20pctB_100x	5743	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0015_MIX_ERR038266_ERR13260106_50pctB_100x	3208	disabled	Possible mixed infection	NO	TB-Profiler mixed-infection flag
+0016_PURE_ERR038255_100x	5898	disabled	No mixed-infection signal detected	YES	no mixed-strain signal
+0017_PURE_ERR13260175_100x	396	disabled	No mixed-infection signal detected	YES	no mixed-strain signal

@@ -1,0 +1,147 @@
+#!/bin/bash
+
+cd /mnt/disks/cromwell_root
+tmpDir=$(mktemp -d "$PWD"/tmp.XXXXXX)
+chmod 777 "$tmpDir"
+export _JAVA_OPTIONS=-Djava.io.tmpdir="$tmpDir"
+export TMPDIR="$tmpDir"
+
+
+(
+cd /mnt/disks/cromwell_root
+ln -s /mnt/disks/cromwell_root /cromwell_root
+)
+
+
+out0a3b74e0="${tmpDir}/out.$$" err0a3b74e0="${tmpDir}/err.$$"
+mkfifo "$out0a3b74e0" "$err0a3b74e0"
+trap 'rm "$out0a3b74e0" "$err0a3b74e0"' EXIT
+touch '/mnt/disks/cromwell_root/stdout' '/mnt/disks/cromwell_root/stderr'
+tee '/mnt/disks/cromwell_root/stdout' < "$out0a3b74e0" &
+tee '/mnt/disks/cromwell_root/stderr' < "$err0a3b74e0" >&2 &
+(
+cd /mnt/disks/cromwell_root
+
+
+set -uo pipefail
+mkdir -p usher_out
+LOG=usher_out/placement.log
+: > "${LOG}"
+echo "unknown_status" > usher_out/status.txt
+
+COLLAPSE=""
+if [ "true" = "true" ]; then COLLAPSE="-c"; fi
+
+# usher defaults to every core on the machine, which on Terra means it can
+# oversubscribe the cores the task actually reserved, so -T is always set.
+STARTING_TREE="/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/c798405b-0542-4aab-afdb-4a3126a7e223/USHER_TB_BENCHMARK/0a3b74e0-43fd-429a-851b-6a4afc6828af/call-BUILD_STARTING_TREE/starting_tree/starting_tree.nwk"
+EXISTING_MAT=""
+
+if [ -n "${EXISTING_MAT}" ] && [ -s "${EXISTING_MAT}" ]; then
+  MODE="placement"
+  SEED_ARGS="--load-mutation-annotated-tree ${EXISTING_MAT}"
+  echo "Mode: placement onto an existing mutation-annotated tree" >> "${LOG}"
+  echo "MAT: ${EXISTING_MAT} ($(stat -c %s "${EXISTING_MAT}" 2>/dev/null || echo unknown) bytes)" >> "${LOG}"
+  # Collapsing is a de novo build option; it would rewrite the reference tree.
+  COLLAPSE=""
+elif [ -n "${STARTING_TREE}" ] && [ -s "${STARTING_TREE}" ]; then
+  MODE="de_novo"
+  SEED_ARGS="--tree ${STARTING_TREE}"
+  echo "Mode: de novo build from a starting tree" >> "${LOG}"
+else
+  # Verified bootstrap from the UShER-TB companion repository: a degenerate
+  # empty tree lets usher build the whole topology by parsimony placement.
+  MODE="de_novo_empty_seed"
+  echo "();" > usher_out/seed_tree.nwk
+  SEED_ARGS="--tree usher_out/seed_tree.nwk"
+  echo "Mode: de novo build seeded with a degenerate empty tree" >> "${LOG}"
+fi
+echo "${MODE}" > usher_out/mode.txt
+
+USHER_BIN=""
+for cand in usher usher-sampled usher_sampled; do
+  if command -v "$cand" >/dev/null 2>&1; then USHER_BIN="$cand"; break; fi
+done
+
+if [ -z "${USHER_BIN}" ]; then
+  echo "ERROR: no usher binary found in ashedpotatoes/usher-plus:0.6.6_rev16" >> "${LOG}"
+  echo "usher_not_found" > usher_out/status.txt
+elif [ "$(grep -vc '^#' "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/c798405b-0542-4aab-afdb-4a3126a7e223/USHER_TB_BENCHMARK/0a3b74e0-43fd-429a-851b-6a4afc6828af/call-ALIGNMENT_TO_VCF/usher_prep/alignment.vcf")" -lt 1 ]; then
+  echo "ERROR: the VCF contains no variant lines; nothing to place." >> "${LOG}"
+  echo "empty_vcf" > usher_out/status.txt
+else
+  echo "Running ${USHER_BIN} in ${MODE} mode" >> "${LOG}"
+  "${USHER_BIN}" \
+    --vcf "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/c798405b-0542-4aab-afdb-4a3126a7e223/USHER_TB_BENCHMARK/0a3b74e0-43fd-429a-851b-6a4afc6828af/call-ALIGNMENT_TO_VCF/usher_prep/alignment.vcf" \
+    ${SEED_ARGS} \
+    --threads 8 \
+    ${COLLAPSE} \
+    --save-mutation-annotated-tree usher_out/mtbc.pb \
+    --outdir usher_out >> "${LOG}" 2>&1
+
+  if [ -s usher_out/mtbc.pb ]; then
+    echo "success" > usher_out/status.txt
+  else
+    echo "usher_failed" > usher_out/status.txt
+    echo "ERROR: usher did not produce a mutation-annotated tree." >> "${LOG}"
+  fi
+fi
+
+# The names of this panel's samples, taken from the VCF header. In
+# placement mode the MAT also holds every sample of the reference tree, so
+# every matUtils call is restricted to the panel; without this the
+# all-paths output would cover ~129,000 samples and the pairwise distance
+# step would attempt on the order of 10^10 comparisons.
+grep -m1 '^#CHROM' "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/c798405b-0542-4aab-afdb-4a3126a7e223/USHER_TB_BENCHMARK/0a3b74e0-43fd-429a-851b-6a4afc6828af/call-ALIGNMENT_TO_VCF/usher_prep/alignment.vcf" 2>/dev/null \
+  | tr '\t' '\n' \
+  | tail -n +10 > usher_out/panel_samples.txt || true
+PANEL_N=$(grep -c . usher_out/panel_samples.txt 2>/dev/null || echo 0)
+echo "panel samples named in the VCF: ${PANEL_N}" >> "${LOG}"
+
+SELECT=""
+if [ "${PANEL_N}" -gt 0 ]; then
+  SELECT="-s usher_out/panel_samples.txt"
+else
+  echo "WARNING: no sample columns were read from the VCF header; matUtils will not be restricted to the panel." >> "${LOG}"
+fi
+
+if [ -s usher_out/mtbc.pb ] && command -v matUtils >/dev/null 2>&1; then
+  matUtils extract -i usher_out/mtbc.pb ${SELECT} -t usher_out/usher_tree.nwk >> "${LOG}" 2>&1 || true
+  matUtils extract -i usher_out/mtbc.pb ${SELECT} -C usher_out/clades.tsv >> "${LOG}" 2>&1 || true
+  # -A/--all-paths gives every node's mutations in depth-first order;
+  # -S/--sample-paths gives one root-to-tip path per sample. Either is
+  # enough to recover per-sample mutation sets, so the second is a fallback
+  # for matUtils builds that do not accept -A.
+  matUtils extract -i usher_out/mtbc.pb ${SELECT} -A usher_out/all_paths.txt >> "${LOG}" 2>&1 || \
+    matUtils extract -i usher_out/mtbc.pb ${SELECT} -S usher_out/all_paths.txt >> "${LOG}" 2>&1 || true
+  matUtils summary -i usher_out/mtbc.pb -s usher_out/samples.tsv >> "${LOG}" 2>&1 || true
+else
+  echo "WARNING: skipping matUtils because no MAT was produced or matUtils is absent." >> "${LOG}"
+fi
+
+# Guarantee every declared output exists so the workflow reports the
+# failure rather than dying on a missing file.
+[ -s usher_out/mtbc.pb ] || printf '' > usher_out/mtbc.pb
+[ -s usher_out/usher_tree.nwk ] || echo "();" > usher_out/usher_tree.nwk
+[ -s usher_out/all_paths.txt ] || echo "" > usher_out/all_paths.txt
+[ -s usher_out/clades.tsv ] || printf 'sample\tclade\n' > usher_out/clades.tsv
+[ -s usher_out/samples.tsv ] || printf 'sample\n' > usher_out/samples.tsv
+[ -s usher_out/panel_samples.txt ] || : > usher_out/panel_samples.txt
+[ -s usher_out/mode.txt ] || echo "unknown" > usher_out/mode.txt
+
+echo "status: $(cat usher_out/status.txt); mode: $(cat usher_out/mode.txt)" >> "${LOG}"
+)  > "$out0a3b74e0" 2> "$err0a3b74e0"
+echo $? > /mnt/disks/cromwell_root/rc.tmp
+(
+# add a .file in every empty directory to facilitate directory delocalization on the cloud
+cd /mnt/disks/cromwell_root
+find . -type d -exec sh -c '[ -z "$(ls -A '"'"'{}'"'"')" ] && touch '"'"'{}'"'"'/.file' \;
+)
+(
+cd /mnt/disks/cromwell_root
+sync
+
+
+)
+mv /mnt/disks/cromwell_root/rc.tmp /mnt/disks/cromwell_root/rc
+

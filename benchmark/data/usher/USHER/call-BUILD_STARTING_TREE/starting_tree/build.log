@@ -1,0 +1,85 @@
+Building starting tree with iqtree2
+IQ-TREE multicore version 2.3.4 COVID-edition for Linux x86 64-bit built Apr 26 2024
+Developed by Bui Quang Minh, James Barbetti, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams, Ly Trong Nhan, Thomas Wong
+
+Host:    0d443f762ab0 (AVX2, FMA3, 31 GB RAM)
+Command: iqtree2 -s /mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.aln -m GTR -fast -nt 8 -pre starting_tree/start
+Seed:    497565 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Tue Nov  3 09:10:33 2026
+Kernel:  AVX+FMA - 8 threads (8 CPU cores detected)
+
+Reading alignment file /mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/3d10dc72-6796-4f83-85ac-6bebbbf7a816/rMAP_TB/06425efe-8104-42ef-b8f4-7f4b69f4e3b5/call-SNIPPY_CORE_MTBC/cacheCopy/snippy_core/core.aln ... Fasta format detected
+Reading fasta file: done in 0.00019002 secs using 33.15% CPU
+Alignment most likely contains DNA/RNA sequences
+Alignment has 19 sequences with 242 columns, 15 distinct patterns
+4 parsimony-informative, 238 singleton sites, 0 constant sites
+Analyzing sequences: done in 0.00301719 secs using 597.3% CPU
+NOTE: 14 identical sequences (see below) will be ignored for subsequent analysis
+Alignment was printed to starting_tree/start.uniqueseq.phy
+
+For your convenience alignment with unique sequences printed to starting_tree/start.uniqueseq.phy
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.00 seconds
+WARNING: 8 threads for alignment length 15 will slow down analysis
+
+NOTE: 0 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.50)
+1. Initial log-likelihood: -767.99
+2. Current log-likelihood: -697.27
+3. Current log-likelihood: -689.39
+Optimal log-likelihood: -688.56
+Rate parameters:  A-C: 0.75011  A-G: 8.09306  A-T: 0.00010  C-G: 1.10087  C-T: 6.38912  G-T: 1.00000
+Warning! Some parameters hit the boundaries
+Base frequencies:  A: 0.184  C: 0.333  G: 0.312  T: 0.171
+Parameters optimization took 3 rounds (0.002 sec)
+Wrote distance file to... 
+Computing ML distances based on estimated model parameters...
+Calculating distance matrix: done in 9.29832e-05 secs using 534.5% CPU
+Computing ML distances took 0.000211 sec (of wall-clock time) 0.001232 sec (of CPU time)
+Setting up auxiliary I and S matrices: done in 4.19617e-05 secs using 510% CPU
+Computing RapidNJ tree took 0.000105 sec (of wall-clock time) 0.000500 sec (of CPU time)
+Log-likelihood of RapidNJ tree: -688.560
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 1 parsimony trees... 0.000 second
+Computing log-likelihood of 1 initial trees ... 0.000 seconds
+Current best score: -688.559
+
+Do NNI search on 2 best initial trees
+Finish initializing candidate tree set (2)
+Current best tree score: -688.559 / CPU time: 0.001
+Number of iterations: 2
+TREE SEARCH COMPLETED AFTER 2 ITERATIONS / Time: 0h:0m:0s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.050)
+1. Initial log-likelihood: -688.559
+2. Current log-likelihood: -688.449
+3. Current log-likelihood: -688.338
+Optimal log-likelihood: -688.298
+Rate parameters:  A-C: 0.78430  A-G: 8.26278  A-T: 0.00010  C-G: 1.61804  C-T: 6.57754  G-T: 1.00000
+Warning! Some parameters hit the boundaries
+Base frequencies:  A: 0.184  C: 0.333  G: 0.312  T: 0.171
+Parameters optimization took 3 rounds (0.002 sec)
+BEST SCORE FOUND : -688.298
+Total tree length: 3.010
+
+Total number of iterations: 2
+CPU time used for tree search: 0.007 sec (0h:0m:0s)
+Wall-clock time used for tree search: 0.001 sec (0h:0m:0s)
+Total CPU time used: 0.105 sec (0h:0m:0s)
+Total wall-clock time used: 0.018 sec (0h:0m:0s)
+
+Analysis results written to: 
+  IQ-TREE report:                starting_tree/start.iqtree
+  Maximum-likelihood tree:       starting_tree/start.treefile
+  Likelihood distances:          starting_tree/start.mldist
+  Screen log file:               starting_tree/start.log
+
+Date and Time: Tue Nov  3 09:10:33 2026
+Starting tree: starting_tree/start.treefile

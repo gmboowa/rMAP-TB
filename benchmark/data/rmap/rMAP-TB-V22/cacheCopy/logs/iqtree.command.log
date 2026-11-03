@@ -1,0 +1,22 @@
+Using IQ-TREE: /iqtree-2.3.4-Linux-intel/bin/iqtree2
+Model: GTR+G
+Bootstrap replicates: 1000
+CPU threads: 16
+Maximum missing fraction allowed for tree: 0.5
+Minimum non-reference samples required for tree: 3
+
+Alignment filtering exit code: 0
+Original sequences: 19
+Included sequences: 19
+Excluded sequences: 0
+Included non-reference samples: 18
+Alignment length: 4411532
+Maximum allowed missing fraction: 0.5
+
+Excluded samples from IQ-TREE only: none
+
+Note: Excluded samples are not removed from the wider workflow. They are excluded only from IQ-TREE phylogenetic inference because their core-SNP alignment sequence did not meet the minimum quality requirements for tree reconstruction.
+
+Proceeding with filtered alignment:
+  iqtree/mtbc_core_snp_alignment.fasta
+

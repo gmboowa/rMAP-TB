@@ -1,0 +1,287 @@
+#!/bin/bash
+
+cd /mnt/disks/cromwell_root
+tmpDir=$(mktemp -d "$PWD"/tmp.XXXXXX)
+chmod 777 "$tmpDir"
+export _JAVA_OPTIONS=-Djava.io.tmpdir="$tmpDir"
+export TMPDIR="$tmpDir"
+
+
+(
+cd /mnt/disks/cromwell_root
+ln -s /mnt/disks/cromwell_root /cromwell_root
+)
+
+
+oute76bf8e8="${tmpDir}/out.$$" erre76bf8e8="${tmpDir}/err.$$"
+mkfifo "$oute76bf8e8" "$erre76bf8e8"
+trap 'rm "$oute76bf8e8" "$erre76bf8e8"' EXIT
+touch '/mnt/disks/cromwell_root/stdout' '/mnt/disks/cromwell_root/stderr'
+tee '/mnt/disks/cromwell_root/stdout' < "$oute76bf8e8" &
+tee '/mnt/disks/cromwell_root/stderr' < "$erre76bf8e8" >&2 &
+(
+cd /mnt/disks/cromwell_root
+
+
+    set -uo pipefail
+    mkdir -p mtbseq_run mtbseq_out
+    LOG=mtbseq_out/mtbseq_run.log
+    : > "${LOG}"
+    echo "not_started" > mtbseq_out/status.txt
+
+    {
+      echo "MTBSEQ_FULL started $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      echo "image: quay.io/biocontainers/mtbseq:1.1.0--hdfd78af_1"
+      echo "threads requested: 8; MTBseq caps at 8, using 8"
+      echo "project: rMAPTB_benchmark; reference basename: M._tuberculosis_H37Rv_2015-11-13"
+    } >> "${LOG}"
+
+    # Terra/Cromwell may inject _JAVA_OPTIONS, which causes java -version to
+    # print "Picked up _JAVA_OPTIONS: ..." before the actual version string.
+    # MTBseq 1.1.0 reads ONLY the first line of java -version 2>&1 and
+    # therefore incorrectly rejects an otherwise valid Java 8 installation.
+    # Clear these Java launch-time option variables for this task (not the
+    # software or its parameters) before running MTBseq and GATK.
+    echo "Clearing _JAVA_OPTIONS/JAVA_TOOL_OPTIONS/JDK_JAVA_OPTIONS for MTBseq version check" >> "${LOG}"
+    unset _JAVA_OPTIONS JAVA_TOOL_OPTIONS JDK_JAVA_OPTIONS
+
+    echo "--- Java version preflight (first line) ---" >> "${LOG}"
+    java -version 2>&1 | sed -n '1p' >> "${LOG}"
+    if ! java -version 2>&1 | sed -n '1p' | grep -Eq '^(openjdk|java) version "1[.]8[.]'; then
+      echo "ERROR: MTBseq 1.1.0 requires Java 8 with an unmodified first version line." >> "${LOG}"
+      echo "java_version_preflight_failed" > mtbseq_out/status.txt
+      exit 2
+    fi
+
+    # ---------------------------------------------------------------------
+    # Stage the reads under MTBseq's naming contract, and write both the
+    # back-mapping table and the --samples TSV that the joint steps need.
+    # ---------------------------------------------------------------------
+    cat > stage_reads.py <<'STAGE'
+import re
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+r1 = [p for p in sys.argv[1].split("\t") if p]
+r2 = [p for p in sys.argv[2].split("\t") if p]
+names = [p for p in sys.argv[3].split("\t") if p]
+lib = sys.argv[4]
+dest_dir = Path(sys.argv[5])
+dest_dir.mkdir(parents=True, exist_ok=True)
+
+if len(r1) != len(r2):
+    print(f"ERROR: {len(r1)} R1 file(s) but {len(r2)} R2 file(s)")
+    sys.exit(2)
+
+
+def derive(path):
+    s = Path(path).name
+    s = re.sub(r"\.(fastq|fq)(\.gz)?$", "", s, flags=re.I)
+    s = re.sub(r"[._]R?1(_001)?$", "", s)
+    return s
+
+
+if not names:
+    names = [derive(p) for p in r1]
+if len(names) != len(r1):
+    print(f"ERROR: {len(names)} sample name(s) for {len(r1)} library/libraries")
+    sys.exit(2)
+
+# MTBseq splits the file name on underscores to recover [SampleID] and
+# [LibID], so an underscore inside a sample identifier would corrupt both.
+# Hyphens are the only special character the manual permits.
+rows = []
+used = {}
+for original, a, b in zip(names, r1, r2):
+    safe = re.sub(r"[^A-Za-z0-9-]", "-", original)
+    safe = re.sub(r"-{2,}", "-", safe).strip("-") or "sample"
+    if safe in used:
+        used[safe] += 1
+        safe = f"{safe}-{used[safe]}"
+    else:
+        used[safe] = 0
+    for src, mate in ((a, "1"), (b, "2")):
+        dest = dest_dir / f"{safe}_{lib}_R{mate}.fastq.gz"
+        if src.endswith(".gz"):
+            shutil.copy(src, dest)
+        else:
+            with open(dest, "wb") as out:
+                subprocess.run(["gzip", "-c", src], stdout=out, check=True)
+        print(f"staged {Path(src).name} -> {dest.name}")
+    rows.append((original, safe, lib,
+                 f"{safe}_{lib}_R1.fastq.gz", f"{safe}_{lib}_R2.fastq.gz"))
+
+with open("mtbseq_out/sample_map.tsv", "w") as fh:
+    fh.write("original_sample\tmtbseq_sample\tmtbseq_library\tr1_staged\tr2_staged\n")
+    for row in rows:
+        fh.write("\t".join(row) + "\n")
+
+# TBjoin, TBamend and TBgroups read a two-column SampleID<TAB>LibID list.
+with open(dest_dir / "samples.tsv", "w") as fh:
+    for row in rows:
+        fh.write(f"{row[1]}\t{row[2]}\n")
+shutil.copy(dest_dir / "samples.tsv", "mtbseq_out/samples.tsv")
+
+print(f"staged {len(rows)} library/libraries into {dest_dir}")
+STAGE
+
+    python3 stage_reads.py \
+      "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_05pctA_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_05pctB_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctA_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctB_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctB_140x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctB_40x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctB_70x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_20pctA_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_20pctB_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_30pctA_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_30pctB_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_50pctB_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038266_ERR13260106_10pctB_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038266_ERR13260106_20pctB_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038266_ERR13260106_50pctB_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/PURE_ERR038255_100x_1.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/PURE_ERR13260175_100x_1.fastq.gz" \
+      "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_05pctA_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_05pctB_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctA_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctB_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctB_140x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctB_40x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_10pctB_70x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_20pctA_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_20pctB_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_30pctA_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_30pctB_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038255_ERR13260175_50pctB_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038266_ERR13260106_10pctB_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038266_ERR13260106_20pctB_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/MIX_ERR038266_ERR13260106_50pctB_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/PURE_ERR038255_100x_2.fastq.gz	/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/uploads/TB_mixtures/PURE_ERR13260175_100x_2.fastq.gz" \
+      "" \
+      "lib1" \
+      mtbseq_run >> "${LOG}" 2>&1
+    stage_rc=$?
+    if [ "${stage_rc}" -ne 0 ]; then
+      echo "ERROR: staging failed with code ${stage_rc}" >> "${LOG}"
+      echo "staging_failed" > mtbseq_out/status.txt
+      exit "${stage_rc}"
+    fi
+
+    echo "--- files presented to MTBseq ---" >> "${LOG}"
+    ls -l mtbseq_run >> "${LOG}" 2>&1
+
+    # ---------------------------------------------------------------------
+    # GATK 3.8. The biocontainer ships it; register only if a jar was given.
+    # ---------------------------------------------------------------------
+    echo "--- GATK ---" >> "${LOG}"
+    if command -v gatk3 >/dev/null 2>&1; then
+      gatk3 --version >> "${LOG}" 2>&1 || true
+    elif command -v GenomeAnalysisTK >/dev/null 2>&1; then
+      GenomeAnalysisTK --version >> "${LOG}" 2>&1 || true
+    else
+      echo "No gatk3 or GenomeAnalysisTK on PATH in this image." >> "${LOG}"
+    fi
+    GATK_JAR=""
+    if [ -n "${GATK_JAR}" ] && [ -f "${GATK_JAR}" ]; then
+      echo "A gatk38_jar was supplied; placing it for MTBseq." >> "${LOG}"
+      if command -v gatk-register >/dev/null 2>&1; then
+        gatk-register "${GATK_JAR}" >> "${LOG}" 2>&1 || \
+          echo "WARNING: gatk-register returned non-zero" >> "${LOG}"
+      else
+        MTB_BIN="$(command -v MTBseq 2>/dev/null || echo /usr/local/bin/MTBseq)"
+        for CAND in "$(dirname "${MTB_BIN}")/../opt" "$(dirname "${MTB_BIN}")/../share" /usr/local/opt; do
+          if mkdir -p "${CAND}" 2>/dev/null && \
+             cp "${GATK_JAR}" "${CAND}/GenomeAnalysisTK.jar" 2>/dev/null; then
+            echo "Placed the GATK jar at ${CAND}/GenomeAnalysisTK.jar" >> "${LOG}"
+            break
+          fi
+        done
+      fi
+    fi
+    java -version >> "${LOG}" 2>&1 || true
+
+    # ---------------------------------------------------------------------
+    # Run MTBseq from inside the FASTQ directory, as the manual requires.
+    # ---------------------------------------------------------------------
+    EXTRA=""
+    if [ -n "" ]; then
+      EXTRA="${EXTRA} --basecalib "
+    fi
+    if [ -n "" ]; then
+      EXTRA="${EXTRA} --resilist "
+    fi
+    if [ -n "" ]; then
+      EXTRA="${EXTRA} --categories "
+    fi
+    # The boolean is rendered by WDL as the bare word true or false and then
+    # tested in shell. Do not fold this into a WDL if-expression that builds
+    # the assignment as a string: a dollar-brace reference inside a WDL string
+    # literal is a WDL placeholder rather than shell, so Cromwell resolves it
+    # at parse time and rejects the workflow with
+    # "Cannot lookup value 'EXTRA', it is never declared".
+    # The same applies to comments, which are shell text inside a command
+    # block and are still scanned for WDL placeholders.
+    if [ "false" = "true" ]; then
+      EXTRA="${EXTRA} --snp_vars"
+    fi
+    if [ "false" = "true" ]; then
+      EXTRA="${EXTRA} --lowfreq_vars"
+    fi
+
+    if [ "M._tuberculosis_H37Rv_2015-11-13" != "H37Rv" ] && [ -z "" ]; then
+      echo "NOTE: a non-H37Rv reference was given without base_calibration_vcf, so MTBseq will skip base recalibration." >> "${LOG}"
+    fi
+
+    cd mtbseq_run
+
+    if command -v MTBseq >/dev/null 2>&1; then
+      MTBseq --version >> "../${LOG}" 2>&1 || true
+      echo "--- MTBseq --step TBfull ---" >> "../${LOG}"
+
+      MTBseq --step TBfull \
+        --project rMAPTB_benchmark \
+        --samples samples.tsv \
+        --ref M._tuberculosis_H37Rv_2015-11-13 \
+        --threads 8 \
+        --minbqual 13 \
+        --mincovf 4 \
+        --mincovr 4 \
+        --minphred 4 \
+        --minfreq 75 \
+        --unambig 95 \
+        --window 12 \
+        --distance 12 \
+        ${EXTRA} >> "../${LOG}" 2>&1
+      mtb_rc=$?
+      cd ..
+      if [ "${mtb_rc}" -eq 0 ]; then
+        # A zero exit code alone is not evidence that a TBfull analysis ran.
+        # Require at least one actual pipeline file in a key analysis folder.
+        # All-zero/empty data and absent analysis are NOT benchmark successes.
+        if [ "TBfull" = "TBfull" ] && \
+           [ -z "$(find mtbseq_run/Called mtbseq_run/Statistics mtbseq_run/Groups -type f -size +0c -print -quit 2>/dev/null)" ]; then
+          echo "no_analytical_outputs" > mtbseq_out/status.txt
+          echo "ERROR: MTBseq returned zero but no nonempty Called, Statistics or Groups outputs exist." >> "${LOG}"
+        else
+          echo "success" > mtbseq_out/status.txt
+        fi
+      else
+        echo "mtbseq_exit_${mtb_rc}" > mtbseq_out/status.txt
+        echo "ERROR: MTBseq exited with code ${mtb_rc}" >> "${LOG}"
+      fi
+    else
+      cd ..
+      echo "ERROR: no MTBseq binary on PATH in quay.io/biocontainers/mtbseq:1.1.0--hdfd78af_1" >> "${LOG}"
+      echo "mtbseq_not_found" > mtbseq_out/status.txt
+    fi
+
+    {
+      echo "--- directories produced ---"
+      find mtbseq_run -maxdepth 2 -type d
+      echo "--- files produced (first 400, excluding staged reads) ---"
+      find mtbseq_run -type f -not -name "*.fastq.gz" | head -400
+    } >> "${LOG}" 2>&1
+
+    # Archive everything but the staged read copies.
+    find mtbseq_run -type f -name "*.fastq.gz" -delete 2>/dev/null
+    tar -czf mtbseq_out/mtbseq_outputs.tar.gz mtbseq_run 2>>"${LOG}" || \
+      tar -czf mtbseq_out/mtbseq_outputs.tar.gz -T /dev/null
+
+    if [ ! -s mtbseq_out/sample_map.tsv ]; then
+      printf 'original_sample\tmtbseq_sample\tmtbseq_library\tr1_staged\tr2_staged\n' > mtbseq_out/sample_map.tsv
+    fi
+    [ -f mtbseq_out/samples.tsv ] || : > mtbseq_out/samples.tsv
+
+    echo "status: $(cat mtbseq_out/status.txt)" >> "${LOG}"
+    if [ "$(cat mtbseq_out/status.txt)" != "success" ]; then
+      echo "FATAL: MTBseq did not complete; inspect mtbseq_run.log. Failing Terra task rather than reporting success." | tee -a "${LOG}" >&2
+      exit 1
+    fi
+)  > "$oute76bf8e8" 2> "$erre76bf8e8"
+echo $? > /mnt/disks/cromwell_root/rc.tmp
+(
+# add a .file in every empty directory to facilitate directory delocalization on the cloud
+cd /mnt/disks/cromwell_root
+find . -type d -exec sh -c '[ -z "$(ls -A '"'"'{}'"'"')" ] && touch '"'"'{}'"'"'/.file' \;
+)
+(
+cd /mnt/disks/cromwell_root
+sync
+
+
+)
+mv /mnt/disks/cromwell_root/rc.tmp /mnt/disks/cromwell_root/rc
+

@@ -1,0 +1,450 @@
+#!/bin/bash
+
+cd /mnt/disks/cromwell_root
+tmpDir=$(mktemp -d "$PWD"/tmp.XXXXXX)
+chmod 777 "$tmpDir"
+export _JAVA_OPTIONS=-Djava.io.tmpdir="$tmpDir"
+export TMPDIR="$tmpDir"
+
+
+(
+cd /mnt/disks/cromwell_root
+ln -s /mnt/disks/cromwell_root /cromwell_root
+)
+
+
+out8be74a1b="${tmpDir}/out.$$" err8be74a1b="${tmpDir}/err.$$"
+mkfifo "$out8be74a1b" "$err8be74a1b"
+trap 'rm "$out8be74a1b" "$err8be74a1b"' EXIT
+touch '/mnt/disks/cromwell_root/stdout' '/mnt/disks/cromwell_root/stderr'
+tee '/mnt/disks/cromwell_root/stdout' < "$out8be74a1b" &
+tee '/mnt/disks/cromwell_root/stderr' < "$err8be74a1b" >&2 &
+(
+cd /mnt/disks/cromwell_root
+
+
+    set -uo pipefail
+    mkdir -p iqtree logs
+
+    ###########################################################################
+    # Guaranteed placeholder outputs
+    #
+    # Cromwell fails output collection if a declared File output does not exist.
+    # These placeholders are overwritten later when filtering and IQ-TREE run
+    # successfully, but they protect the task from missing-output failures if
+    # filtering exits early or IQ-TREE is skipped.
+    ###########################################################################
+
+    echo -e "sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\tthreshold\treason\texclusion_note" > iqtree/excluded_from_iqtree.tsv
+    echo -e "sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction" > iqtree/included_in_iqtree.tsv
+    echo "Alignment filtering has not yet completed." > iqtree/alignment_filtering_summary.txt
+    echo "IQ-TREE log not available." > iqtree/iqtree.log
+    echo "IQ-TREE report not available." > iqtree/iqtree.report
+    echo "" > iqtree/support_labels.txt
+    echo "not_started" > iqtree/iqtree_status.txt
+    echo "(IQTREE_not_started:0.0);" > iqtree/final.treefile
+    echo "IQ-TREE was not executed or produced no run log." > logs/iqtree.run.log
+    echo "IQ-TREE command log initialized." > logs/iqtree.command.log
+
+    if command -v iqtree2 >/dev/null 2>&1; then
+      IQTREE_BIN="$(command -v iqtree2)"
+    elif command -v iqtree >/dev/null 2>&1; then
+      IQTREE_BIN="$(command -v iqtree)"
+    elif [ -x /usr/local/bin/iqtree2 ]; then
+      IQTREE_BIN="/usr/local/bin/iqtree2"
+    else
+      echo "ERROR: IQ-TREE executable not found." >&2
+      echo "iqtree_executable_not_found" > iqtree/iqtree_status.txt
+      exit 127
+    fi
+
+    cp "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/026a83b0-c2a0-4daa-87a2-d29e7031e200/rMAP_TB/8be74a1b-3ce0-4761-9659-413332ebd1cb/call-SNIPPY_CORE_MTBC/snippy_core/core.full.aln" iqtree/mtbc_core_snp_alignment.original.fasta
+    cp "/mnt/disks/cromwell_root/fc-67b90df7-2f0b-4506-947f-aaf2f23ceaa1/submissions/026a83b0-c2a0-4daa-87a2-d29e7031e200/rMAP_TB/8be74a1b-3ce0-4761-9659-413332ebd1cb/call-SNIPPY_CORE_MTBC/snippy_core/core.full.aln" iqtree/mtbc_core_snp_alignment.fasta
+
+    if [ ! -s iqtree/mtbc_core_snp_alignment.original.fasta ]; then
+      echo "ERROR: alignment file is missing or empty." >&2
+      echo "alignment_missing_or_empty" > iqtree/iqtree_status.txt
+      echo "ERROR: alignment file is missing or empty." > iqtree/alignment_filtering_summary.txt
+      exit 1
+    fi
+
+    echo "Using IQ-TREE: ${IQTREE_BIN}" > logs/iqtree.command.log
+    echo "Model: GTR+G" >> logs/iqtree.command.log
+    echo "Bootstrap replicates: 1000" >> logs/iqtree.command.log
+    echo "CPU threads: 16" >> logs/iqtree.command.log
+    echo "Maximum missing fraction allowed for tree: 0.5" >> logs/iqtree.command.log
+    echo "Minimum non-reference samples required for tree: 3" >> logs/iqtree.command.log
+    echo "" >> logs/iqtree.command.log
+
+    ###########################################################################
+    # Pre-IQ-TREE filtering
+    #
+    # This does NOT remove samples from the whole workflow.
+    # It only removes samples from IQ-TREE phylogenetic inference when their
+    # core-SNP alignment sequence is too poor for tree reconstruction.
+    #
+    # Outputs:
+    #   iqtree/mtbc_core_snp_alignment.original.fasta = original alignment
+    #   iqtree/mtbc_core_snp_alignment.fasta          = filtered alignment for IQ-TREE
+    #   iqtree/excluded_from_iqtree.tsv               = samples excluded from tree only
+    #   iqtree/included_in_iqtree.tsv                 = samples retained for tree
+    #   iqtree/alignment_filtering_summary.txt        = filtering summary
+    ###########################################################################
+
+    python3 <<'PY'
+from collections import OrderedDict
+import sys
+
+input_fasta = "iqtree/mtbc_core_snp_alignment.original.fasta"
+clean_fasta = "iqtree/mtbc_core_snp_alignment.fasta"
+excluded_tsv = "iqtree/excluded_from_iqtree.tsv"
+included_tsv = "iqtree/included_in_iqtree.tsv"
+summary_txt = "iqtree/alignment_filtering_summary.txt"
+
+max_missing_fraction = float("0.5")
+min_non_reference_samples = int("3")
+
+records = OrderedDict()
+current_name = None
+current_seq = []
+
+with open(input_fasta, "r", encoding="utf-8", errors="replace") as handle:
+    for line in handle:
+        line = line.rstrip("\n")
+        if not line:
+            continue
+
+        if line.startswith(">"):
+            if current_name is not None:
+                records[current_name] = "".join(current_seq)
+
+            current_name = line[1:].strip().split()[0]
+            current_seq = []
+        else:
+            current_seq.append(line.strip())
+
+if current_name is not None:
+    records[current_name] = "".join(current_seq)
+
+def write_empty_failure_outputs(message, exit_code):
+    with open(excluded_tsv, "w") as out:
+        out.write("sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\tthreshold\treason\texclusion_note\n")
+
+    with open(included_tsv, "w") as out:
+        out.write("sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\n")
+
+    with open(summary_txt, "w") as out:
+        out.write(message.rstrip() + "\n")
+
+    with open(clean_fasta, "w") as out:
+        out.write("")
+
+    sys.exit(exit_code)
+
+if not records:
+    write_empty_failure_outputs(
+        "ERROR: No FASTA records were found in the alignment.",
+        10
+    )
+
+lengths = {name: len(seq) for name, seq in records.items()}
+unique_lengths = sorted(set(lengths.values()))
+
+if len(unique_lengths) != 1:
+    with open(excluded_tsv, "w") as out:
+        out.write("sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\tthreshold\treason\texclusion_note\n")
+
+    with open(included_tsv, "w") as out:
+        out.write("sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\n")
+
+    with open(summary_txt, "w") as out:
+        out.write("ERROR: Alignment records do not all have the same length.\n")
+        out.write("sample\tsequence_length\n")
+        for name, length in lengths.items():
+            out.write(f"{name}\t{length}\n")
+
+    with open(clean_fasta, "w") as out:
+        out.write("")
+
+    sys.exit(11)
+
+alignment_length = unique_lengths[0]
+
+included = OrderedDict()
+excluded = []
+
+threshold_percent_text = f"{max_missing_fraction * 100:.0f}%"
+
+for name, seq in records.items():
+    seq_upper = seq.upper()
+
+    acgt_count = sum(1 for base in seq_upper if base in {"A", "C", "G", "T"})
+    missing_count = sum(1 for base in seq_upper if base not in {"A", "C", "G", "T"})
+    missing_fraction = missing_count / alignment_length if alignment_length > 0 else 1.0
+    missing_percent_text = f"{missing_fraction * 100:.2f}%"
+
+    reason = ""
+    exclusion_note = ""
+
+    if alignment_length == 0:
+        reason = "empty_sequence"
+        exclusion_note = (
+            f"{name} was excluded from IQ-TREE because its core-SNP alignment "
+            f"sequence was empty."
+        )
+
+    elif acgt_count == 0:
+        reason = "no_usable_acgt_bases"
+        exclusion_note = (
+            f"{name} was excluded from IQ-TREE because it had "
+            f"{missing_percent_text} missing/ambiguous/gap content in the "
+            f"core-SNP alignment and no usable ACGT bases."
+        )
+
+    elif missing_fraction >= max_missing_fraction:
+        reason = f"missing_fraction_ge_{max_missing_fraction}"
+        exclusion_note = (
+            f"{name} was excluded from IQ-TREE because "
+            f"{missing_percent_text} of its core-SNP alignment was "
+            f"missing/ambiguous/gap content, exceeding the maximum allowed "
+            f"threshold of {threshold_percent_text}."
+        )
+
+    if reason:
+        excluded.append({
+            "sample": name,
+            "alignment_length": alignment_length,
+            "acgt_count": acgt_count,
+            "missing_count": missing_count,
+            "missing_fraction": missing_fraction,
+            "threshold": max_missing_fraction,
+            "reason": reason,
+            "exclusion_note": exclusion_note
+        })
+    else:
+        included[name] = seq
+
+non_reference_included = [
+    name for name in included
+    if name.lower() not in {"reference", "ref", "h37rv", "h37rv_reference"}
+]
+
+with open(excluded_tsv, "w") as out:
+    out.write("sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\tthreshold\treason\texclusion_note\n")
+    for row in excluded:
+        out.write(
+            f"{row['sample']}\t"
+            f"{row['alignment_length']}\t"
+            f"{row['acgt_count']}\t"
+            f"{row['missing_count']}\t"
+            f"{row['missing_fraction']:.6f}\t"
+            f"{row['threshold']:.6f}\t"
+            f"{row['reason']}\t"
+            f"{row['exclusion_note']}\n"
+        )
+
+with open(included_tsv, "w") as out:
+    out.write("sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\n")
+    for name, seq in included.items():
+        seq_upper = seq.upper()
+        acgt_count = sum(1 for base in seq_upper if base in {"A", "C", "G", "T"})
+        missing_count = sum(1 for base in seq_upper if base not in {"A", "C", "G", "T"})
+        missing_fraction = missing_count / alignment_length if alignment_length > 0 else 1.0
+
+        out.write(
+            f"{name}\t"
+            f"{alignment_length}\t"
+            f"{acgt_count}\t"
+            f"{missing_count}\t"
+            f"{missing_fraction:.6f}\n"
+        )
+
+with open(clean_fasta, "w") as out:
+    for name, seq in included.items():
+        out.write(f">{name}\n")
+        for i in range(0, len(seq), 80):
+            out.write(seq[i:i+80] + "\n")
+
+with open(summary_txt, "w") as out:
+    out.write(f"Original sequences: {len(records)}\n")
+    out.write(f"Included sequences: {len(included)}\n")
+    out.write(f"Excluded sequences: {len(excluded)}\n")
+    out.write(f"Included non-reference samples: {len(non_reference_included)}\n")
+    out.write(f"Alignment length: {alignment_length}\n")
+    out.write(f"Maximum allowed missing fraction: {max_missing_fraction}\n")
+    out.write("\n")
+
+    if excluded:
+        out.write("Excluded samples from IQ-TREE only:\n")
+        for row in excluded:
+            out.write(
+                f"- {row['sample']}: "
+                f"{row['missing_fraction']:.2%} missing/ambiguous/gap content; "
+                f"{row['reason']}; "
+                f"{row['exclusion_note']}\n"
+            )
+    else:
+        out.write("Excluded samples from IQ-TREE only: none\n")
+
+    out.write("\n")
+    out.write(
+        "Note: Excluded samples are not removed from the wider workflow. "
+        "They are excluded only from IQ-TREE phylogenetic inference because "
+        "their core-SNP alignment sequence did not meet the minimum quality "
+        "requirements for tree reconstruction.\n"
+    )
+
+if len(non_reference_included) < min_non_reference_samples:
+    sys.exit(12)
+
+sys.exit(0)
+PY
+
+    filter_exit_code=$?
+
+    echo "Alignment filtering exit code: ${filter_exit_code}" >> logs/iqtree.command.log
+
+    if [ -s iqtree/alignment_filtering_summary.txt ]; then
+      cat iqtree/alignment_filtering_summary.txt >> logs/iqtree.command.log
+    else
+      echo "Alignment filtering summary was not generated." >> logs/iqtree.command.log
+      echo "Alignment filtering summary was not generated." > iqtree/alignment_filtering_summary.txt
+    fi
+
+    echo "" >> logs/iqtree.command.log
+
+    if [ ! -f iqtree/excluded_from_iqtree.tsv ]; then
+      echo -e "sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\tthreshold\treason\texclusion_note" > iqtree/excluded_from_iqtree.tsv
+    fi
+
+    if [ ! -f iqtree/included_in_iqtree.tsv ]; then
+      echo -e "sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction" > iqtree/included_in_iqtree.tsv
+    fi
+
+    if [ ! -f iqtree/mtbc_core_snp_alignment.fasta ]; then
+      cp iqtree/mtbc_core_snp_alignment.original.fasta iqtree/mtbc_core_snp_alignment.fasta || true
+    fi
+
+    if [ "${filter_exit_code}" -eq 10 ] || [ "${filter_exit_code}" -eq 11 ]; then
+      status="alignment_filtering_failed"
+      echo "ERROR: Alignment filtering failed before IQ-TREE." >> logs/iqtree.command.log
+
+    elif [ "${filter_exit_code}" -eq 12 ]; then
+      status="too_few_samples_after_filtering"
+      echo "WARNING: Too few valid non-reference samples remained after filtering. Generating fallback tree." >> logs/iqtree.command.log
+
+    elif [ "${filter_exit_code}" -eq 0 ]; then
+      echo "Proceeding with filtered alignment:" >> logs/iqtree.command.log
+      echo "  iqtree/mtbc_core_snp_alignment.fasta" >> logs/iqtree.command.log
+      echo "" >> logs/iqtree.command.log
+
+      if "$IQTREE_BIN" \
+        -s iqtree/mtbc_core_snp_alignment.fasta \
+        -m GTR+G \
+        -B 1000 \
+        -alrt 1000 \
+        -bnni \
+        -nt 16 \
+        -pre iqtree/MTBC_core_SNP_phylogeny \
+        >> logs/iqtree.run.log 2>&1; then
+
+        status="success"
+
+      else
+        status="iqtree_failed_after_filtering"
+        echo "WARNING: IQ-TREE failed even after problematic-sample filtering. Generating fallback tree." >> logs/iqtree.command.log
+      fi
+
+    else
+      status="unknown_filtering_error"
+      echo "ERROR: Unknown filtering error before IQ-TREE. Generating fallback tree." >> logs/iqtree.command.log
+    fi
+
+    if [ "$status" = "success" ] && [ -s iqtree/MTBC_core_SNP_phylogeny.treefile ]; then
+      cp iqtree/MTBC_core_SNP_phylogeny.treefile iqtree/final.treefile
+    else
+      echo "(IQTREE_failed:0.0);" > iqtree/final.treefile
+    fi
+
+    if [ -s iqtree/MTBC_core_SNP_phylogeny.log ]; then
+      cp iqtree/MTBC_core_SNP_phylogeny.log iqtree/iqtree.log
+    else
+      echo "IQ-TREE log not available." > iqtree/iqtree.log
+    fi
+
+    if [ -s iqtree/MTBC_core_SNP_phylogeny.iqtree ]; then
+      cp iqtree/MTBC_core_SNP_phylogeny.iqtree iqtree/iqtree.report
+    else
+      echo "IQ-TREE report not available." > iqtree/iqtree.report
+    fi
+
+    if [ ! -s logs/iqtree.run.log ]; then
+      echo "IQ-TREE was not executed or produced no run log." > logs/iqtree.run.log
+    fi
+
+    grep -oE '\)[0-9]+(\.[0-9]+)?(/[0-9]+(\.[0-9]+)?)?:' iqtree/final.treefile > iqtree/support_labels.txt || true
+
+    if [ ! -f iqtree/support_labels.txt ]; then
+      echo "" > iqtree/support_labels.txt
+    fi
+
+    echo "$status" > iqtree/iqtree_status.txt
+
+    if [ ! -f iqtree/excluded_from_iqtree.tsv ]; then
+      echo -e "sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction\tthreshold\treason\texclusion_note" > iqtree/excluded_from_iqtree.tsv
+    fi
+
+    if [ ! -f iqtree/included_in_iqtree.tsv ]; then
+      echo -e "sample\talignment_length\tacgt_count\tmissing_count\tmissing_fraction" > iqtree/included_in_iqtree.tsv
+    fi
+
+    if [ ! -f iqtree/alignment_filtering_summary.txt ]; then
+      echo "Alignment filtering summary not available." > iqtree/alignment_filtering_summary.txt
+    fi
+
+    if [ ! -f iqtree/mtbc_core_snp_alignment.original.fasta ]; then
+      echo "" > iqtree/mtbc_core_snp_alignment.original.fasta
+    fi
+
+    if [ ! -f iqtree/mtbc_core_snp_alignment.fasta ]; then
+      echo "" > iqtree/mtbc_core_snp_alignment.fasta
+    fi
+
+    if [ ! -f iqtree/final.treefile ]; then
+      echo "(IQTREE_failed:0.0);" > iqtree/final.treefile
+    fi
+
+    if [ ! -f iqtree/iqtree.log ]; then
+      echo "IQ-TREE log not available." > iqtree/iqtree.log
+    fi
+
+    if [ ! -f iqtree/iqtree.report ]; then
+      echo "IQ-TREE report not available." > iqtree/iqtree.report
+    fi
+
+    if [ ! -f iqtree/iqtree_status.txt ]; then
+      echo "unknown_status" > iqtree/iqtree_status.txt
+    fi
+
+    if [ ! -f logs/iqtree.command.log ]; then
+      echo "IQ-TREE command log not available." > logs/iqtree.command.log
+    fi
+
+    if [ ! -f logs/iqtree.run.log ]; then
+      echo "IQ-TREE run log not available." > logs/iqtree.run.log
+    fi
+)  > "$out8be74a1b" 2> "$err8be74a1b"
+echo $? > /mnt/disks/cromwell_root/rc.tmp
+(
+# add a .file in every empty directory to facilitate directory delocalization on the cloud
+cd /mnt/disks/cromwell_root
+find . -type d -exec sh -c '[ -z "$(ls -A '"'"'{}'"'"')" ] && touch '"'"'{}'"'"'/.file' \;
+)
+(
+cd /mnt/disks/cromwell_root
+sync
+
+
+)
+mv /mnt/disks/cromwell_root/rc.tmp /mnt/disks/cromwell_root/rc
+

@@ -1,0 +1,231 @@
+{
+ "rMAP-TB": {
+  "version": "v22",
+  "samples_with_output": 18,
+  "detected_mixture": [
+   "MIX_ERR038255_ERR13260175_05pctA_100x",
+   "MIX_ERR038255_ERR13260175_05pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctA_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_140x",
+   "MIX_ERR038255_ERR13260175_10pctB_40x",
+   "MIX_ERR038255_ERR13260175_10pctB_70x",
+   "MIX_ERR038255_ERR13260175_20pctA_100x",
+   "MIX_ERR038255_ERR13260175_20pctB_100x",
+   "MIX_ERR038255_ERR13260175_30pctA_100x",
+   "MIX_ERR038255_ERR13260175_30pctB_100x",
+   "MIX_ERR038255_ERR13260175_50pctB_100x",
+   "MIX_ERR038266_ERR13260106_10pctB_100x",
+   "MIX_ERR038266_ERR13260106_20pctB_100x",
+   "MIX_ERR038266_ERR13260106_50pctB_100x"
+  ],
+  "controls_flagged": [],
+  "pairs_total": 153,
+  "pairs_refused": 150,
+  "pairs_close": 1,
+  "pairs_distant": 2,
+  "parent_parent_snps": 1148,
+  "parent_parent_sites": 3944469,
+  "parent_parent_class": "distant"
+ },
+ "MAGMA": {
+  "samples_with_output": 16,
+  "samples_passing_own_thresholds": 9,
+  "samples_zero_mapped": [
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x",
+   "PURE_ERR038255_100x"
+  ],
+  "detected_mixture_strict": [
+   "MIX_ERR038255_ERR13260175_05pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_140x",
+   "MIX_ERR038255_ERR13260175_10pctB_70x",
+   "MIX_ERR038255_ERR13260175_20pctB_100x",
+   "MIX_ERR038266_ERR13260106_10pctB_100x"
+  ],
+  "detected_mixture_lenient": [
+   "MIX_ERR038255_ERR13260175_05pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_140x",
+   "MIX_ERR038255_ERR13260175_10pctB_70x",
+   "MIX_ERR038255_ERR13260175_20pctB_100x",
+   "MIX_ERR038266_ERR13260106_10pctB_100x",
+   "MIX_ERR038266_ERR13260106_20pctB_100x"
+  ],
+  "passing_mixtures": [
+   "MIX_ERR038255_ERR13260175_05pctA_100x",
+   "MIX_ERR038255_ERR13260175_10pctA_100x",
+   "MIX_ERR038255_ERR13260175_20pctA_100x",
+   "MIX_ERR038255_ERR13260175_30pctA_100x",
+   "MIX_ERR038255_ERR13260175_30pctB_100x",
+   "MIX_ERR038255_ERR13260175_50pctB_100x",
+   "MIX_ERR038266_ERR13260106_20pctB_100x",
+   "MIX_ERR038266_ERR13260106_50pctB_100x"
+  ],
+  "detected_among_passing_strict": [],
+  "detected_among_passing_lenient": [
+   "MIX_ERR038266_ERR13260106_20pctB_100x"
+  ],
+  "controls_flagged": [],
+  "mapped_pct": {
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x": 0.0,
+   "MIX_ERR038255_ERR13260175_05pctA_100x": 85.83,
+   "MIX_ERR038255_ERR13260175_05pctB_100x": 2.42,
+   "MIX_ERR038255_ERR13260175_10pctA_100x": 77.57,
+   "MIX_ERR038255_ERR13260175_10pctB_100x": 4.96,
+   "MIX_ERR038255_ERR13260175_10pctB_140x": 4.97,
+   "MIX_ERR038255_ERR13260175_10pctB_40x": 4.97,
+   "MIX_ERR038255_ERR13260175_10pctB_70x": 4.96,
+   "MIX_ERR038255_ERR13260175_20pctA_100x": 63.14,
+   "MIX_ERR038255_ERR13260175_20pctB_100x": 10.48,
+   "MIX_ERR038255_ERR13260175_30pctA_100x": 50.96,
+   "MIX_ERR038255_ERR13260175_30pctB_100x": 16.67,
+   "MIX_ERR038255_ERR13260175_50pctB_100x": 31.51,
+   "MIX_ERR038266_ERR13260106_10pctB_100x": 5.0,
+   "MIX_ERR038266_ERR13260106_20pctB_100x": 10.58,
+   "MIX_ERR038266_ERR13260106_50pctB_100x": 31.79,
+   "PURE_ERR038255_100x": 0.0,
+   "PURE_ERR13260175_100x": 94.92
+  },
+  "clusters": [
+   {
+    "id": 1,
+    "n": 2,
+    "members": [
+     "MIX_ERR038266_ERR13260106_20pctB_100x",
+     "MIX_ERR038266_ERR13260106_50pctB_100x"
+    ],
+    "bootstrap": 100.0
+   },
+   {
+    "id": 2,
+    "n": 7,
+    "members": [
+     "MIX_ERR038255_ERR13260175_05pctA_100x",
+     "MIX_ERR038255_ERR13260175_30pctB_100x",
+     "MIX_ERR038255_ERR13260175_50pctB_100x",
+     "MIX_ERR038255_ERR13260175_10pctA_100x",
+     "MIX_ERR038255_ERR13260175_30pctA_100x",
+     "PURE_ERR13260175_100x",
+     "MIX_ERR038255_ERR13260175_20pctA_100x"
+    ],
+    "bootstrap": 100.0
+   }
+  ],
+  "cluster_with_pure_parent": [
+   {
+    "id": 2,
+    "n": 7,
+    "members": [
+     "MIX_ERR038255_ERR13260175_05pctA_100x",
+     "MIX_ERR038255_ERR13260175_30pctB_100x",
+     "MIX_ERR038255_ERR13260175_50pctB_100x",
+     "MIX_ERR038255_ERR13260175_10pctA_100x",
+     "MIX_ERR038255_ERR13260175_30pctA_100x",
+     "PURE_ERR13260175_100x",
+     "MIX_ERR038255_ERR13260175_20pctA_100x"
+    ],
+    "bootstrap": 100.0
+   }
+  ]
+ },
+ "MTBseq": {
+  "samples_with_output": 18,
+  "mapped_pct_min": 97.22,
+  "mapped_pct_max": 99.55,
+  "cov_min": 39.19,
+  "cov_max": 132.81,
+  "detected_mixture": [],
+  "quality_bad": [
+   "MIX_ERR038255_ERR13260175_20pctA_100x",
+   "MIX_ERR038255_ERR13260175_20pctB_100x",
+   "MIX_ERR038255_ERR13260175_30pctA_100x",
+   "MIX_ERR038255_ERR13260175_30pctB_100x",
+   "MIX_ERR038255_ERR13260175_50pctB_100x",
+   "MIX_ERR038266_ERR13260106_50pctB_100x"
+  ],
+  "quality_bad_mixtures": [
+   "MIX_ERR038255_ERR13260175_20pctA_100x",
+   "MIX_ERR038255_ERR13260175_20pctB_100x",
+   "MIX_ERR038255_ERR13260175_30pctA_100x",
+   "MIX_ERR038255_ERR13260175_30pctB_100x",
+   "MIX_ERR038255_ERR13260175_50pctB_100x",
+   "MIX_ERR038266_ERR13260106_50pctB_100x"
+  ],
+  "groups_18": {
+   "group_1": 18
+  },
+  "parent_parent_snps_18cohort": 0,
+  "parent_parent_same_group_18cohort": true,
+  "alignment_cols_18cohort": 246,
+  "alignment_seqs_18cohort": 18,
+  "joint_candidate_sites_18cohort": 3148,
+  "parent_parent_snps_2cohort": 1103,
+  "alignment_cols_2cohort": 1433,
+  "joint_candidate_sites_2cohort": 2257,
+  "pure_cohort_grouping": true
+ },
+ "UShER": {
+  "samples_with_output": 18,
+  "detected_mixture": [],
+  "clusters": {
+   "UShER_cluster_1": 18
+  },
+  "largest_cluster": 18,
+  "threshold": "5",
+  "parents_same_cluster": true,
+  "parsimony_zero": [
+   "MIX_ERR038266_ERR13260106_20pctB_100x",
+   "MIX_ERR038266_ERR13260106_10pctB_100x",
+   "MIX_ERR038266_ERR13260106_50pctB_100x",
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x",
+   "MIX_ERR038255_ERR13260175_05pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_40x",
+   "PURE_ERR13260175_100x",
+   "MIX_ERR038255_ERR13260175_20pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_70x",
+   "MIX_ERR038255_ERR13260175_10pctA_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_140x",
+   "PURE_ERR038255_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_100x",
+   "MIX_ERR038255_ERR13260175_30pctB_100x",
+   "MIX_ERR038255_ERR13260175_50pctB_100x",
+   "MIX_ERR038255_ERR13260175_30pctA_100x",
+   "MIX_ERR038255_ERR13260175_20pctA_100x",
+   "MIX_ERR038255_ERR13260175_05pctA_100x"
+  ],
+  "vcf_snp_records": 242,
+  "fasta_columns": 4411532,
+  "caveat": [
+   "UShER parsimony path branch mutation events are NOT equivalent to core SNP counts.",
+   "Shared input core alignment distances are a consistency control, NOT an independent UShER benchmark."
+  ]
+ },
+ "_design": {
+  "n_samples": 18,
+  "n_mixtures": 15,
+  "n_controls": 3,
+  "mixtures": [
+   "MIX_ERR038255_ERR13260175_05pctA_100x",
+   "MIX_ERR038255_ERR13260175_05pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctA_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_100x",
+   "MIX_ERR038255_ERR13260175_10pctB_140x",
+   "MIX_ERR038255_ERR13260175_10pctB_40x",
+   "MIX_ERR038255_ERR13260175_10pctB_70x",
+   "MIX_ERR038255_ERR13260175_20pctA_100x",
+   "MIX_ERR038255_ERR13260175_20pctB_100x",
+   "MIX_ERR038255_ERR13260175_30pctA_100x",
+   "MIX_ERR038255_ERR13260175_30pctB_100x",
+   "MIX_ERR038255_ERR13260175_50pctB_100x",
+   "MIX_ERR038266_ERR13260106_10pctB_100x",
+   "MIX_ERR038266_ERR13260106_20pctB_100x",
+   "MIX_ERR038266_ERR13260106_50pctB_100x"
+  ],
+  "controls": [
+   "CTRL_SAMELIN_ERR038254_ERR038255_50pct_100x",
+   "PURE_ERR038255_100x",
+   "PURE_ERR13260175_100x"
+  ]
+ }
+}

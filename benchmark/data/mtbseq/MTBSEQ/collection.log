@@ -1,0 +1,13 @@
+sample map: 18 entry/entries
+Classification: 1 file(s) (e.g. Strain_Classification.tab)
+Called variants: 18 file(s) (e.g. CTRL-SAMELIN-ERR038254-ERR038255-50pct-100x_lib1.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab)
+Groups matrix: 1 file(s) (e.g. rMAPTB_benchmark_joint_cf4_cr4_fr75_ph4_samples18_amended_u95_phylo_w12.matrix)
+Groups assignment: 1 file(s) (e.g. rMAPTB_benchmark_joint_cf4_cr4_fr75_ph4_samples18_amended_u95_phylo_w12_d12.groups)
+Statistics: 1 file(s) (e.g. Mapping_and_Variant_Statistics.tab)
+Amend alignments: 4 file(s) (e.g. rMAPTB_benchmark_joint_cf4_cr4_fr75_ph4_samples18_amended_u95_phylo.fasta)
+wrote mtbseq_classification.tsv from Strain_Classification.tab (19 row(s))
+wrote mtbseq_distance_matrix.tsv from rMAPTB_benchmark_joint_cf4_cr4_fr75_ph4_samples18_amended_u95_phylo_w12.matrix (18 row(s))
+wrote mtbseq_groups.tsv from rMAPTB_benchmark_joint_cf4_cr4_fr75_ph4_samples18_amended_u95_phylo_w12_d12.groups (22 row(s))
+wrote mtbseq_statistics.tsv from Mapping_and_Variant_Statistics.tab (19 row(s))
+wrote mtbseq_resistance.tsv with 0 resistance-annotated variant(s) from 18 Called/ table(s)
+NOTE: Called/ tables were present but carried no resistance annotation. Columns seen: #Pos, Allel, Cov, CovFor, CovRev, Freq, Gene, GeneName, Insindex, InterestingRegion, PhyloSNP, Product, Qual20, Ref, ResistanceSNP, Subst, Type

@@ -1,0 +1,5 @@
+stage	retained_positions	removed_since_prior	note
+All candidate rows in 18-sample amended joint table	3148	0	Candidate variable/variant positions, not genome-wide coordinates
+18/18 unambiguous calls (u95 rounding)	291	2857	With 18 samples, 17/18 =94.44% is below 95%
+MTBseq phylogenetic eligibility	246	45	Official TBamend _u95_phylo stage; additional region, allele-type and other exclusions
+MTBseq 12-base window	237	9	Official _u95_phylo_w12 stage; nine removed sites

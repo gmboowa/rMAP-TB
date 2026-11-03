@@ -1,0 +1,6 @@
+Samples: 18
+VCF SNP records: 242
+FASTA columns: 4411532
+Unique pairs: 153
+UShER parsimony path branch mutation events are NOT equivalent to core SNP counts.
+Shared input core alignment distances are a consistency control, NOT an independent UShER benchmark.

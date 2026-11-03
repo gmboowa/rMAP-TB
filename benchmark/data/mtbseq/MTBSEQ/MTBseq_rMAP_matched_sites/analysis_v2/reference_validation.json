@@ -1,0 +1,142 @@
+{
+  "fasta": "/Users/gmboowa/Downloads/MTBseq_rMAP_matched_sites/core.full.aln",
+  "fasta_sha256": "b8f740b0aef5f3a615d4595347e6a033ce0021bd78dd7e08bc9b917b45a22aac",
+  "reference": "Reference",
+  "ref_comparable_positions_checked": 2864,
+  "reference_matches": 2356,
+  "reference_mismatches": [
+    {
+      "position": 103744,
+      "mtbseq_ref": "A",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 103745,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 103746,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 103747,
+      "mtbseq_ref": "A",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 103748,
+      "mtbseq_ref": "A",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 103749,
+      "mtbseq_ref": "T",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 103756,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 104712,
+      "mtbseq_ref": "C",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 104824,
+      "mtbseq_ref": "C",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 104915,
+      "mtbseq_ref": "T",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 104919,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 104962,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 105021,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 105045,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 105139,
+      "mtbseq_ref": "C",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 105736,
+      "mtbseq_ref": "T",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 132417,
+      "mtbseq_ref": "C",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 177857,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 178205,
+      "mtbseq_ref": "C",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 178453,
+      "mtbseq_ref": "C",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 188317,
+      "mtbseq_ref": "A",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 188800,
+      "mtbseq_ref": "T",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 189850,
+      "mtbseq_ref": "A",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 308661,
+      "mtbseq_ref": "A",
+      "rmap_ref": "X"
+    },
+    {
+      "position": 333892,
+      "mtbseq_ref": "G",
+      "rmap_ref": "X"
+    }
+  ],
+  "masks_after_reference_matching": {
+    "final_237": 234,
+    "joint_candidate_3148": 2356,
+    "pure_panel_2201": 1999
+  },
+  "final_237_pairs_with_0_shared_sites": 0,
+  "joint_candidate_3148_pairs_with_0_shared_sites": 0,
+  "pure_panel_2201_pairs_with_0_shared_sites": 0
+}
