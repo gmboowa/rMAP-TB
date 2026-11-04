@@ -238,13 +238,24 @@ A surveillance report must distinguish "nothing to report" from "the analysis di
 
 ## 3. Repository structure
 
+
 ```text
 rMAP-TB/
 ├── README.md
-├── LICENSE
-├── .dockstore.yml
 ├── .gitignore
 ├── rMAP_TB.wdl
+│
+├── benchmark/
+│   ├── README.md
+│   ├── run_all.sh
+│   ├── data/
+│   ├── panels/
+│   │   ├── panel1_mixtures/
+│   │   │   ├── MIXTURE_PROTOCOL.md
+│   │   │   └── STEPS.md
+│   │   └── panel2_mtbc_ntm/
+│   ├── scripts/
+│   └── results/
 │
 ├── examples/
 │   ├── inputs.example.json
@@ -265,17 +276,27 @@ rMAP-TB/
 │       └── README.md
 │
 ├── tests/
+│   ├── README.md
+│   ├── conftest.py
+│   ├── test_merge_report.py
+│   ├── test_scripts.py
+│   ├── test_surveillance_visuals.py
+│   ├── test_tree_visualization.py
+│   ├── test_wdl_static.py
+│   └── wdl_blocks.py
 │
 └── docs/
     ├── index.html
-    ├── DEPLOYMENT.md
-    ├── reports/
-    │   └── README.md
-    └── assets/
-        ├── workflow/
-        │   └── rMAP-TB-workflow.png
-        ├── images/
-        └── css/
+    ├── assets/
+    │   ├── workflow/
+    │   │   └── rMAP-TB-workflow.png
+    │   ├── images/
+    │   └── css/
+    └── reports/
+        ├── panel1-mixtures/
+        │   └── report.html
+        └── panel2-mtbc-ntm/
+
 ```
 
 | Path | Contents |
@@ -579,7 +600,7 @@ rMAP-TB is intended for research, genomic epidemiology & public-health surveilla
 
 ---
 
-## 11. Citation and licence
+## 11. Citation & licence
 
 ### 11.1 Citation
 
